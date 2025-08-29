@@ -46,6 +46,8 @@ export const lightTheme = {
 	colors: {
 		background: "#ffffffff",
 		text: "#000000",
+		white: "#ffffff",
+		black: "#000000",
 		secondaryText: "#00000059",
 		foreground: "#E0E0E0",
 		primary: "#0A84FF",
