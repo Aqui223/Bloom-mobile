@@ -7,6 +7,7 @@ export const styles = StyleSheet.create(theme => ({
 		backgroundColor: theme.colors.background,
 		paddingBottom: theme.spacing.lg,
         flexDirection: "row",
+		zIndex: 1,
         alignItems: "center",
 		justifyContent: "center",
 		gap: theme.spacing.lg,

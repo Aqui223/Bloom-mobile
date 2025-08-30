@@ -9,12 +9,21 @@ export const styles = StyleSheet.create((theme) => ({
     flexDirection: "row",
     gap: theme.spacing.lg,
   },
-  button: {
+  button: (send) => ({
     height: 40,
     width: 40,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: theme.radius.full,
+    backgroundColor: send ? theme.colors.primary : theme.colors.foreground,
+  }),
+  input: {
+    flex: 1,
+    paddingHorizontal: theme.spacing.md,
+    height: 40,
+    borderRadius: theme.radius.full,
     backgroundColor: theme.colors.foreground,
+    borderWidth: 1,
+    borderColor: theme.colors.foreground,
   },
 }));

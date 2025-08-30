@@ -1,0 +1,50 @@
+import { StyleSheet } from "react-native-unistyles";
+
+export const styles = StyleSheet.create((theme) => ({
+  message: (isMe) => ({
+    padding: theme.spacing.md,
+    maxWidth: "85%",
+    transformOrigin: isMe ? "bottom-right" : "bottom-left",
+    paddingHorizontal: theme.spacing.lg,
+    borderRadius: theme.radius.lg,
+    backgroundColor: isMe ? theme.colors.primary : theme.colors.foreground,
+    alignItems: isMe ? "flex-end" : "flex-start",
+  }),
+  messageWrapper: (isMe) => ({
+    gap: theme.spacing.sm,
+    position: "relative",
+    paddingBottom: theme.spacing.lg,
+    alignItems: isMe ? "flex-end" : "flex-start",
+  }),
+  text: (isMe) => ({
+    fontSize: 15,
+    lineHeight: 18,
+    fontFamily: theme.fontFamily.medium,
+    color: isMe ? theme.colors.white : theme.colors.text,
+  }),
+  metaRow: {
+    flexDirection: "row",
+    gap: theme.spacing.md,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  metaRowText: {
+    color: theme.colors.secondaryText,
+    fontSize: theme.fontSize.sm,
+    lineHeight: theme.lineHeight.sm,
+    fontFamily: theme.fontFamily.medium,
+  },
+  metaRowSeparator: {
+    height: 4,
+    width: 4,
+    borderRadius: theme.radius.full,
+    backgroundColor: theme.colors.secondaryText,
+  },
+  tail: (isMe) => ({
+    position: "absolute",
+    right: isMe ? 0 : undefined,
+    left: isMe ? undefined : 0,
+    transform: isMe ? [{scale: 1}] : [{scaleX: -1}],
+    bottom: 0,
+  }),
+}));

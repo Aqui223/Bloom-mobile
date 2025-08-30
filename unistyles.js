@@ -12,7 +12,7 @@ const base = {
 	},
 	lineHeight: {
 		xs: 15,
-		sm: 14,
+		sm: 17,
 		md: 19,
 		lg: 29,
 		xl: 39,
@@ -27,7 +27,7 @@ const base = {
 	radius: {
 		sm: 12,
 		md: 20,
-		lg: 28,
+		lg: 24,
 		full: 9999,
 	},
 	fontFamily: {

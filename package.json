@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@d11/react-native-fast-image": "^8.11.1",
+    "@legendapp/list": "^1.1.4",
     "@react-native/babel-preset": "^0.81.0",
     "@react-navigation/bottom-tabs": "^7.4.6",
     "@react-navigation/elements": "^2.6.3",
