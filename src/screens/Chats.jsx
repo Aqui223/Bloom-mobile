@@ -16,7 +16,7 @@ const AnimatedFlashList = Animated.createAnimatedComponent(FlashList);
 
 export default function CardScreen() {
   const scrollY = useSharedValue(0);
-  const { focused, headerHeight } = useChatsScreenStore();
+  const { headerHeight } = useChatsScreenStore();
   const renderItem = ({ item }) => {
     return (
       <Chat

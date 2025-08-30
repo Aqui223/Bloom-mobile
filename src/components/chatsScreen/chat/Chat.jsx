@@ -1,14 +1,19 @@
-import { View, Text } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import { styles } from "./Chat.styles";
 import FastImage from "@d11/react-native-fast-image";
 
 import Icon from "@components/ui/Icon";
 import { useUnistyles } from "react-native-unistyles";
+import { useNavigation } from "@react-navigation/native";
+
+import { ROUTES } from "@constants/Routes";
 
 export default function Chat({ chat }) {
   const { theme } = useUnistyles();
+  const navigation = useNavigation();
+
   return (
-    <View style={styles.chat}>
+    <Pressable onPress={() => navigation.navigate(ROUTES.CHAT, { chat })} style={styles.chat}>
       <View style={styles.avatarWrapper}>
         <FastImage style={styles.avatar} source={{ uri: chat.avatar }} />
       </View>
@@ -31,6 +36,6 @@ export default function Chat({ chat }) {
           {chat.lastMessage}
         </Text>
       </View>
-    </View>
+    </Pressable>
   );
 }

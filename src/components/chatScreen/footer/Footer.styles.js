@@ -1,0 +1,20 @@
+import { StyleSheet } from "react-native-unistyles";
+
+export const styles = StyleSheet.create((theme) => ({
+  footer: {
+    width: "100%",
+    paddingHorizontal: theme.spacing.lg,
+    backgroundColor: theme.colors.background,
+    paddingTop: theme.spacing.lg,
+    flexDirection: "row",
+    gap: theme.spacing.lg,
+  },
+  button: {
+    height: 40,
+    width: 40,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: theme.radius.full,
+    backgroundColor: theme.colors.foreground,
+  },
+}));

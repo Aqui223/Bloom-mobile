@@ -3,4 +3,7 @@ export const ROUTES = {
   TAB_CHATS: "tab_chats",
   TAB_SEARCH: "tab_search",
   TAB_SETTINGS: "tab_settings",
+
+  // Chat
+  CHAT: "chat",
 };
