@@ -49,6 +49,7 @@ export const styles = StyleSheet.create(theme => ({
 		paddingVertical: theme.spacing.sm,
 		height: 40,
 		textAlignVertical: "center",
+		color: theme.colors.text,
 		fontFamily: theme.fontFamily.medium,
 	}
 }));

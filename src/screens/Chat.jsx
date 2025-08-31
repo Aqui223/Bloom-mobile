@@ -10,6 +10,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { quickSpring } from "@constants/Easings";
 import Transition from "react-native-screen-transitions";
+import EmptyModal from "@components/chatScreen/emptyModal/EmptyModal";
 
 import { useAnimatedKeyboard } from "react-native-reanimated";
 const TransitionList = Transition.createTransitionAwareComponent(
@@ -25,7 +26,7 @@ export default function ChatScreen({ route }) {
   );
 
   const animatedStyles = useAnimatedStyle(() => ({
-    transform: [{ translateY: -keyboard.height.value }],
+    marginBottom: keyboard.height.value,
   }));
 
   const addMessage = (e) => {
@@ -43,6 +44,7 @@ export default function ChatScreen({ route }) {
     <View style={styles.container}>
       <Header chat={chat} />
       <Animated.View style={[styles.list, animatedStyles]}>
+        <EmptyModal visible={messages.length === 0}/>
         <TransitionList
           data={messages}
           renderItem={renderItem}

@@ -21,6 +21,8 @@ export const styles = StyleSheet.create((theme) => ({
     flex: 1,
     paddingHorizontal: theme.spacing.md,
     height: 40,
+    zIndex: 1,
+    color: theme.colors.text,
     borderRadius: theme.radius.full,
     backgroundColor: theme.colors.foreground,
     borderWidth: 1,

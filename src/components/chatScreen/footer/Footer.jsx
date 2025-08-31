@@ -1,11 +1,12 @@
-import { Pressable, TextInput } from "react-native";
+import { Keyboard, Pressable, TextInput } from "react-native";
 import { styles } from "./Footer.styles";
 import useInsets from "@hooks/UseInsets";
 import Icon from "@components/ui/Icon";
 import { useUnistyles } from "react-native-unistyles";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Animated, {
   LinearTransition,
+  useAnimatedKeyboard,
   ZoomIn,
   ZoomOut,
 } from "react-native-reanimated";
@@ -49,11 +50,24 @@ export default function Footer({ onSend }) {
   const insets = useInsets();
   const { theme } = useUnistyles();
   const [value, setValue] = useState("");
-  const [focused, setFocused] = useState(false);
-
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
+  
+  useEffect(() => {
+   const keyboardShowListener = Keyboard.addListener("keyboardDidShow", () => {
+      setKeyboardVisible(true);
+    }); 
+    const keyboardHideListener = Keyboard.addListener("keyboardDidHide", () => {
+      setKeyboardVisible(false);
+    });
+    return () => {
+      keyboardShowListener.remove();
+      keyboardHideListener.remove();
+    };
+  }, [])
+  
   const handleSend = () => {
     if (value.trim() !== "") {
-      onSend(value);
+      onSend(value.trim());
       setValue("");
     }
   };
@@ -62,7 +76,7 @@ export default function Footer({ onSend }) {
 
   return (
     <Animated.View
-      style={[styles.footer, { paddingBottom: focused ? 16 : insets.bottom }]}
+      style={[styles.footer, { paddingBottom: keyboardVisible ? 16 : insets.bottom }]}
     >
       {!hasValue && (
         <>
@@ -74,13 +88,13 @@ export default function Footer({ onSend }) {
       <AnimatedTextInput
         layout={layoutAnimation}
         style={styles.input}
-        onSubmitEditing={handleSend}
         onChangeText={setValue}
-        onFocus={() => setFocused(true)}
-        submitBehavior="submit"
-        onBlur={() => setFocused(false)}
+        numberOfLines={4}
+        multiline
+        submitBehavior="newline"
+        cursorColor={theme.colors.secondaryText}
         selectionColor={theme.colors.secondaryText}
-        returnKeyType="send"
+        returnKeyType="previous"
         value={value}
         placeholderTextColor={theme.colors.secondaryText}
         placeholder="Введите сообщение..."

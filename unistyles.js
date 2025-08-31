@@ -21,13 +21,15 @@ const base = {
 		xs: 12,
 		sm: 14,
 		md: 16,
-		lg: 24,
-		xl: 32,
+		lg: 20,
+		xl: 24,
+		xxl: 32,
 	},
 	radius: {
 		sm: 12,
 		md: 20,
 		lg: 24,
+		xl: 32,
 		full: 9999,
 	},
 	fontFamily: {
@@ -56,6 +58,7 @@ export const lightTheme = {
 		pink: "#FF66F5",
 		yellow: "#FFB566",
 		cyan: "#28A8E9",
+		cyanBackdrop: "#28a8e959",
 	},
 	...base,
 };
