@@ -68,6 +68,7 @@ export default function WelcomeScreen() {
       <View style={[styles.buttonContainer, { paddingBottom: insets.bottom + theme.spacing.lg }]}>
         <Button
           animatedStyle={animatedStyle}
+          shimmer
         />
       </View>
     </View>
