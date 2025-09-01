@@ -1,21 +1,31 @@
 {
   "expo": {
-    "name": "my-app",
-    "slug": "my-app",
+    "name": "Bloom",
+    "slug": "bloom",
     "version": "1.0.0",
-    "plugins": [
-      [
-        "react-native-edge-to-edge",
-        {
-          "android": {
-            "parentTheme": "Default",
-            "enforceNavigationBarContrast": false
-          }
-        }
-      ]
-    ],
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0A84FF"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "pw.bloom.app"
+    },
     "android": {
-      "package": "com.anonymous.myapp"
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0A84FF"
+      },
+      "package": "pw.bloom.app",
+      "permissions": [
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.ACCESS_MEDIA_LOCATION"
+      ]
     }
   }
 }

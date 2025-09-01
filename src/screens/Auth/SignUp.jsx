@@ -1,12 +1,10 @@
 import { View } from "react-native";
 import { StyleSheet } from "react-native-unistyles";
-import WelcomeScreen from "@components/auth/welcomeScreen";
 import Button from "@components/auth/welcomeScreen/Button";
 
-export default function AuthScreen() {
+export default function SignUpScreen() {
   return (
     <View style={styles.container}>
-      <WelcomeScreen />
       <Button />
     </View>
   );

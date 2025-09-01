@@ -6,4 +6,8 @@ export const ROUTES = {
 
   // Chat
   CHAT: "chat",
+
+  // Auth
+  SIGN_UP: "sign_up",
+  WELCOME: "welcome",
 };
