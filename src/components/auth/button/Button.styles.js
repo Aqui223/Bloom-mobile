@@ -7,6 +7,7 @@ export const styles = StyleSheet.create((theme) => ({
     borderRadius: theme.radius.full,
     justifyContent: "center",
     alignItems: "center",
+    overflow: 'hidden'
   },
   text: {
     fontSize: theme.fontSize.md,
