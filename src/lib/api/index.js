@@ -1,1 +1,1 @@
-export { default as auth } from "./auth/auth";
+export { default as getChats } from "./chats/getChats";

@@ -16,7 +16,7 @@ secp.hashes.sha256Async = async (msg) => sha256(msg);
 ed.hashes.sha512 = sha512;
 ed.hashes.sha512Async = (m) => Promise.resolve(sha512(m));
 
-export default async function () {
+export default function () {
     const { publicKey: kyberPublicKey, secretKey: kyberSecretKey } = ml_kem768.keygen();
     const { publicKey: ecdhPublicKey, secretKey: ecdhSecretKey } = secp.keygen();
     const { publicKey: edPublicKey, secretKey: edSecretKey } = ed.keygen()

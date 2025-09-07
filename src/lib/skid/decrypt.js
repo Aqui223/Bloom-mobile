@@ -5,7 +5,7 @@ import decryptCekWithKek from "./modules/crypto/aes/decryptCekWithKek";
 import decryptMessage from "./modules/crypto/aes/decryptMessage";
 import verifySignature from "./modules/crypto/ed/verifySignature";
 
-export default async function decrypt(payload, me, sender, isAuthor = false) {
+export default function decrypt(payload, me, sender, isAuthor = false) {
   let cek, iv, ciphertext;
 
   if (isAuthor) {

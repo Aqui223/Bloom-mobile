@@ -9,19 +9,22 @@ import Animated, {
 import Chat from "@components/chatsScreen/chat";
 import useChatsScreenStore from "@stores/ChatsScreen";
 import SearchView from "@components/chatsScreen/searchView";
-
-const data = Array.from({ length: 100 }).map((_, i) => ({ id: i.toString() }));
+import { getChats } from "@lib/api";
+import { useEffect, useState } from "react";
 
 const AnimatedFlashList = Animated.createAnimatedComponent(FlashList);
 
 export default function CardScreen() {
   const scrollY = useSharedValue(0);
   const { headerHeight } = useChatsScreenStore();
+  const [chats, setChats] = useState([]);
+
   const renderItem = ({ item }) => {
+    console.log(item.members[0].id)
     return (
       <Chat
         chat={{
-          name: "Чат " + item.id,
+          name: "Чат " + item.members[0].id,
           lastMessage: "Последнее сообщение",
           lastMessageTime: "12:34",
           avatar:
@@ -36,6 +39,13 @@ export default function CardScreen() {
     scrollY.value = event.contentOffset.y;
   });
 
+  useEffect(() => {
+    (async () => {
+      const res = await getChats();
+      setChats(res);
+    })();
+  }, []);
+
   return (
     <View style={styles.container}>
       <Header scrollY={scrollY} />
@@ -43,7 +53,7 @@ export default function CardScreen() {
       <AnimatedFlashList
         onScroll={onscroll}
         estimatedItemSize={100}
-        data={data}
+        data={chats}
         contentContainerStyle={{
           paddingTop: headerHeight,
         }}

@@ -10,7 +10,7 @@ import encryptMessage from "./modules/crypto/aes/encryptMessage";
 import bytesToBase64 from "./modules/utils/bytesToBase64";
 import signPayload from "./modules/crypto/ed/signPayload";
 
-export default async function encrypt(content, sender, receiver, counter) {
+export default function encrypt(content, sender, receiver, counter) {
     const { sessionKey: ssReceiver, cipherText: ctReceiver } = hybridEncrypt(
         base64ToUint8Array(receiver.ecdhPublicKey),
         base64ToUint8Array(receiver.kyberPublicKey),
