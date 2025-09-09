@@ -48,8 +48,6 @@ export default function SearchBar({ value, setValue, scrollY, focusedValue }) {
     width: width.value || undefined,
   }));
 
-  console.log(fullWidth);
-
   const animatedWrapperStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: interpolate(scrollY.value, [0, 50], [0, -56], 'clamp') }],
     width: fullWidth ? interpolate(scrollY.value, [0, 50], [fullWidth, initialWidth.value + 56], 'clamp') : undefined,

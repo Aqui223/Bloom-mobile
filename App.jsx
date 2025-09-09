@@ -9,6 +9,7 @@ import { enableScreens } from "react-native-screens";
 import AppNavigator from 'src/navigation/AppNavigator';
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { WebSocketProvider } from 'src/providers/WebSocketContext';
+import ChatsProvider from 'src/providers/ChatsContext';
 
 enableScreens();
 
@@ -30,7 +31,9 @@ export default function App() {
 				<GestureHandlerRootView style={{ flex: 1, backgroundColor: "#000000" }}>
 					<StatusBar style='dark' />
 					<WebSocketProvider>
-						<AppNavigator />
+						<ChatsProvider>
+							<AppNavigator />
+						</ChatsProvider>
 					</WebSocketProvider>
 				</GestureHandlerRootView>
 			</KeyboardProvider>

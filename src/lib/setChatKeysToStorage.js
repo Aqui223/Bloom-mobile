@@ -11,7 +11,7 @@ export default async function (chat_id, keys) {
     }
 
     const chat = chats?.find(chat => chat?.id === chat_id);
-
+    
     chats = [...chats?.filter(_chat => _chat?.id !== chat_id), {
         ...chat,
         keys: {
@@ -20,5 +20,7 @@ export default async function (chat_id, keys) {
         }
     }]
 
-    return Storage.set("chats", JSON.stringify(chats))
+    Storage.set("chats", JSON.stringify(chats))
+
+    return chats;
 }

@@ -9,19 +9,16 @@ import Animated, {
 import Chat from "@components/chatsScreen/chat";
 import useChatsScreenStore from "@stores/ChatsScreen";
 import SearchView from "@components/chatsScreen/searchView";
-import { getChats } from "@lib/api";
-import { useEffect, useState } from "react";
-import { createSecureStorage } from "@lib/Storage";
-import { useWebSocket } from "src/providers/WebSocketContext";
+import { useState } from "react";
+import { useChatList } from "src/providers/ChatsContext";
 
 const AnimatedFlashList = Animated.createAnimatedComponent(FlashList);
 
 export default function CardScreen() {
   const scrollY = useSharedValue(0);
   const { headerHeight } = useChatsScreenStore();
-  const [chats, setChats] = useState([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]);
   const [userId, setUserId] = useState();
-  const ws = useWebSocket();
+  const chats = useChatList();
 
   const renderItem = ({ item }) => {
     const recipient = item.members.find(member => member?.id !== parseInt(userId))
@@ -44,17 +41,6 @@ export default function CardScreen() {
   const onscroll = useAnimatedScrollHandler((event) => {
     scrollY.value = event.contentOffset.y;
   });
-
-  // useEffect(() => {
-  //   (async () => {
-  //     const Storage = await createSecureStorage("user-storage");
-
-  //     setUserId(Storage.getString("user_id"));
-
-  //     const res = await getChats(ws);
-  //     setChats(res);
-  //   })();
-  // }, []);
 
   return (
     <View style={styles.container}>

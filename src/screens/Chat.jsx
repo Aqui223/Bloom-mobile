@@ -20,7 +20,7 @@ export default function ChatScreen({ route }) {
   const { chat } = route.params;
 
   const [messages, setMessages] = useState(
-    Array.from({ length: 0 }).map((_, i) => ({ id: i.toString() }))
+    Array.from({ length: 0 }).map((_, i) => ({ id: String(i) }))
   );
 
   const addMessage = async (e) => {
@@ -28,7 +28,7 @@ export default function ChatScreen({ route }) {
       const chatData = await getChatFromStorage(chat?.id);
       const encrypted = encrypt(e, chatData?.keys?.my, chatData?.keys?.recipient, messages?.length);
       setMessages((prev) => [
-        { id: (prev.length + 1).toString(), isMe: true, payload: encrypted },
+        { id: String((prev.length + 1)), isMe: true, payload: encrypted },
         ...prev,
       ]);      
     } catch (error) {

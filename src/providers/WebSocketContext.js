@@ -20,24 +20,6 @@ export const WebSocketProvider = ({ children }) => {
             }
         };
 
-        ws.onmessage = async (msg) => {
-            let message;
-            try {
-                message = JSON.parse(msg?.data);
-            } catch (error) {
-                console.log(error);
-                return;
-            }
-
-            if (message.type === "keys_added") {
-                await setChatKeysToStorage(message?.chat_id, {
-                    kyberPublicKey: message?.kyberPublicKey,
-                    ecdhPublicKey: message?.ecdhPublicKey,
-                    edPublicKey: message?.edPublicKey
-                }, message?.user_id);
-            }
-        }
-
         ws.onclose = () => {
             reconnectTimeout.current = setTimeout(connect, 3000);
         };
