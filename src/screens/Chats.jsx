@@ -4,12 +4,13 @@ import { FlashList } from "@shopify/flash-list";
 import { StyleSheet } from "react-native-unistyles";
 import Animated, {
   useAnimatedScrollHandler,
-  useSharedValue
+  useSharedValue,
+  interpolate,
 } from "react-native-reanimated";
 import Chat from "@components/chatsScreen/chat";
 import useChatsScreenStore from "@stores/ChatsScreen";
 import SearchView from "@components/chatsScreen/searchView";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useChatList } from "src/providers/ChatsContext";
 
 const AnimatedFlashList = Animated.createAnimatedComponent(FlashList);
@@ -19,9 +20,38 @@ export default function CardScreen() {
   const { headerHeight } = useChatsScreenStore();
   const [userId, setUserId] = useState();
   const chats = useChatList();
+  const listRef = useRef(null);
+
+  const getCloser = (value, checkOne, checkTwo) =>
+    Math.abs(value - checkOne) < Math.abs(value - checkTwo)
+      ? checkOne
+      : checkTwo;
+
+  const onEndDrag = (event) => {
+    const offsetY = event.nativeEvent.contentOffset.y;
+
+    const clampedY = Math.min(Math.max(scrollY.value, 0), 56);
+    const translateY = interpolate(clampedY, [0, 56], [0, -56], "clamp");
+
+    if (!(translateY === 0 || translateY === -56)) {
+      if (listRef.current) {
+        const snapTo =
+          getCloser(translateY, -56, 0) === -56 ? offsetY + 56 : offsetY - 56;
+
+        console.log(snapTo);
+
+        listRef.current.scrollToOffset({
+          offset: offsetY - snapTo,
+          animated: true,
+        });
+      }
+    }
+  };
 
   const renderItem = ({ item }) => {
-    const recipient = item.members.find(member => member?.id !== parseInt(userId))
+    const recipient = item.members.find(
+      (member) => member?.id !== parseInt(userId)
+    );
 
     return (
       <Chat
@@ -47,6 +77,8 @@ export default function CardScreen() {
       <Header scrollY={scrollY} />
       <SearchView />
       <AnimatedFlashList
+        onMomentumScrollEnd={onEndDrag}
+        ref={listRef}
         onScroll={onscroll}
         estimatedItemSize={100}
         data={chats}
@@ -57,8 +89,8 @@ export default function CardScreen() {
         maxToRenderPerBatch={10}
         initialNumToRender={10}
         scrollEventThrottle={16}
+        keyExtractor={(item) => item?.id.toString()}
         updateCellsBatchingPeriod={30}
-        keyExtractor={(item) => item.id}
         renderItem={renderItem}
       />
     </View>

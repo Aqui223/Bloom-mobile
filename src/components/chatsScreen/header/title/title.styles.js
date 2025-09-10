@@ -11,7 +11,7 @@ export const styles = StyleSheet.create((theme) => ({
     alignItems: "center",
   },
   char: {
-    fontSize: theme.fontSize.lg,
+    fontSize: theme.fontSize.md,
     fontFamily: theme.fontFamily.bold,
   }
 }));

@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 import { createSecureStorage } from "@lib/Storage";
 import * as SplashScreen from "expo-splash-screen";
 import AuthNavigator from "./AuthNavigator";
+import useInsets from "@hooks/UseInsets";
 
 const RootStack = createNativeStackNavigator();
 
@@ -16,6 +17,7 @@ export default function AppNavigator() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isNavReady, setIsNavReady] = useState(false);
+  const insets = useInsets();
 
   useEffect(() => {
     let listener;
@@ -83,7 +85,7 @@ export default function AppNavigator() {
                   const borderRadius = interpolate(
                     progress,
                     [0, 1, 2],
-                    [36, 36, 36]
+                    [insets.top / 4, insets.top - 6, insets.top / 4]
                   );
                   const translateY = interpolate(
                     current.gesture.normalizedY,

@@ -1,6 +1,6 @@
 import { Pressable, TextInput, useWindowDimensions } from "react-native";
 import { styles } from "./SearchBar.styles";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { useUnistyles } from "react-native-unistyles";
 import Icon from "@components/ui/Icon";
 import Animated, { useSharedValue, withSpring, useAnimatedStyle, interpolate } from "react-native-reanimated";
@@ -49,8 +49,8 @@ export default function SearchBar({ value, setValue, scrollY, focusedValue }) {
   }));
 
   const animatedWrapperStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: interpolate(scrollY.value, [0, 50], [0, -56], 'clamp') }],
-    width: fullWidth ? interpolate(scrollY.value, [0, 50], [fullWidth, initialWidth.value + 56], 'clamp') : undefined,
+    transform: [{ translateY: interpolate(scrollY.value, [0, 56], [0, -56], 'clamp') }],
+    width: fullWidth ? interpolate(scrollY.value, [0, 56], [fullWidth, initialWidth.value + 56], 'clamp') : undefined,
   }));
 
   return (

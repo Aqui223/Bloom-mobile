@@ -24,7 +24,8 @@ export default function Title({ state, scrollY }) {
   }));
 
   const animatedContainerStyle = useAnimatedStyle(() => ({
-    opacity: interpolate(scrollY.value, [0, 50], [1, 0]),
+    opacity: interpolate(scrollY.value, [0, 56], [1, 0], 'clamp'),
+    transform: [{scale: interpolate(scrollY.value, [0, 56], [1, 0.8], 'clamp')}],
   }));
 
 
@@ -35,7 +36,7 @@ export default function Title({ state, scrollY }) {
 
   return (
     <AnimatedView style={[styles.container, animatedContainerStyle]}>
-      <Icon icon="lightbolt" size={26} animatedProps={animatedIconProps} />
+      <Icon icon="lightbolt" size={24} animatedProps={animatedIconProps} />
       <View style={styles.charStack}>
         {title.split("").map((char, i) => (
           <AnimatedText

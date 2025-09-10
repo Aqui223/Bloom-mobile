@@ -17,7 +17,7 @@ export default function Header({ scrollY }) {
   const [value, setValue] = useState("");
   const focusedValue = useSharedValue(1);
 
-  const { setFocused, setHeaderHeight } = useChatsScreenStore();
+  const { setHeaderHeight } = useChatsScreenStore();
 
   const onHeaderLayout = (e) => {
     setHeaderHeight(e.nativeEvent.layout.height);
