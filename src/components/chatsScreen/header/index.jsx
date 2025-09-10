@@ -26,14 +26,18 @@ export default function Header({ scrollY }) {
     setHeaderHeight(e.nativeEvent.layout.height);
   };
 
-  const headerAnimatedStyle = useAnimatedStyle(() => ({
-    transform: [
-      { translateY: interpolate(focusedValue.value, [1, 0], [0, -56]) },
-    ],
-  }));
+  const headerAnimatedStyle = useAnimatedStyle(() => {
+    const interpolatedTranslateY = interpolate(scrollY.value, [0, 56], [0, -56], 'clamp');
+    return {
+      transform: [
+        { translateY: interpolate(focusedValue.value, [0, 1], [-56, interpolatedTranslateY], 'clamp') },
+      ],
+    };
+  });
 
   const topHeaderAnimatedStyle = useAnimatedStyle(() => ({
     opacity: focusedValue.value,
+    transform: [{scale: interpolate(focusedValue.value, [0, 1], [0.9, 1], 'clamp')}, {translateY: interpolate(scrollY.value, [0, 56], [0, 56], 'clamp')}],
   }));
 
   useEffect(() => {

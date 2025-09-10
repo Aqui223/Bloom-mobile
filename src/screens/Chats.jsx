@@ -24,9 +24,12 @@ export default function ChatsScreen() {
       <SearchView />
       <AnimatedFlashList
         ref={listRef}
-        data={chats}
-        renderItem={({ item }) => <ChatItem item={item} userId={userId} />}
-        keyExtractor={(item) => item?.id.toString()}
+        // data={chats}
+        // renderItem={({ item }) => <ChatItem item={item} userId={userId} />}
+        // keyExtractor={(item) => item?.id.toString()}
+        // Props for testing scrollY
+        data={[1,2,3,4,5,6,7,8,9,10,11,12,13,14]}
+        renderItem={() => <View style={{ height: 100, backgroundColor: "red", marginBottom: 10, width: '100%' }} />}
         estimatedItemSize={100}
         contentContainerStyle={{ paddingTop: headerHeight }}
         onMomentumScrollEnd={onEndDrag}

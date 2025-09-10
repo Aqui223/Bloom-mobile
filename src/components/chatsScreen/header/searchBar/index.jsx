@@ -3,7 +3,12 @@ import { styles } from "./SearchBar.styles";
 import { useRef } from "react";
 import { useUnistyles } from "react-native-unistyles";
 import Icon from "@components/ui/Icon";
-import Animated, { useSharedValue, withSpring, useAnimatedStyle, interpolate } from "react-native-reanimated";
+import Animated, {
+  useSharedValue,
+  withSpring,
+  useAnimatedStyle,
+  interpolate,
+} from "react-native-reanimated";
 import useChatsScreenStore from "@stores/ChatsScreen";
 import { fastSpring } from "@constants/Easings";
 
@@ -19,6 +24,7 @@ export default function SearchBar({ value, setValue, scrollY, focusedValue }) {
   const { setFocused } = useChatsScreenStore();
 
   const fullWidth = screenWidth - theme.spacing.lg * 2;
+  const nestedWidth = fullWidth - theme.spacing.lg * 2 - theme.spacing.sm * 2;
 
   const onInputLayout = (e) => {
     if (initialWidth.value === 0) {
@@ -32,7 +38,7 @@ export default function SearchBar({ value, setValue, scrollY, focusedValue }) {
     focusedValue.value = withSpring(0, fastSpring);
     setFocused(true);
     if (fullWidth) {
-      width.value = withSpring(fullWidth, fastSpring);
+      width.value = withSpring(nestedWidth, fastSpring);
     }
   };
 
@@ -48,10 +54,25 @@ export default function SearchBar({ value, setValue, scrollY, focusedValue }) {
     width: width.value || undefined,
   }));
 
-  const animatedWrapperStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: interpolate(scrollY.value, [0, 56], [0, -56], 'clamp') }],
-    width: fullWidth ? interpolate(scrollY.value, [0, 56], [fullWidth, initialWidth.value + 56], 'clamp') : undefined,
-  }));
+  const animatedWrapperStyle = useAnimatedStyle(() => {
+    const interpolatedWidth = fullWidth
+      ? interpolate(
+          scrollY.value,
+          [0, 56],
+          [fullWidth, initialWidth.value + 58],
+          "clamp"
+        )
+      : undefined;
+
+    return {
+      transform: [
+        {
+          translateY: interpolate(scrollY.value, [0, 56], [0, -0], "clamp"),
+        },
+      ],
+      width: interpolate(focusedValue.value, [0, 1], [fullWidth, interpolatedWidth], "clamp"),
+    };
+  });
 
   return (
     <AnimatedPressable
