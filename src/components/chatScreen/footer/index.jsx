@@ -6,7 +6,6 @@ import { useUnistyles } from "react-native-unistyles";
 import { useEffect, useState } from "react";
 import Animated, {
   LinearTransition,
-  useAnimatedKeyboard,
   ZoomIn,
   ZoomOut,
 } from "react-native-reanimated";

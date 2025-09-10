@@ -22,6 +22,7 @@ export const styles = StyleSheet.create((theme) => ({
     paddingHorizontal: theme.spacing.md,
     height: 40,
     zIndex: 1,
+    textAlignVertical: "center",
     color: theme.colors.text,
     borderRadius: theme.radius.full,
     fontSize: theme.fontSize.sm,
