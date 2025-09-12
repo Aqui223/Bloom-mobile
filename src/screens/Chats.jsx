@@ -32,7 +32,7 @@ export default function ChatsScreen() {
         renderItem={() => <View style={{ height: 100, backgroundColor: "red", marginBottom: 10, width: '100%' }} />}
         estimatedItemSize={100}
         contentContainerStyle={{ paddingTop: headerHeight }}
-        onMomentumScrollEnd={onEndDrag}
+        onScrollEndDrag={onEndDrag}
         onScroll={onScroll}
         scrollEventThrottle={16}
         removeClippedSubviews
