@@ -5,22 +5,11 @@ import Svg, { Path } from "react-native-svg";
 import { quickSpring } from "@constants/Easings";
 
 import Animated, { ZoomIn } from "react-native-reanimated";
-import decrypt from "@lib/skid/decrypt";
-import { useEffect, useState } from "react";
-import getChatFromStorage from "@lib/getChatFromStorage";
+import formatSentTime from "@lib/formatSentTime";
 
 export default function Message({ message, chat }) {
   const { theme } = useUnistyles();
   const isMe = message.isMe;
-
-  const [decrypted, setDecrypted] = useState({});
-
-  useEffect(() => {
-    (async () => {
-      const _chat = await getChatFromStorage(chat?.id);
-      setDecrypted(decrypt(message?.payload, isMe ? null : _chat?.keys?.my, isMe ? _chat?.keys?.my : _chat?.keys?.recipient, isMe));
-    })()
-  }, [])
 
   return (
     <View style={styles.messageWrapper(isMe)}>
@@ -31,7 +20,7 @@ export default function Message({ message, chat }) {
           .stiffness(quickSpring.stiffness)}
         style={styles.message(isMe)}
       >
-        <Text style={styles.text(isMe)}>{decrypted.content}</Text>
+        <Text style={styles.text(isMe)}>{message.content}</Text>
         <Svg
           width="22"
           height="15"
@@ -50,12 +39,12 @@ export default function Message({ message, chat }) {
         {isMe ? (
           <>
             <Text style={styles.metaRowText}>
-              {message.viewed ? "Просмотрено" : "Отправлено"}
+              {message.seen ? "Просмотрено" : "Отправлено"}
             </Text>
             <View style={styles.metaRowSeparator} />
           </>
         ) : null}
-        <Text style={styles.metaRowText}>10:2{isMe ? 5 : 0}</Text>
+        <Text style={styles.metaRowText}>{formatSentTime(message?.date)}</Text>
       </View>
     </View>
   );

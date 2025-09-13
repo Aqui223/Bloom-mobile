@@ -54,11 +54,15 @@ export default function MessagesProvider({ children }) {
         }
     }, [ws]);
 
+    function clear () {
+        setMessages([]);
+    }
+
     return (
-        <MessagesContext.Provider value={{ messages }}>
+        <MessagesContext.Provider value={{ messages, clear }}>
             {children}
         </MessagesContext.Provider>
     )
 }
 
-export const useMessageContext = () => useContext(MessagesContext);
+export const useMessagesList = () => useContext(MessagesContext);

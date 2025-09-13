@@ -61,6 +61,7 @@ export default function encrypt(content, sender, receiver, counter) {
 
     return {
         ...toSign,
+        signed_payload: JSON.stringify(toSign, null, 2),
         signature
     }
 }

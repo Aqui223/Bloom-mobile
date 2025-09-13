@@ -1,0 +1,50 @@
+import getChatFromStorage from "./getChatFromStorage";
+import initRealm from "./initRealm";
+import Realm from "realm";
+import decrypt from "./skid/decrypt";
+import encrypt from "./skid/encrypt";
+import { createSecureStorage } from "./Storage";
+
+export default async function (content, chat_id, count, ws) {
+    const realm = await initRealm();
+    const storage = await createSecureStorage("user-storage");
+    const chatData = await getChatFromStorage(chat_id);
+    const encrypted = encrypt(content, { ...chatData?.keys?.my, id: storage.getString("user_id") }, chatData?.keys?.recipient, count);
+
+    ws.send(JSON.stringify({
+        type: "send",
+        chat_id: chat_id,
+        ...encrypted
+    }));
+
+    const listener = async (msg) => {
+        try {
+            message = JSON.parse(msg?.data);
+        } catch (error) {
+            console.log(error);
+            return;
+        }
+
+        if (message?.type === "message") {
+            try {
+                const decrypted = { ...(decrypt(message, chatData?.keys?.my, chatData?.keys?.my, true) || {}), id: message?.id };
+                realm.write(() => {
+                    realm.create("Message", {
+                        id: message?.id,
+                        chat_id: message?.chat_id,
+                        content: decrypted?.content,
+                        author_id: parseInt(decrypted?.from_id),
+                        date: new Date(),
+                        seen: new Date(),
+                    }, Realm.UpdateMode.Modified);
+                });
+                ws.removeEventListener("message", listener);
+            } catch (error) {
+                console.log(error)
+            }
+
+        }
+    };
+
+    ws.addEventListener("message", listener)
+}

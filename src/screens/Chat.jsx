@@ -11,6 +11,11 @@ import EmptyModal from "@components/chatScreen/emptyModal";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import getChatFromStorage from "@lib/getChatFromStorage";
 import encrypt from "@lib/skid/encrypt";
+import initRealm from "@lib/initRealm";
+import { createSecureStorage } from "@lib/Storage";
+import { useMessagesList } from "@providers/MessagesContext";
+import sendMessage from "@lib/sendMessage";
+import { useWebSocket } from "@providers/WebSocketContext";
 
 const TransitionList = Transition.createTransitionAwareComponent(
   Animated.FlatList
@@ -19,26 +24,60 @@ const TransitionList = Transition.createTransitionAwareComponent(
 export default function ChatScreen({ route }) {
   const { chat } = route.params;
 
-  const [messages, setMessages] = useState(
-    Array.from({ length: 0 }).map((_, i) => ({ id: String(i) }))
-  );
+  const [messages, setMessages] = useState([]);
+
+  const newMessages = useMessagesList();
+  const ws = useWebSocket();
 
   const addMessage = async (e) => {
     try {
-      const chatData = await getChatFromStorage(chat?.id);
-      const encrypted = encrypt(e, chatData?.keys?.my, chatData?.keys?.recipient, messages?.length);
-      setMessages((prev) => [
-        { id: String((prev.length + 1)), isMe: true, payload: encrypted },
-        ...prev,
-      ]);      
+      const storage = await createSecureStorage("user-storage");
+      await sendMessage(e, chat?.id, messages?.length, ws).catch(console.log);;
+
+      setMessages((prev) => [...prev, { 
+          id: String((prev.length + 1)), 
+          isMe: true, 
+          chat_id: chat?.id, 
+          content: e, 
+          author_id: storage?.getString("user_id"),
+          date: new Date(),
+          seen: false
+        }]);
     } catch (error) {
       console.log(error)
     }
   };
 
   const renderItem = useCallback(({ item }) => {
-    return <Message message={item} chat={chat}/>;
+    return <Message message={item} chat={chat} />;
   }, [chat]);
+
+  useEffect(() => {
+    (async () => {
+      const storage = await createSecureStorage("user-storage");
+
+      const realm = await initRealm();
+
+      const messages = realm.objects("Message").filtered("chat_id == $0", chat?.id);
+
+      setMessages(prev => [...prev, ...messages?.map(message => ({
+        ...message, isMe: message?.author_id === parseInt(storage.getString("user_id"))
+      }))])
+    })()
+  }, [])
+
+  useEffect(() => {
+    if (newMessages?.messages?.length === 0) return;
+    (async () => {
+      const storage = await createSecureStorage("user-storage");
+
+      setMessages(prev => [...prev, ...newMessages?.messages?.map(message => ({
+        ...message, isMe: message?.from_id === parseInt(storage.getString("user_id"))
+      }))])
+
+      newMessages?.clear();
+    })()
+  }, [newMessages])
 
   return (
     <View style={styles.container}>
@@ -49,7 +88,7 @@ export default function ChatScreen({ route }) {
         style={styles.list}
       >
         <TransitionList
-          data={messages}
+          data={[...messages].reverse()}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
           inverted
