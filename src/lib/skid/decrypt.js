@@ -38,7 +38,7 @@ export default function decrypt(payload, me, sender, isAuthor = false) {
     );
   }
 
-  const signatureValid = verifySignature(base64ToUint8Array(sender.edPublicKey), Object.fromEntries(Object.entries(payload).filter(([k]) => k !== "signature")), payload.signature)
+  const signatureValid = verifySignature(base64ToUint8Array(sender.edPublicKey), JSON.parse(payload?.signed_payload), payload.signature)
   
   if (!signatureValid) {
     return new Error("Signature is not valid")

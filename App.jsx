@@ -9,6 +9,7 @@ import AppNavigator from "src/navigation/AppNavigator";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { WebSocketProvider } from "@providers/WebSocketContext";
 import ChatsProvider from "@providers/ChatsContext";
+import MessagesProvider from "@providers/MessagesContext";
 
 enableScreens();
 
@@ -31,7 +32,9 @@ export default function App() {
           <StatusBar style="dark" />
           <WebSocketProvider>
             <ChatsProvider>
-              <AppNavigator />
+              <MessagesProvider>
+                <AppNavigator />
+              </MessagesProvider>
             </ChatsProvider>
           </WebSocketProvider>
         </GestureHandlerRootView>

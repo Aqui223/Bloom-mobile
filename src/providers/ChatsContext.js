@@ -18,7 +18,7 @@ export default function ChatsProvider({ children }) {
                 if (_chats) setChats(_chats);
             })()
 
-            ws.onmessage = async (msg) => {
+            ws.addEventListener("message", async (msg) => {
                 const Storage = await createSecureStorage("user-storage");
 
                 let message;
@@ -65,7 +65,7 @@ export default function ChatsProvider({ children }) {
 
                     setChats(prev => [...prev, message?.chat])
                 }
-            }
+            });
         }
     }, [ws]);
 

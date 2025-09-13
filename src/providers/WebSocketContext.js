@@ -35,7 +35,6 @@ export const WebSocketProvider = ({ children }) => {
         connect();
         return () => {
             if (reconnectTimeout.current) clearTimeout(reconnectTimeout.current);
-            socket?.close();
         };
     }, []);
 
