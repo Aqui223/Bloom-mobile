@@ -35,7 +35,7 @@ export default function MessagesProvider({ children }) {
 
                         const decrypted = decrypt(message, myKeys, recipientKeys, false);
 
-                        setMessages(prev => [...prev, decrypted]);
+                        setMessages(prev => [...prev, {...decrypted, chat_id: message?.chat_id, id: message?.id }]);
                         realm.write(() => {
                             realm.create("Message", {
                                 id: message?.id,
