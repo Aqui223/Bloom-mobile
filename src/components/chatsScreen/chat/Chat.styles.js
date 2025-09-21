@@ -6,8 +6,8 @@ export const styles = StyleSheet.create(theme => ({
     paddingRight: theme.spacing.lg,
   },
   avatar: {
-    width: 48,
-    height: 48,
+    width: 56,
+    height: 56,
     borderRadius: theme.radius.full,
   },
   avatarWrapper: {
@@ -15,7 +15,6 @@ export const styles = StyleSheet.create(theme => ({
     paddingLeft: theme.spacing.lg,
   },
   content: {
-    justifyContent: "center",
     flex: 1,
     gap: theme.spacing.sm,
     borderBottomColor: theme.colors.foreground,

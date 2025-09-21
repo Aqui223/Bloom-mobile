@@ -5,6 +5,8 @@ const useChatsScreenStore = create((set) => ({
   setFocused: (newFocused) => set({ focused: newFocused }),
   headerHeight: 0,
   setHeaderHeight: (newHeaderHeight) => set({ headerHeight: newHeaderHeight }),
+  query: "",
+  setQuery: (newQuery) => set({ query: newQuery }),
 }));
 
 export default useChatsScreenStore;

@@ -21,7 +21,7 @@ export default function SearchBar({ value, setValue, scrollY, focusedValue }) {
   const inputRef = useRef(null);
   const initialWidth = useSharedValue(0);
   const width = useSharedValue(0);
-  const { setFocused } = useChatsScreenStore();
+  const { setFocused, setQuery } = useChatsScreenStore();
 
   const fullWidth = screenWidth - theme.spacing.lg * 2;
   const nestedWidth = fullWidth - theme.spacing.lg * 2 - theme.spacing.sm * 2;
@@ -88,7 +88,7 @@ export default function SearchBar({ value, setValue, scrollY, focusedValue }) {
         ref={inputRef}
         onLayout={onInputLayout}
         onBlur={handleBlur}
-        onChangeText={setValue}
+        onChangeText={(text) => {setValue(text); setQuery(text)}}
         selectionColor={theme.colors.secondaryText}
         value={value}
         placeholderTextColor={theme.colors.secondaryText}

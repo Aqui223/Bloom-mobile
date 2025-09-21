@@ -8,7 +8,7 @@ import { StyleSheet } from "react-native-unistyles";
 import { useSnapScroll } from "@hooks/useSnapScroll";
 import { useChatList } from "@providers/ChatsContext";
 import useChatsScreenStore from "@stores/ChatsScreen";
-import ChatItem from "@components/chatScreen/ChatItem";
+import ChatItem from "@components/chatsScreen/ChatItem";
 import { createSecureStorage } from "@lib/Storage";
 import getChatFromStorage from "@lib/getChatFromStorage";
 
@@ -35,7 +35,7 @@ export default function ChatsScreen() {
       <AnimatedFlashList
         ref={listRef}
         data={chats}
-        renderItem={({ item }) => <ChatItem item={item} userId={parseInt(userId)} />}
+        renderItem={({ item, index }) => <ChatItem item={item} index={index} userId={parseInt(userId)} />}
         keyExtractor={(item) => item?.id.toString()}
         // Props for testing scrollY
         // data={[1,2,3,4,5,6,7,8,9,10,11,12,13,14]}
