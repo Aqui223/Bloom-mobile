@@ -6,8 +6,6 @@ export default function ChatItem({ item, userId, isSearch, index }) {
     (member) => member?.id !== parseInt(userId)
   );
 
-  console.log(isSearch ? recipient : null)
-
   return (
     <Chat
       chat={{

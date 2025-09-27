@@ -8,6 +8,8 @@ import { useNavigation } from "@react-navigation/native";
 
 import { ROUTES } from "@constants/Routes";
 import { getFadeOut, getFadeIn } from "@constants/animations";
+import { useChatList } from "@providers/ChatsContext";
+import { useWebSocket } from "@providers/WebSocketContext";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
@@ -15,12 +17,25 @@ export default function Chat({ chat, isSearch, index }) {
   const { theme } = useUnistyles();
   const navigation = useNavigation();
 
+  const chats = useChatList();
+
+  const ws = useWebSocket()
+
   return (
     <AnimatedPressable
       key={`chat-${index}`}
       exiting={getFadeOut(index)}
       entering={getFadeIn(index)}
-      onPress={() => navigation.navigate(ROUTES.CHAT, { chat })}
+      onPress={() => {
+        if (!chats.find(_chat => _chat?.id === chat?.id)) {
+          ws.send(JSON.stringify({
+            type: "create_chat",
+            recipient: chat?.id
+          }))
+        }
+
+        navigation.navigate(ROUTES.CHAT, { chat })
+      }}
       style={styles.chat}
     >
       <View style={styles.avatarWrapper}>
