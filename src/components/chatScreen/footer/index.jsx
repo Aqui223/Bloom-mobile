@@ -45,7 +45,7 @@ const ActionButton = ({ icon, isSendButton, onPress }) => {
   );
 };
 
-export default function Footer({ onSend }) {
+export default function Footer({ isAllKeys, onSend }) {
   const insets = useInsets();
   const { theme } = useUnistyles();
   const [value, setValue] = useState("");

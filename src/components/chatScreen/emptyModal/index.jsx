@@ -8,26 +8,14 @@ import Animated, {
   useAnimatedStyle,
 } from "react-native-reanimated";
 import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
-import { useEffect, useState } from "react";
-import getChatFromStorage from "@lib/getChatFromStorage";
 
-export default function EmptyModal({ chat, visible }) {
+export default function EmptyModal({ isAllKeys, visible }) {
   const { theme } = useUnistyles();
   const keyboard = useReanimatedKeyboardAnimation();
-
-  const [isAllKeys, setIsAllKeys] = useState();
 
   const animatedStyles = useAnimatedStyle(() => {
     return { transform: [{ translateY: keyboard.height.value / 2 }] };
   });
-
-  useEffect(() => {
-    (async () => {
-      const _chat = await getChatFromStorage(chat?.id);
-      console.log(124, _chat)
-      setIsAllKeys(!!_chat?.keys?.recipient?.ecdhPublicKey)
-    })()
-  }, [])
 
   return visible ? (
     <Animated.View
