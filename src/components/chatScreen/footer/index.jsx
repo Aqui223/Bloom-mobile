@@ -75,7 +75,7 @@ export default function Footer({ isAllKeys, onSend }) {
 
   return (
     <Animated.View
-      style={[styles.footer, { paddingBottom: keyboardVisible ? 16 : insets.bottom }]}
+      style={[styles.footer, { paddingBottom: keyboardVisible ? 16 : insets.bottom, opacity: isAllKeys ? 0.5 : 1, pointerEvents: isAllKeys ? 'none' : 'auto' }]}
     >
       {!hasValue && (
         <>
