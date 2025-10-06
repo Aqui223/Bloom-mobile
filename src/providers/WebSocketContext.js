@@ -1,6 +1,7 @@
 import { createSecureStorage } from "@lib/Storage";
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import setChatKeysToStorage from "@lib/setChatKeysToStorage";
+import { WEBSOCKET_URL } from "@constants/Api";
 
 const WebSocketContext = createContext(null);
 
@@ -11,7 +12,7 @@ export const WebSocketProvider = ({ children }) => {
     const connect = async () => {
         const storage = await createSecureStorage("user-storage");
 
-        const ws = new WebSocket("wss://swiftly.slipe.fun/ws?token=" + storage.getString("token"));
+        const ws = new WebSocket(WEBSOCKET_URL + storage.getString("token"));
 
         ws.onopen = () => {
             if (reconnectTimeout.current) {
