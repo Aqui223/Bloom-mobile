@@ -1,16 +1,17 @@
 import { interpolate } from "react-native-reanimated";
-import { slowSpring } from "@constants/Easings";
+import { fastSpring, slowSpring } from "@constants/Easings";
+import { Platform } from "react-native";
 
 export const chatTransition = (insets) => ({
   enableTransitions: true,
   gestureEnabled: true,
   gestureDirection: ["horizontal"],
-  screenStyleInterpolator: ({ current, layouts: { screen }, progress, focused }) => {
+  screenStyleInterpolator: ({ layouts: { screen }, progress, focused }) => {
     "worklet";
-    const scale = interpolate(progress, [0, 1, 2], [0, 1, 0.75]);
-    const borderRadius = interpolate(progress, [0, 1, 2], [insets.top / 4, insets.top - 6, insets.top / 4]);
-    const translateY = interpolate(current.gesture.normalizedY, [-1, 1], [-screen.height * 0.5, screen.height * 0.5], "clamp");
-    const translateX = interpolate(current.gesture.normalizedX, [-1, 1], [-screen.width * 0.5, screen.width * 0.5], "clamp");
+    const countedBorderRadius = Platform.OS === "ios" ? insets.top : insets.top - 6
+
+    const borderRadius = interpolate(progress, [0, 1, 2], [0, countedBorderRadius, 0]);
+    const translateX = interpolate(progress, [0, 1, 2], [screen.width, 0, -screen.width], "clamp");
 
     return {
       overlayStyle: {
@@ -18,14 +19,14 @@ export const chatTransition = (insets) => ({
         opacity: focused ? interpolate(progress, [0, 1], [0, 1]) : 0,
       },
       contentStyle: {
-        transform: [{ scale }, { translateY }, { translateX }],
+        transform: [{ translateX }],
         borderRadius,
         overflow: "hidden",
       },
     };
   },
   transitionSpec: {
-    open: slowSpring,
-    close: slowSpring,
+    open: fastSpring,
+    close: fastSpring,
   },
 });
