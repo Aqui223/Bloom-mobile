@@ -20,19 +20,24 @@ export default function ChatScreen({ route }) {
   const { chat } = route.params;
 
   const { messages, addMessage } = useMessages(chat?.id);
-
   const [isAllKeys, setIsAllKeys] = useState();
+  const [seenId, setSeenId] = useState(0);
 
   const renderItem = useCallback(({ item }) => {
-    return <Message message={item} chat={chat} />;
-  }, [chat]);
+    return <Message seen={seenId === item?.id} message={item} chat={chat} />;
+  }, [chat, seenId]);
 
   useEffect(() => {
     (async () => {
       const _chat = await getChatFromStorage(chat?.id);
       setIsAllKeys(!!_chat?.keys?.recipient?.ecdhPublicKey)
     })()
-  }, [])
+  }, []);
+
+  useEffect(() => {
+      const lastSeenMessage = messages?.reverse().find(m => m?.seen && m.isMe)
+      setSeenId(lastSeenMessage?.id);
+  }, [messages])
 
   return (
     <View style={styles.container}>
@@ -43,7 +48,7 @@ export default function ChatScreen({ route }) {
         style={styles.list}
       >
         <TransitionList
-          data={[...messages].reverse()}
+          data={[...messages]?.reverse()}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
           inverted

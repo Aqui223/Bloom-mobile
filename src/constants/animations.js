@@ -1,8 +1,8 @@
 import {
   FadeIn,
   FadeOut,
-  FadeInUp,
-  FadeOutDown,
+  FadeInDown,
+  FadeOutUp,
 } from "react-native-reanimated";
 import { normalSpring, quickSpring } from "./Easings";
 
@@ -21,13 +21,13 @@ export const getFadeIn = (i = 0) => {
 };
 
 export const getCharEnter = (i = 0) =>
-  FadeInUp.springify()
+  FadeInDown.springify()
     .damping(quickSpring.damping)
     .mass(quickSpring.mass + i * 0.2)
     .stiffness(quickSpring.stiffness);
 
 export const getCharExit = (i = 0) =>
-  FadeOutDown.springify()
+  FadeOutUp.springify()
     .damping(quickSpring.damping)
     .mass(quickSpring.mass + i * 0.2)
     .stiffness(quickSpring.stiffness);

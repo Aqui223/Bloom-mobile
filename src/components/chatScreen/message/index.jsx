@@ -7,7 +7,9 @@ import { quickSpring } from "@constants/Easings";
 import Animated, { FadeIn, ZoomIn } from "react-native-reanimated";
 import formatSentTime from "@lib/formatSentTime";
 
-export default function Message({ message, chat }) {
+const enteringAnimation = FadeIn.springify().mass(quickSpring.mass).damping(quickSpring.damping).stiffness(quickSpring.stiffness)
+	
+export default function Message({ message, chat, seen }) {
 	const { theme } = useUnistyles();
 	const isMe = message.isMe;
 
@@ -29,9 +31,9 @@ export default function Message({ message, chat }) {
 				</Svg>
 			</Animated.View>
 			<View style={styles.metaRow}>
-				{isMe ? (
+				{isMe && seen ? (
 					<>
-						<Text style={styles.metaRowText}>{message.seen ? "Просмотрено" : "Отправлено"}</Text>
+						<Animated.Text entering={enteringAnimation} key={seen} style={styles.metaRowText}>Просмотрено</Animated.Text>
 						<View style={styles.metaRowSeparator} />
 					</>
 				) : null}

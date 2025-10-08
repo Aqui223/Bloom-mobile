@@ -8,6 +8,10 @@ export const styles = StyleSheet.create((theme: any) => ({
   avatarWrapper: {
     padding: theme.spacing.lg,
   },
+  charStack: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
   content: {
     flex: 1,
     gap: theme.spacing.xs,

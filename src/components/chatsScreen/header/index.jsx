@@ -54,11 +54,11 @@ export default function Header({ scrollY }) {
     >
       <Animated.View style={[styles.topHeader, topHeaderAnimatedStyle]}>
         <Pressable style={styles.button}>
-          <Icon icon="filter" size={24} color="black" />
+          <Icon icon="filter" size={24} color="white" />
         </Pressable>
        <Title scrollY={scrollY} state={status} />
         <Pressable style={styles.button}>
-          <Icon icon="pencil" size={24} color="black" />
+          <Icon icon="pencil" size={24} color="white" />
         </Pressable>
       </Animated.View>
       <SearchBar value={value} setValue={setValue} scrollY={scrollY} focusedValue={focusedValue} />
