@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Pressable, StyleProp, ViewStyle } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { styles } from "./Button.styles";
@@ -41,17 +41,16 @@ export default function Button({ ref, variant = "text", size = "md", children, i
 				paddingHorizontal = theme.spacing.lg;
 		}
 	}
+	
+	const buttonStyle = useMemo(
+		() => styles.button({ height: SIZE_MAP[size], isIcon: variant === "icon", paddingHorizontal, disabled }),
+		[size, variant, paddingHorizontal, disabled]
+	);
 
 	return (
 		<Pressable
 			style={[
-				styles.base,
-				{
-					height: SIZE_MAP[size],
-					aspectRatio: variant === "icon" ? 1 : undefined,
-					paddingHorizontal,
-					opacity: disabled ? theme.opacity.secondaryText : 1,
-				},
+				buttonStyle,
 				style,
 			]}
 			ref={ref}

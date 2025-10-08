@@ -1,22 +1,16 @@
 import { StyleSheet } from "react-native-unistyles";
 
-export const styles = StyleSheet.create(theme => ({
+export const styles = StyleSheet.create((theme: any) => ({
   chat: {
     flexDirection: "row",
     paddingRight: theme.spacing.lg,
   },
-  avatar: {
-    width: 56,
-    height: 56,
-    borderRadius: theme.radius.full,
-  },
   avatarWrapper: {
-    padding: theme.spacing.md,
-    paddingLeft: theme.spacing.lg,
+    padding: theme.spacing.lg,
   },
   content: {
     flex: 1,
-    gap: theme.spacing.sm,
+    gap: theme.spacing.xs,
     borderBottomColor: theme.colors.foreground,
     borderBottomWidth: 1,
     paddingVertical: theme.spacing.md,
@@ -28,7 +22,7 @@ export const styles = StyleSheet.create(theme => ({
   },
   name: {
     fontSize: theme.fontSize.md,
-    lineHeight: theme.lineHeight.md,
+    color: theme.colors.text,
     fontFamily: theme.fontFamily.semibold,
   },
   nameWrapper: {
@@ -42,15 +36,8 @@ export const styles = StyleSheet.create(theme => ({
     alignItems: "center",
     gap: theme.spacing.sm,
   },
-  time: {
+  secondary: {
     fontSize: theme.fontSize.sm,
-    lineHeight: theme.lineHeight.sm,
-    color: theme.colors.secondaryText,
-    fontFamily: theme.fontFamily.medium,
-  },
-  message: {
-    fontSize: theme.fontSize.sm,
-    lineHeight: theme.lineHeight.sm,
     color: theme.colors.secondaryText,
     fontFamily: theme.fontFamily.medium,
   },

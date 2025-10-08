@@ -1,8 +1,23 @@
 import { StyleSheet } from "react-native-unistyles";
 
+type avatarStyleProps = {
+	height: number;
+	square: boolean;
+	image: string | undefined;
+	padding: number;
+	backgroundColor: string;
+};
+
 export const styles = StyleSheet.create((theme: any) => ({
-    emoji: {
-        width: '100%',
-        height: '100%',
-    }
+	avatar: ({ height, square, image, padding, backgroundColor }: avatarStyleProps) => ({
+		aspectRatio: 1,
+		height,
+		borderRadius: square ? theme.radius.md : theme.radius.full,
+		padding: image ? 0 : padding,
+		backgroundColor: image ? theme.colors.foreground : backgroundColor,
+	}),
+	emoji: {
+		width: "100%",
+		height: "100%",
+	},
 }));

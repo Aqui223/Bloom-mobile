@@ -13,7 +13,7 @@ import { Avatar } from "@components/ui";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
-export default function Chat({ chat, isSearch, index }) {
+export default function Chat({ chat, index }) {
   const { theme } = useUnistyles();
   const navigation = useNavigation();
 
@@ -39,7 +39,7 @@ export default function Chat({ chat, isSearch, index }) {
       style={styles.chat}
     >
       <View style={styles.avatarWrapper}>
-        <Avatar size="lg" username="t"/>
+        <Avatar size="lg" username={chat?.recipient?.username}/>
       </View>
       <View style={styles.content}>
         <View style={styles.headerRow}>
@@ -47,19 +47,17 @@ export default function Chat({ chat, isSearch, index }) {
             <Text style={styles.name}>{chat?.recipient?.username}</Text>
             {chat?.unreadCount > 0 && <View style={styles.unreadMark} />}
           </View>
-          {isSearch ? null : (
             <View style={styles.metaRow}>
-              <Text style={styles.time}>{chat?.lastMessageTime}</Text>
+              <Text style={styles.secondary}>{chat?.lastMessageTime}</Text>
               <Icon
                 icon="chevron.right"
                 size={17}
                 color={theme.colors.secondaryText}
               />
             </View>
-          )}
         </View>
-        <Text style={styles.message} numberOfLines={2}>
-          {isSearch ? chat?.username : chat?.lastMessage}
+        <Text style={styles.secondary} numberOfLines={2}>
+         {chat?.lastMessage}
         </Text>
       </View>
     </AnimatedPressable>

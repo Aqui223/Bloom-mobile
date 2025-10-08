@@ -4,23 +4,24 @@ export const styles = StyleSheet.create((theme) => ({
   message: (isMe) => ({
     padding: theme.spacing.md,
     maxWidth: "85%",
+    minWidth: 56,
     transformOrigin: isMe ? "bottom-right" : "bottom-left",
     paddingHorizontal: theme.spacing.lg,
     borderRadius: theme.radius.lg,
     backgroundColor: isMe ? theme.colors.primary : theme.colors.foreground,
-    alignItems: isMe ? "flex-end" : "flex-start",
+    alignItems: 'center',
   }),
   messageWrapper: (isMe) => ({
-    gap: theme.spacing.sm,
+    gap: theme.spacing.md,
     position: "relative",
     paddingBottom: theme.spacing.lg,
     alignItems: isMe ? "flex-end" : "flex-start",
   }),
   text: (isMe) => ({
-    fontSize: 15,
-    lineHeight: 18,
+    fontSize: theme.fontSize.md,
     fontFamily: theme.fontFamily.medium,
     color: isMe ? theme.colors.white : theme.colors.text,
+    textAlign: isMe ? "right" : "left",
   }),
   metaRow: {
     flexDirection: "row",

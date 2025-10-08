@@ -10,11 +10,12 @@ export const chatTransition = (insets) => ({
     "worklet";
     
     const translateX = interpolate(progress, [0, 1, 2], [screen.width, 0, -screen.width], "clamp");
+    const opacity = interpolate(progress, [0, 1, 2], [0, 1, 0], "clamp");
 
     return {
       overlayStyle: {
         backgroundColor: "rgba(0,0,0,0.85)",
-        opacity: focused ? interpolate(progress, [0, 1], [0, 1]) : 0,
+        opacity: focused ? opacity : 0,
       },
       contentStyle: {
         transform: [{ translateX }],
