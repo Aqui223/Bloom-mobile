@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native-unistyles";
 
-type buttonStyleProps = {
+type ButtonStyleProps = {
 	height: number;
 	isIcon: boolean;
 	paddingHorizontal: number;
@@ -8,7 +8,7 @@ type buttonStyleProps = {
 };	
 
 export const styles = StyleSheet.create((theme: any) => ({
-	button: ({height, isIcon, paddingHorizontal, disabled}:buttonStyleProps) => ({
+	button: ({height, isIcon, paddingHorizontal, disabled}:ButtonStyleProps) => ({
 		alignItems: "center",
 		justifyContent: "center",
 		flexDirection: "row",

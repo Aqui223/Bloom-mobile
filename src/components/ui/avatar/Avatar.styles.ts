@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native-unistyles";
 
-type avatarStyleProps = {
+type AvatarStyleProps = {
 	height: number;
 	square: boolean;
 	image: string | undefined;
@@ -9,7 +9,7 @@ type avatarStyleProps = {
 };
 
 export const styles = StyleSheet.create((theme: any) => ({
-	avatar: ({ height, square, image, padding, backgroundColor }: avatarStyleProps) => ({
+	avatar: ({ height, square, image, padding, backgroundColor }: AvatarStyleProps) => ({
 		aspectRatio: 1,
 		height,
 		borderRadius: square ? theme.radius.md : theme.radius.full,

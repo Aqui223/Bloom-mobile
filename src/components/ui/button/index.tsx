@@ -14,7 +14,7 @@ type ButtonProps = {
 	style?: StyleProp<ViewStyle>;
 	icon?: React.ReactNode;
 	children?: React.ReactNode;
-};
+} & React.ComponentProps<typeof Pressable>;
 
 const SIZE_MAP: Record<Size, number> = {
 	sm: 36,
