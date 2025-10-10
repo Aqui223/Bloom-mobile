@@ -11,7 +11,7 @@ export default function MainNavigator() {
   const insets = useInsets();
 
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator screenOptions={{ headerShown: false, contentStyle: {backgroundColor: "#00000000"} }}>
       <Stack.Screen name={ROUTES.TAB_NAVIGATOR} component={MainTabNavigator} />
       <Stack.Screen name={ROUTES.CHAT} component={ChatScreen} options={chatTransition(insets)} />
     </Stack.Navigator>
