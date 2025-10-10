@@ -5,45 +5,19 @@ import Icon from "@components/ui/Icon";
 import { useUnistyles } from "react-native-unistyles";
 import { useEffect, useState } from "react";
 import Animated, {
-  LinearTransition,
-  ZoomIn,
-  ZoomOut,
+  LinearTransition
 } from "react-native-reanimated";
 import { quickSpring } from "@constants/Easings";
+import { Button } from "@components/ui";
+import { zoomAnimationIn, zoomAnimationOut } from "@constants/animations";
 
-const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+const AnimatedButton = Animated.createAnimatedComponent(Button);
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
-
-const zoomAnimation = {
-  entering: ZoomIn.springify()
-    .mass(quickSpring.mass)
-    .damping(quickSpring.damping)
-    .stiffness(quickSpring.stiffness),
-  exiting: ZoomOut.springify()
-    .mass(quickSpring.mass)
-    .damping(quickSpring.damping)
-    .stiffness(quickSpring.stiffness),
-};
 
 const layoutAnimation = LinearTransition.springify()
   .mass(quickSpring.mass)
   .damping(quickSpring.damping)
   .stiffness(quickSpring.stiffness);
-
-const ActionButton = ({ icon, isSendButton, onPress }) => {
-  const { theme } = useUnistyles();
-  const color = isSendButton ? theme.colors.white : theme.colors.text;
-
-  return (
-    <AnimatedPressable
-      {...zoomAnimation}
-      style={styles.button(isSendButton)}
-      onPress={onPress}
-    >
-      <Icon icon={icon} size={24} color={color} />
-    </AnimatedPressable>
-  );
-};
 
 export default function Footer({ isAllKeys, onSend }) {
   const insets = useInsets();
@@ -79,8 +53,12 @@ export default function Footer({ isAllKeys, onSend }) {
     >
       {!hasValue && (
         <>
-          <ActionButton icon="dots" />
-          <ActionButton icon="face.smile" />
+        <AnimatedButton exiting={zoomAnimationOut} entering={zoomAnimationIn} variant="icon">
+          <Icon icon="image" size={24} color={theme.colors.text} />
+        </AnimatedButton>
+         <AnimatedButton exiting={zoomAnimationOut} entering={zoomAnimationIn} variant="icon">
+          <Icon icon="face.smile" size={24} color={theme.colors.text} />
+        </AnimatedButton>
         </>
       )}
 
@@ -96,11 +74,13 @@ export default function Footer({ isAllKeys, onSend }) {
         returnKeyType="previous"
         value={value}
         placeholderTextColor={theme.colors.secondaryText}
-        placeholder="Введите сообщение..."
+        placeholder="Cообщение..."
       />
 
       {hasValue && (
-        <ActionButton icon="paperplane" isSendButton onPress={handleSend} />
+          <AnimatedButton exiting={zoomAnimationOut} entering={zoomAnimationIn} onPress={handleSend} style={{ backgroundColor: theme.colors.primary}} variant="icon">
+          <Icon icon="paperplane" size={24} color={theme.colors.white} />
+        </AnimatedButton>
       )}
     </Animated.View>
   );

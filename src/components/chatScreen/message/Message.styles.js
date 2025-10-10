@@ -3,11 +3,12 @@ import { StyleSheet } from "react-native-unistyles";
 export const styles = StyleSheet.create((theme) => ({
   message: (isMe) => ({
     padding: theme.spacing.md,
-    maxWidth: "85%",
+    maxWidth: "82%",
     minWidth: 56,
     transformOrigin: isMe ? "bottom-right" : "bottom-left",
     paddingHorizontal: theme.spacing.lg,
     borderRadius: theme.radius.lg,
+    borderCurve: 'continuous',
     backgroundColor: isMe ? theme.colors.primary : theme.colors.foreground,
     alignItems: 'center',
   }),
@@ -21,7 +22,7 @@ export const styles = StyleSheet.create((theme) => ({
     fontSize: theme.fontSize.md,
     fontFamily: theme.fontFamily.medium,
     color: isMe ? theme.colors.white : theme.colors.text,
-    textAlign: isMe ? "right" : "left",
+    textAlign: "left"
   }),
   metaRow: {
     flexDirection: "row",

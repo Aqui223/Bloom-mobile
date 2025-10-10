@@ -4,6 +4,7 @@ export const styles = StyleSheet.create(theme => ({
     indicator: {
        position: "absolute",
        left: 16,
+       borderCurve: 'continuous',
        opacity: theme.opacity.secondaryText,
        backgroundColor: theme.colors.primary,
        height: 42,

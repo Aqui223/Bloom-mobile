@@ -12,11 +12,15 @@ export const styles = StyleSheet.create((theme: any) => ({
 		gap: theme.spacing.lg,
 	},
     title: {
+		width: '100%',
+		textAlign: 'center',
 		fontSize: theme.fontSize.md,
 		color: theme.colors.text,
 		fontFamily: theme.fontFamily.semibold,
 	},
 	time: {
+		width: '100%',
+		textAlign: 'center',
 		fontSize: theme.fontSize.sm,
 		color: theme.colors.secondaryText,
 		fontFamily: theme.fontFamily.medium,
@@ -24,5 +28,6 @@ export const styles = StyleSheet.create((theme: any) => ({
 	titleWrapper: {
         flex: 1,
 		justifyContent: "center",
+		gap: theme.spacing.xs,
 	},
 }));
