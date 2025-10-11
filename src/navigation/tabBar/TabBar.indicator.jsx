@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useWindowDimensions, View } from "react-native";
 import Animated, { useSharedValue, useAnimatedStyle, withSpring, interpolateColor } from "react-native-reanimated";
-import { fastSpring } from "@constants/Easings";
+import { quickSpring } from "@constants/Easings";
 import useInsets from "@hooks/useInsets";
 import { useUnistyles } from "react-native-unistyles";
 import { styles } from "./TabBar.indicator.styles";
@@ -30,13 +30,13 @@ export default function TabBarIndicator({ index = 0, count = 3 }) {
 		const direction = index > prevIndex.current ? 1 : -1;
 		prevIndex.current = index;
 
-		x.value = withSpring(target, fastSpring);
+		x.value = withSpring(target, quickSpring);
 
-		scaleX.value = withSpring(1 + 0.2 * direction, fastSpring, () => {
-			scaleX.value = withSpring(1, fastSpring);
+		scaleX.value = withSpring(1 + 0.2 * direction, quickSpring, () => {
+			scaleX.value = withSpring(1, quickSpring);
 		});
 
-		colorProgress.value = withSpring(index, fastSpring);
+		colorProgress.value = withSpring(index, quickSpring);
 	}, [index, calculatedWidth, count]);
 
 	const style = useAnimatedStyle(() => {

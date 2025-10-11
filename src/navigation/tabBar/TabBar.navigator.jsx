@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { ROUTES } from "@constants/Routes";
 import { CardScreen, SettingsScreen } from "@screens";
 import TabBar from ".";
-import { fastSpring } from "@constants/Easings";
+import { quickSpring } from "@constants/Easings";
 import { useUnistyles } from "react-native-unistyles";
 
 const Tab = createBottomTabNavigator();
@@ -11,9 +11,9 @@ const options = {
 	transitionSpec: {
 		animation: "spring",
 		config: {
-			mass: fastSpring.mass,
-			damping: fastSpring.damping,
-			stiffness: fastSpring.stiffness,
+			mass: quickSpring.mass,
+			damping: quickSpring.damping,
+			stiffness: quickSpring.stiffness,
 		},
 	},
 };
