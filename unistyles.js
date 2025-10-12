@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native-unistyles";
 
-const staticColor = {
+export const staticColor = {
 	white: "#ffffff",
 	black: "#000000",
 	primary: "#0A84FF",
@@ -71,6 +71,7 @@ export const lightTheme = {
 		text: "#000000",
 		secondaryText: "#00000059",
 		foreground: "#E0E0E0",
+		border: '#0000000c',
 		...staticColor
 	},
 	...base,
@@ -82,6 +83,7 @@ export const darkTheme = {
 		text: "#ffffff",	
 		secondaryText: "#ffffff59",	
 		foreground: "#1A1A1A",
+		border: '#ffffff0c',
 		...staticColor
 	},
 	...base,

@@ -1,5 +1,3 @@
-/** @format */
-
 import { styles } from "./Header.styles";
 import { View, Text, Pressable } from "react-native";
 import Icon from "@components/ui/Icon";
@@ -11,6 +9,8 @@ import Menu from "@components/ui/menu";
 import { useState } from "react";
 import Animated, { useAnimatedStyle, withSpring } from "react-native-reanimated";
 import { quickSpring } from "@constants/Easings";
+import { Option } from "@components/ui/menu";
+import { staticColor } from "unistyles";
 
 interface Chat {
   recipient: {
@@ -21,6 +21,13 @@ interface Chat {
 type HeaderProps = {
   chat?: Chat | null;
 };
+
+const options: Option[] = [
+  { label: "Открыть профиль", icon: "person", color: staticColor.white, action: "swag" },
+  { label: "Поиск", icon: "magnifyingglass", color: staticColor.primary, action: "swag" },
+  { label: "Сменить обои", icon: "image", color: staticColor.yellow, action: "swag" },
+  { label: "Удалить чат", icon: "lock", color: staticColor.orange, action: "swag" },
+];
 
 export default function Header({ chat }: HeaderProps): React.ReactNode {
   const { theme } = useUnistyles() as { theme: any };
@@ -43,7 +50,7 @@ export default function Header({ chat }: HeaderProps): React.ReactNode {
         <Text style={styles.time}>Была(а) недавно</Text>
       </View>
 
-      <Menu options={[1, 2, 3]} onClose={() => setOpen(false)} onOpen={() => setOpen(true)} onSelect={() => console.log(1)} trigger={<Avatar size="md" username={chat?.recipient?.username} />} />
+      <Menu options={options} onClose={() => setOpen(false)} onOpen={() => setOpen(true)} onSelect={() => console.log(1)} trigger={<Avatar size="md" username={chat?.recipient?.username} />} />
     </Animated.View>
   );
 }

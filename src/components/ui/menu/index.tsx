@@ -6,12 +6,22 @@ import { normalSpring, quickSpring } from "@constants/Easings";
 import { Haptics } from "react-native-nitro-haptics";
 import { BlurView } from "expo-blur";
 import { styles } from "./Menu.styles";
+import Icon from "../Icon";
+import { ICONS } from "@constants/icons";
+
+export interface Option {
+  icon: keyof typeof ICONS;
+  label: string;
+  action: string;
+  color: string;
+}
 
 type Position = { top: number; left: number; width: number };
 
+
 type MenuProps = {
   trigger: React.ReactNode;
-  options?: object;
+  options: Option[];
   onSelect?: (value?: unknown) => void;
   onOpen?: () => void;
   onClose?: () => void;
@@ -40,10 +50,15 @@ export default function Menu({ trigger, options, onSelect, onOpen, onClose }: Me
     });
   }, [open, close, onOpen]);
 
+  const onSelectPressed = (value: string) => {
+    onSelect?.(value);
+    close();
+  }
+
   const animatedViewStyles = useAnimatedStyle(() => ({
-    opacity: withSpring(open ? 1 : 0, normalSpring),
+    opacity: withSpring(open ? 1 : 0, quickSpring),
     borderRadius: withSpring(open ? 28 : 20, normalSpring),
-    transform: [{ scale: withSpring(open ? 1 : 0, quickSpring) }],
+    transform: [{ scale: withSpring(open ? 1 : 0.25, quickSpring) }],
   }));
 
   const animatedPressableStyles = useAnimatedStyle(() => ({
@@ -63,7 +78,8 @@ export default function Menu({ trigger, options, onSelect, onOpen, onClose }: Me
         <View style={styles.menuWrapper({ top: position.top, open })}>
           <Animated.View style={[styles.menu, animatedViewStyles]}>
             <BlurView tint="dark" style={styles.backdrop} intensity={128} />
-            <Text>Swag</Text>
+            {options.map((option, index) => 
+            <Pressable onPress={() => onSelectPressed(option.action)} style={styles.option} key={index}><Icon size={28} color={option.color} icon={option.icon}/><Text style={styles.optionText(option.color)}>{option.label}</Text></Pressable>)}
           </Animated.View>
         </View>
       </Portal>

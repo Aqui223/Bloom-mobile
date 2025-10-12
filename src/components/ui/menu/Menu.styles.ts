@@ -21,8 +21,23 @@ export const styles = StyleSheet.create((theme: any) => ({
     pointerEvents: open ? "auto" : "none",
   }),
   menu: {
+    paddingVertical: theme.spacing.sm,
+    borderWidth: 1,
+    borderColor: theme.colors.border,
     transformOrigin: 'top right',
     borderCurve: 'continuous',
     overflow: 'hidden',
-  }
+  },
+  option: {
+    padding: theme.spacing.lg,
+    alignItems: 'center',
+    flex: 1,
+    gap: theme.spacing.md,
+    flexDirection: 'row',
+  },
+  optionText:(color?: string) => ({
+    fontSize: theme.fontSize.md,
+    color,
+    fontFamily: theme.fontFamily.medium
+  })
 }));
