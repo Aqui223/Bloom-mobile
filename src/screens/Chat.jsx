@@ -22,10 +22,11 @@ export default function ChatScreen({ route }) {
   const { messages, addMessage } = useMessages(chat?.id);
   const [isAllKeys, setIsAllKeys] = useState();
   const [seenId, setSeenId] = useState(0);
+  const [lastMessageId, setLastMessageId] = useState(0);
 
   const renderItem = useCallback(({ item }) => {
-    return <Message seen={seenId === item?.id} message={item} chat={chat} />;
-  }, [chat, seenId]);
+    return <Message seen={seenId === item?.id} isLast={lastMessageId === item?.id} message={item} chat={chat} />;
+  }, [chat, seenId, lastMessageId]);
 
   useEffect(() => {
     (async () => {
@@ -35,8 +36,10 @@ export default function ChatScreen({ route }) {
   }, []);
 
   useEffect(() => {
-      const lastSeenMessage = messages?.reverse().find(m => m?.seen && m.isMe)
+      const lastSeenMessage = [...messages]?.reverse().find(m => m?.seen && m.isMe)
       setSeenId(lastSeenMessage?.id);
+
+      setLastMessageId(messages[messages.length - 1]?.id);
   }, [messages])
 
   return (

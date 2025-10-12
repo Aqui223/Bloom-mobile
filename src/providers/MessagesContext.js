@@ -35,7 +35,7 @@ export default function MessagesProvider({ children }) {
 
                         const decrypted = decrypt(message, myKeys, recipientKeys, false);
 
-                        setMessages(prev => [...prev, {...decrypted, chat_id: message?.chat_id, id: message?.id }]);
+                        setMessages(prev => [...prev, { ...decrypted, chat_id: message?.chat_id, id: message?.id }]);
                         realm.write(() => {
                             realm.create("Message", {
                                 id: message?.id,
@@ -43,7 +43,7 @@ export default function MessagesProvider({ children }) {
                                 content: decrypted?.content,
                                 author_id: decrypted?.from_id,
                                 date: new Date(),
-                                seen: new Date(),
+                                seen: null,
                             }, Realm.UpdateMode.Modified);
                         });
                     } catch (error) {
@@ -54,7 +54,7 @@ export default function MessagesProvider({ children }) {
         }
     }, [ws]);
 
-    function clear () {
+    function clear() {
         setMessages([]);
     }
 

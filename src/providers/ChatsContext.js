@@ -48,7 +48,6 @@ export default function ChatsProvider({ children }) {
             })();
 
             ws.addEventListener("message", async (msg) => {
-                console.log(msg)
                 try {
                     const Storage = await createSecureStorage("user-storage");
 
@@ -59,8 +58,6 @@ export default function ChatsProvider({ children }) {
                         console.log(error);
                         return;
                     }
-
-                    console.log(message)
 
                     if (message?.type === "keys_added") {
                         await setChatKeysToStorage(message?.chat_id, {

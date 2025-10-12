@@ -35,7 +35,7 @@ export default async function (content, chat_id, count, ws) {
                         content: decrypted?.content,
                         author_id: parseInt(decrypted?.from_id),
                         date: new Date(),
-                        seen: new Date(),
+                        seen: null,
                     }, Realm.UpdateMode.Modified);
                 });
                 ws.removeEventListener("message", listener);

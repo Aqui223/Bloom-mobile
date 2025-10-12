@@ -11,6 +11,7 @@ import { WebSocketProvider } from "@providers/WebSocketContext";
 import ChatsProvider from "@providers/ChatsContext";
 import MessagesProvider from "@providers/MessagesContext";
 import { PortalProvider } from "@gorhom/portal";
+import SeenMessagesProvider from "@providers/SeenMessagesContext";
 
 enableScreens();
 
@@ -35,7 +36,9 @@ export default function App() {
           <WebSocketProvider>
             <ChatsProvider>
               <MessagesProvider>
-                <AppNavigator />
+                <SeenMessagesProvider>
+                  <AppNavigator />
+                </SeenMessagesProvider>
               </MessagesProvider>
             </ChatsProvider>
           </WebSocketProvider>

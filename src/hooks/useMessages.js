@@ -8,6 +8,7 @@ import Realm from "realm";
 import getChatMessages from "@lib/api/messages/getChatMessages";
 import decrypt from "@lib/skid/decrypt";
 import getChatFromStorage from "@lib/getChatFromStorage";
+import { useSeenMessagesList } from "@providers/SeenMessagesContext";
 
 function uniqueById(arr) {
     const seen = new Set();
@@ -18,19 +19,24 @@ function uniqueById(arr) {
     });
 }
 
+function mergeAndSort(prev, next) {
+    return uniqueById([...prev, ...next])
+        .sort((a, b) => new Date(a.date) - new Date(b.date))
+}
+
 export default function useChatMessages(chat_id) {
     const [messages, setMessages] = useState([]);
-    const newMessages = useMessagesList();
+    const { messages: newMessages, clear: clearNewMessages } = useMessagesList();
+    const { seenMessages: newSeenMessages, clear: clearNewSeenMessages} = useSeenMessagesList();
     const ws = useWebSocket();
-
-    // send message func
+ 
     const addMessage = async (content) => {
         try {
             const storage = await createSecureStorage("user-storage");
             await sendMessage(content, chat_id, messages?.length, ws).catch(console.log);
 
             const newMsg = {
-                id: String(Date.now()),
+                id: messages[messages.length - 1]?.id + 1,
                 isMe: true,
                 chat_id,
                 content,
@@ -39,13 +45,12 @@ export default function useChatMessages(chat_id) {
                 seen: false
             };
 
-            setMessages(prev => [...prev, newMsg]);
+            setMessages(prev => mergeAndSort(prev, [newMsg]));
         } catch (error) {
             console.log(error);
         }
     };
 
-    // sync messages with server
     useEffect(() => {
         (async () => {
             const storage = await createSecureStorage("user-storage");
@@ -59,8 +64,7 @@ export default function useChatMessages(chat_id) {
             const messages = await getChatMessages(chat_id, lastMessage?.id);
 
             const chat = await getChatFromStorage(chat_id);
-
-            if (!chat) return
+            if (!chat) return;
 
             const myKeys = chat?.keys?.my;
             const recipientKeys = chat?.keys?.recipient;
@@ -83,9 +87,14 @@ export default function useChatMessages(chat_id) {
                         } catch { }
                     }
                 }
-            }).map(message => ({ ...message, isMe: message.from_id === parseInt(storage.getString("user_id")) })).filter(Boolean)
+            })
+                .map(message => ({
+                    ...message,
+                    isMe: message.from_id === parseInt(storage.getString("user_id"))
+                }))
+                .filter(Boolean);
 
-            setMessages(prev => [...prev, ...decryptedMessages].sort((a, b) => a.id - b.id))
+            setMessages(prev => mergeAndSort(prev, decryptedMessages));
 
             realm.write(() => {
                 decryptedMessages.forEach(message => {
@@ -96,7 +105,7 @@ export default function useChatMessages(chat_id) {
                             chat_id: message?.chat_id,
                             content: message?.content,
                             author_id: message?.from_id,
-                            date: new Date(),
+                            date: new Date(message?.date),
                             seen: new Date(),
                         },
                         Realm.UpdateMode.Modified
@@ -104,10 +113,9 @@ export default function useChatMessages(chat_id) {
                 });
             });
 
-        })()
-    }, [chat_id])
+        })();
+    }, [chat_id]);
 
-    // get messages from realm storage
     useEffect(() => {
         (async () => {
             const storage = await createSecureStorage("user-storage");
@@ -115,27 +123,22 @@ export default function useChatMessages(chat_id) {
 
             const realmMessages = realm.objects("Message").filtered("chat_id == $0", chat_id);
 
-            setMessages(prev => [
-                ...prev,
-                ...realmMessages
-                    .map(message => ({
-                        ...message,
-                        isMe: message.author_id === parseInt(storage.getString("user_id"))
-                    }))
-                    .filter(m => !prev.some(pm => pm.id === m.id))
-            ]);
+            const newMsgs = realmMessages.map(message => ({
+                ...message,
+                isMe: message.author_id === parseInt(storage.getString("user_id"))
+            }));
+
+            setMessages(prev => mergeAndSort(prev, newMsgs));
         })();
     }, [chat_id]);
 
-
-    // get messages from socket
     useEffect(() => {
-        if (!newMessages?.messages?.length) return;
+        if (!newMessages?.length) return;
 
         (async () => {
             const storage = await createSecureStorage("user-storage");
 
-            const filtered = newMessages.messages
+            const filtered = newMessages
                 .filter(m => m.chat_id === chat_id)
                 .map(m => ({
                     ...m,
@@ -143,12 +146,29 @@ export default function useChatMessages(chat_id) {
                 }));
 
             if (filtered.length > 0) {
-                setMessages(prev => [...prev, ...filtered]);
+                setMessages(prev => mergeAndSort(prev, filtered));
             }
 
-            newMessages.clear();
+            clearNewMessages();
         })();
-    }, [newMessages, chat_id, messages]);
+    }, [newMessages, chat_id]);
 
-    return { messages: uniqueById(messages), addMessage };
+    useEffect(() => {
+        if (!newSeenMessages.length) return;
+
+        const filtered = newSeenMessages.filter(m => m?.chat_id === chat_id);
+
+        if (filtered?.length > 0) {
+            setMessages(prev => prev.map(m => {
+                if (filtered?.find(_m => _m?.id === m?.id)) {
+                    return {...m, seen: m?.date}
+                }
+                return m;
+            }))
+        }
+
+        clearNewSeenMessages()
+    }, [newSeenMessages, chat_id]);
+
+    return { messages: messages, addMessage };
 }
