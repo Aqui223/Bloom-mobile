@@ -67,6 +67,7 @@ export default function Footer({ isAllKeys, onSend }) {
         style={styles.input}
         onChangeText={setValue}
         numberOfLines={4}
+        keyboardAppearance="dark"
         multiline
         submitBehavior="newline"
         cursorColor={theme.colors.secondaryText}

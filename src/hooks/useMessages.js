@@ -177,7 +177,7 @@ export default function useChatMessages(chat_id) {
 
             const lastMessage = messages[messages?.length - 1];
 
-            if (!lastMessage?.seen) {
+            if (!lastMessage?.seen && !lastMessage?.isMe) {
                 ws.send(JSON.stringify({
                     chat_id, messages: [lastMessage?.id]
                 }))

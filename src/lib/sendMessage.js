@@ -13,6 +13,7 @@ export default async function (content, chat_id, count, ws) {
 
     ws.send(JSON.stringify({
         type: "send",
+        encryption_type: 'client',
         chat_id: chat_id,
         ...encrypted
     }));
