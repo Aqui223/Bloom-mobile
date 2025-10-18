@@ -46,10 +46,10 @@ export default function Chat({ chat, index }) {
 			onPress={() => {
 				const getChat = () => chats?.find(_chat =>
 					_chat?.members?.some(m1 => m1?.id === userId) &&
-					_chat?.members?.some(m2 => m2?.id === chat?.id)
+					_chat?.members?.some(m2 => m2?.id === (chat?.recipient?.id || chat?.id))
 				);
 
-				if (getChat()) return;
+				if (getChat()) return navigation.navigate(ROUTES.CHAT, { chat: { ...chat, id: getChat()?.id } });;
 
 				ws.send(JSON.stringify({
 					type: "create_chat",
