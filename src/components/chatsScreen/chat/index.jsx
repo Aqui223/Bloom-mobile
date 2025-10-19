@@ -1,24 +1,17 @@
 import { View, Text, Pressable } from "react-native";
 import { styles } from "./Chat.styles";
-import Animated, { FadeInDown, FadeOutUp, LinearTransition } from "react-native-reanimated";
+import Animated from "react-native-reanimated";
 import Icon from "@components/ui/Icon";
 import { useUnistyles } from "react-native-unistyles";
 import { useNavigation } from "@react-navigation/native";
 import { quickSpring } from "@constants/Easings";
 import { ROUTES } from "@constants/Routes";
-import { getFadeOut, getFadeIn, getCharEnter, getCharExit } from "@constants/animations";
+import { getFadeOut, getFadeIn, getCharEnter, getCharExit, layoutAnimation } from "@constants/animations";
 import { useChatList } from "@api/providers/ChatsContext";
 import { useWebSocket } from "@api/providers/WebSocketContext";
 import { Avatar } from "@components/ui";
 import { useEffect, useState } from "react";
 import { createSecureStorage } from "@lib/Storage";
-
-const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
-
-const textAnimation = {
-	entering: FadeInDown.springify().mass(quickSpring.mass).damping(quickSpring.damping).stiffness(quickSpring.stiffness),
-	exiting: FadeOutUp.springify().mass(quickSpring.mass).damping(quickSpring.damping).stiffness(quickSpring.stiffness),
-};
 
 export default function Chat({ chat, index }) {
 	const { theme } = useUnistyles();
@@ -39,10 +32,8 @@ export default function Chat({ chat, index }) {
 	}, [])
 
 	return (
-		<AnimatedPressable
+		<Pressable
 			key={`chat-${index}`}
-			exiting={getFadeOut(index)}
-			entering={getFadeIn(index)}
 			onPress={() => {
 				const getChat = () => chats?.find(_chat =>
 					_chat?.members?.some(m1 => m1?.id === userId) &&
@@ -91,10 +82,7 @@ export default function Chat({ chat, index }) {
 									style={styles.secondary}
 									entering={getCharEnter(i)}
 									exiting={getCharExit(i)}
-									layout={LinearTransition.springify()
-										.mass(quickSpring.mass)
-										.damping(quickSpring.damping)
-										.stiffness(quickSpring.stiffness)}
+									layout={layoutAnimation}
 								>
 									{char}
 								</Animated.Text>
@@ -104,8 +92,8 @@ export default function Chat({ chat, index }) {
 					</View>
 				</View>
 				<Animated.Text
-					entering={textAnimation.entering}
-					exiting={textAnimation.exiting}
+					entering={getCharEnter()}
+					exiting={getCharExit()}
 					key={chat?.lastMessage}
 					style={styles.secondary}
 					numberOfLines={2}
@@ -113,6 +101,6 @@ export default function Chat({ chat, index }) {
 					{chat?.lastMessage}
 				</Animated.Text>
 			</View>
-		</AnimatedPressable>
+		</Pressable>
 	);
 }

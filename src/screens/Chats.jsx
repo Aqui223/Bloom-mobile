@@ -22,11 +22,10 @@ export default function ChatsScreen() {
   useEffect(() => {
     (async () => {
       const storage = await createSecureStorage("user-storage");
-
       setUserId(storage.getString("user_id"));
     })()
   }, [])
-
+  
   return (
     <View style={styles.container}>
       <Header scrollY={scrollY} />
