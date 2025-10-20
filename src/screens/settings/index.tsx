@@ -1,17 +1,15 @@
 import Header from "@components/settingsScreen/header";
 import { View } from "react-native";
-import { StyleSheet } from "react-native-unistyles";
-import { useSnapScroll } from "@hooks/useSnapScroll";
+import { styles } from "./Settings.styles";
+import { useSnapScroll } from "@hooks/index";
 import Animated from "react-native-reanimated";
 import useSettingsScreenStore from "src/stores/settingsScreen";
 import { useEffect } from "react";
-import useInsets from "@hooks/useInsets";
 import useGetMyself from "@api/hooks/useGetMyself";
 
 export default function SettingsScreen() {
   const { headerHeight, setSnapEndPosition, snapEndPosition } = useSettingsScreenStore();
   const { scrollY, listRef, scrollHandler } = useSnapScroll(snapEndPosition);
-  const insets = useInsets();
   const { user, error, loading } = useGetMyself();
 
   useEffect(() => {
@@ -25,7 +23,7 @@ export default function SettingsScreen() {
         ref={listRef}
         onScroll={scrollHandler}
         scrollEventThrottle={16}
-        data={[]}
+        data={[1,2,3,4,5,6,7,8,9]}
         renderItem={({ item }) => (
           <View
             key={item}
@@ -37,16 +35,8 @@ export default function SettingsScreen() {
             }}
           />
         )}
-        sections={[]}
         contentContainerStyle={{ paddingTop: headerHeight }}
       />
     </View>
   );
 }
-
-const styles = StyleSheet.create((theme) => ({
-  container: {
-    flex: 1,
-    backgroundColor: theme.colors.background,
-  },
-}));

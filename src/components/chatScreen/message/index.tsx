@@ -9,13 +9,13 @@ import { MessageInterface } from "@interfaces";
 
 type MessageProps = {
   message: MessageInterface | null;
-  seen: Boolean;
-  isLast: Boolean;
+  seen: boolean;
+  isLast: boolean;
 };
 
 export default function Message({ message, seen, isLast }: MessageProps): React.ReactNode {
   const { theme } = useUnistyles();
-  const isMe: Boolean = message?.isMe;
+  const isMe: boolean = message?.isMe;
 
   return (
     <Animated.View entering={zoomAnimationIn} style={styles.messageWrapper(isMe)}>

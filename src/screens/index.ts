@@ -1,5 +1,5 @@
 export { default as CardScreen } from './Chats'
-export { default as SettingsScreen } from './Settings'
+export { default as SettingsScreen } from './settings'
 export { default as ChatScreen } from './chat'
 export { default as WelcomeScreen } from './Auth/Welcome'
 export { default as RegisterScreen } from './Auth/Register'

@@ -26,8 +26,8 @@ export default function ChatScreen({ route }: ChatScreenProps) {
   const { chat } = route.params as {chat: Chat};
 
   const { messages, addMessage } = useMessages(chat?.id);
-  const [seenId, setSeenId] = useState<Number>(0);
-  const [lastMessageId, setLastMessageId] = useState<Number>(0);
+  const [seenId, setSeenId] = useState<number>(0);
+  const [lastMessageId, setLastMessageId] = useState<number>(0);
 
   const renderItem = useCallback(({item}) => {
     return <Message seen={seenId === item?.id} isLast={lastMessageId === item?.id} message={item} />;
