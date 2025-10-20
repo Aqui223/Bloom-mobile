@@ -3,7 +3,7 @@ import { styles } from "./TabBar.item.styles";
 import Icon from "@components/ui/Icon";
 import Animated, { interpolateColor, useAnimatedProps, useAnimatedStyle, useSharedValue, withSpring } from "react-native-reanimated";
 import { useEffect } from "react";
-import { fastSpring } from "@constants/Easings";
+import { fastSpring } from "@constants/easings";
 import { useUnistyles } from "react-native-unistyles";
 
 const TABS_ICONS = {

@@ -5,13 +5,13 @@ import Icon from "@components/ui/Icon";
 import { useUnistyles } from "react-native-unistyles";
 import { useState } from "react";
 import Animated, { interpolate, useAnimatedStyle } from "react-native-reanimated";
-import { layoutAnimation } from "@constants/animations";
+import { layoutAnimationSpringy } from "@constants/animations";
 import { Button } from "@components/ui";
 import { zoomAnimationIn, zoomAnimationOut } from "@constants/animations";
 import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
 
 type FooterProps = {
-  onSend?: (value) => void;
+  onSend?: (value: string) => void;
 };
 
 const AnimatedButton = Animated.createAnimatedComponent(Button);
@@ -50,7 +50,7 @@ export default function Footer({ onSend }: FooterProps) {
         </>
       )}
 
-      <Animated.View style={styles.inputWrapper} layout={layoutAnimation}>
+      <Animated.View style={styles.inputWrapper} layout={layoutAnimationSpringy}>
         <TextInput
           style={styles.input}
           onChangeText={setValue}

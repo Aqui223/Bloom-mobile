@@ -1,19 +1,23 @@
 import { FadeIn, FadeOut, FadeInDown, FadeOutUp, withSpring, LinearTransition } from "react-native-reanimated";
-import { fastSpring, normalSpring, quickSpring } from "./Easings";
+import { fastSpring, normalSpring, quickSpring } from "./easings";
+import physicsSpring from "@lib/physicSpring";
 
-export const getFadeOut = (i = 0) => {
+const springy = physicsSpring({mass: quickSpring.mass, duration: 0.25, dampingRatio: 0.65})
+
+export const layoutAnimationSpringy = LinearTransition.springify().mass(springy.mass).damping(springy.damping).stiffness(springy.stiffness);
+export const layoutAnimation = LinearTransition.springify().mass(quickSpring.mass).damping(quickSpring.damping).stiffness(quickSpring.stiffness);
+
+export const getFadeOut = (i = 0) => 
   FadeOut.springify()
-    .damping(normalSpring.damping)
-    .mass(normalSpring.mass + i * 0.4)
-    .stiffness(normalSpring.stiffness);
-};
+    .damping(quickSpring.damping)
+    .mass(quickSpring.mass + i * 0.4)
+    .stiffness(quickSpring.stiffness);
 
-export const getFadeIn = (i = 0) => {
+export const getFadeIn = (i = 0) => 
   FadeIn.springify()
-    .damping(normalSpring.damping)
-    .mass(normalSpring.mass + i * 0.4)
-    .stiffness(normalSpring.stiffness);
-};
+    .damping(quickSpring.damping)
+    .mass(quickSpring.mass + i * 0.4)
+    .stiffness(quickSpring.stiffness);
 
 export const getCharEnter = (i = 0) =>
   FadeInDown.springify()
@@ -26,8 +30,6 @@ export const getCharExit = (i = 0) =>
     .damping(quickSpring.damping)
     .mass(quickSpring.mass + i * 0.2)
     .stiffness(quickSpring.stiffness);
-
-export const layoutAnimation = LinearTransition.springify().mass(quickSpring.mass).damping(quickSpring.damping).stiffness(quickSpring.stiffness);
 
 export const zoomAnimationOut = () => {
   "worklet";

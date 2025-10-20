@@ -1,5 +1,5 @@
 import { interpolate, withSpring } from "react-native-reanimated";
-import { fastSpring, slowSpring } from "@constants/Easings";
+import { fastSpring, slowSpring } from "@constants/easings";
 import { Platform } from "react-native";
 
 export const chatTransition = (insets) => ({

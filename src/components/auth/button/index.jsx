@@ -9,7 +9,7 @@ import Animated, {
 import { useEffect } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { styles } from "./Button.styles";
-import { quickSpring } from "@constants/Easings";
+import { quickSpring } from "@constants/easings";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);

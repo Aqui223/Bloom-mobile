@@ -3,7 +3,7 @@ import { Text, View } from "react-native";
 import Animated, { interpolate, interpolateColor, LinearTransition, useAnimatedProps, useSharedValue, withSpring, useAnimatedStyle } from "react-native-reanimated";
 import { useState, useEffect } from "react";
 import { getCharEnter, getCharExit } from "@constants/animations";
-import { quickSpring } from "@constants/Easings";
+import { quickSpring } from "@constants/easings";
 import { useUnistyles } from "react-native-unistyles";
 import { styles } from "./title.styles";
 

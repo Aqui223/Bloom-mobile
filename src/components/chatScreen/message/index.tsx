@@ -1,11 +1,12 @@
-import { Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import { styles } from "./Message.styles";
 import { useUnistyles } from "react-native-unistyles";
 import Svg, { Path } from "react-native-svg";
-import Animated, { LayoutAnimationConfig } from "react-native-reanimated";
+import Animated, { LayoutAnimationConfig, useAnimatedStyle, useSharedValue, withSpring } from "react-native-reanimated";
 import formatSentTime from "@lib/formatSentTime";
 import { zoomAnimationIn, zoomAnimationOut } from "@constants/animations";
 import { MessageInterface } from "@interfaces";
+import { quickSpring, slowSpring } from "@constants/easings";
 
 type MessageProps = {
   message: MessageInterface | null;
@@ -13,12 +14,25 @@ type MessageProps = {
   isLast: boolean;
 };
 
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable)
+
 export default function Message({ message, seen, isLast }: MessageProps): React.ReactNode {
   const { theme } = useUnistyles();
   const isMe: boolean = message?.isMe;
+  const scale = useSharedValue(1);
+
+  const onPress = (out: boolean = false) => {
+	scale.value = withSpring(out ? 1 : 1.05, slowSpring);
+  }
+
+  console.log(slowSpring)
+
+  const animatedPressableStyles = useAnimatedStyle(() => {
+	return { transform: [{scale: scale.value}]}
+  })
 
   return (
-    <Animated.View entering={zoomAnimationIn} style={styles.messageWrapper(isMe)}>
+    <AnimatedPressable onLongPress={() => console.log(12)} onPressIn={() => onPress()} onPressOut={() => onPress(true)} entering={zoomAnimationIn} style={[styles.messageWrapper(isMe), animatedPressableStyles]}>
       <View style={styles.message(isMe)}>
         <Text style={styles.text(isMe)}>{message?.content}</Text>
         <Svg width='22' height='15' viewBox='0 0 22 15' style={styles.tail(isMe)} fill='none'>
@@ -59,6 +73,6 @@ export default function Message({ message, seen, isLast }: MessageProps): React.
           <Text style={styles.metaRowText}>{formatSentTime(message?.date)}</Text>
         </View>
       </LayoutAnimationConfig>
-    </Animated.View>
+    </AnimatedPressable>
   );
 }

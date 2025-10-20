@@ -1,10 +1,11 @@
 import { useEffect, useRef } from "react";
 import { useWindowDimensions, View } from "react-native";
 import Animated, { useSharedValue, useAnimatedStyle, withSpring, interpolateColor } from "react-native-reanimated";
-import { quickSpring } from "@constants/Easings";
+import { fastSpring } from "@constants/easings";
 import useInsets from "@hooks/useInsets";
 import { useUnistyles } from "react-native-unistyles";
 import { styles } from "./TabBar.indicator.styles";
+import physicsSpring from "@lib/physicSpring";
 
 const AnimatedView = Animated.createAnimatedComponent(View);
 
@@ -23,6 +24,8 @@ export default function TabBarIndicator({ index = 0, count = 3 }) {
 	const tabWidth = calculatedWidth / count;
 	const indicatorWidth = tabWidth - 32;
 
+	const swag = physicsSpring({ mass: fastSpring.mass, duration: 0.25, dampingRatio: 0.7})
+
 	useEffect(() => {
 		if (!calculatedWidth || count <= 0) return;
 		const target = tabWidth * index + (tabWidth - indicatorWidth) / 2;
@@ -30,13 +33,13 @@ export default function TabBarIndicator({ index = 0, count = 3 }) {
 		const direction = index > prevIndex.current ? 1 : -1;
 		prevIndex.current = index;
 
-		x.value = withSpring(target, quickSpring);
+		x.value = withSpring(target, swag);
 
-		scaleX.value = withSpring(1 + 0.2 * direction, quickSpring, () => {
-			scaleX.value = withSpring(1, quickSpring);
+		scaleX.value = withSpring(1 + 0.2 * direction, swag, () => {
+			scaleX.value = withSpring(1, swag);
 		});
 
-		colorProgress.value = withSpring(index, quickSpring);
+		colorProgress.value = withSpring(index, swag);
 	}, [index, calculatedWidth, count]);
 
 	const style = useAnimatedStyle(() => {

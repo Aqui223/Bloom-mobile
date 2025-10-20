@@ -10,7 +10,7 @@ import Animated, {
   interpolate,
 } from "react-native-reanimated";
 import useChatsScreenStore from "@stores/ChatsScreen";
-import { fastSpring } from "@constants/Easings";
+import { fastSpring } from "@constants/easings";
 
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);

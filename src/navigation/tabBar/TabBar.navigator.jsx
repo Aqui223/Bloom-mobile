@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { ROUTES } from "@constants/Routes";
 import { CardScreen, SettingsScreen } from "@screens";
 import TabBar from ".";
-import { quickSpring } from "@constants/Easings";
+import { quickSpring } from "@constants/easings";
 import { useUnistyles } from "react-native-unistyles";
 
 const Tab = createBottomTabNavigator();

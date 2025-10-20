@@ -1,7 +1,7 @@
 import { styles } from "./SearchView.styles";
 import useChatsScreenStore from "@stores/ChatsScreen";
 import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
-import { fastSpring } from "@constants/Easings";
+import { fastSpring } from "@constants/easings";
 import { useUnistyles } from "react-native-unistyles";
 import { FlashList } from "@shopify/flash-list";
 import { View } from "react-native";

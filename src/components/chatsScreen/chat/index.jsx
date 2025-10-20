@@ -1,10 +1,10 @@
 import { View, Text, Pressable } from "react-native";
 import { styles } from "./Chat.styles";
-import Animated from "react-native-reanimated";
+import Animated, { LayoutAnimationConfig } from "react-native-reanimated";
 import Icon from "@components/ui/Icon";
 import { useUnistyles } from "react-native-unistyles";
 import { useNavigation } from "@react-navigation/native";
-import { quickSpring } from "@constants/Easings";
+import { quickSpring } from "@constants/easings";
 import { ROUTES } from "@constants/Routes";
 import { getFadeOut, getFadeIn, getCharEnter, getCharExit, layoutAnimation } from "@constants/animations";
 import { useChatList } from "@api/providers/ChatsContext";
@@ -32,6 +32,7 @@ export default function Chat({ chat, index }) {
 	}, [])
 
 	return (
+	<LayoutAnimationConfig skipEntering skipExiting>
 		<Pressable
 			key={`chat-${index}`}
 			onPress={() => {
@@ -68,6 +69,7 @@ export default function Chat({ chat, index }) {
 			<View style={styles.avatarWrapper}>
 				<Avatar size='lg' username={chat?.recipient?.username} />
 			</View>
+			
 			<View style={styles.content}>
 				<View style={styles.headerRow}>
 					<View style={styles.nameWrapper}>
@@ -101,6 +103,6 @@ export default function Chat({ chat, index }) {
 					{chat?.lastMessage}
 				</Animated.Text>
 			</View>
-		</Pressable>
+		</Pressable></LayoutAnimationConfig>
 	);
 }
