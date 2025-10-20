@@ -96,6 +96,7 @@ export default function ChatsProvider({ children }) {
                         // add chat to mmkv storage
                         _chats = [..._chats, {
                             id: message?.chat?.id,
+                            key: message?.chat?.encryption_key,
                             keys: {
                                 my: { ...myKeys },
                                 recipient: {}
