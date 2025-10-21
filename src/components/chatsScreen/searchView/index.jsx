@@ -29,7 +29,7 @@ export default function SearchView() {
 
   const { users, loading, error, addPage } = useUsersSearch(query);
 
-  return focused ? (
+  return focused || query ? (
     <Animated.View
       {...opacityAnimation}
       style={[styles.container, { paddingTop: headerHeight - 56 }]}
@@ -51,6 +51,7 @@ export default function SearchView() {
           key="search"
           estimatedItemSize={7}
           removeClippedSubviews
+          keyboardShouldPersistTaps="handled"
           maxToRenderPerBatch={10}
           initialNumToRender={10}
           updateCellsBatchingPeriod={30}

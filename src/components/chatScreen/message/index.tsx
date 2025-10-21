@@ -25,8 +25,6 @@ export default function Message({ message, seen, isLast }: MessageProps): React.
 	scale.value = withSpring(out ? 1 : 1.05, slowSpring);
   }
 
-  console.log(slowSpring)
-
   const animatedPressableStyles = useAnimatedStyle(() => {
 	return { transform: [{scale: scale.value}]}
   })
