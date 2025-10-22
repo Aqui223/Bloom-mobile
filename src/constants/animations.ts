@@ -57,8 +57,8 @@ export const zoomAnimationOut = (): LayoutAnimResult => {
   return {
     initialValues: { opacity: 1, transform: [{ scale: 1 }] },
     animations: {
-      opacity: withSpring(0, { mass: quickSpring.mass, stiffness: quickSpring.stiffness, damping: quickSpring.damping } ),
-      transform: [{ scale: withSpring(0.5, { mass: quickSpring.mass, stiffness: quickSpring.stiffness, damping: quickSpring.damping } ) }],
+      opacity: withSpring(0, quickSpring),
+      transform: [{ scale: withSpring(0.5, quickSpring) }],
     },
   };
 };
@@ -68,8 +68,8 @@ export const zoomAnimationIn = (): LayoutAnimResult => {
   return {
     initialValues: { opacity: 0, transform: [{ scale: 0.5 }] },
     animations: {
-      opacity: withSpring(1, { mass: quickSpring.mass, stiffness: quickSpring.stiffness, damping: quickSpring.damping } ),
-      transform: [{ scale: withSpring(1, { mass: quickSpring.mass, stiffness: quickSpring.stiffness, damping: quickSpring.damping } ) }],
+      opacity: withSpring(1, quickSpring),
+      transform: [{ scale: withSpring(1, quickSpring) }],
     },
   };
 };
@@ -77,9 +77,9 @@ export const zoomAnimationIn = (): LayoutAnimResult => {
 export const messageFocusAnimationOut = (): LayoutAnimResult => {
   "worklet";
   return {
-    initialValues: { transform: [{ scale: 1.1 }] },
+    initialValues: { transform: [{ scale: 1.1 }]},
     animations: {
-      transform: [{ scale: withSpring(1, { mass: springyMessage.mass, stiffness: springyMessage.stiffness, damping: springyMessage.damping } ) }],
+      transform: [{ scale: withSpring(1, springyMessage ) }],
     },
   };
 };
@@ -87,9 +87,9 @@ export const messageFocusAnimationOut = (): LayoutAnimResult => {
 export const messageFocusAnimationIn = (): LayoutAnimResult => {
   "worklet";
   return {
-    initialValues: { transform: [{ scale: 0.95 }] },
+    initialValues: { transform: [{ scale: 0.95 }]},
     animations: {
-      transform: [{ scale: withSpring(1.1, { mass: springyMessage.mass, stiffness: springyMessage.stiffness, damping: springyMessage.damping } ) }],
+      transform: [{ scale: withSpring(1.1, springyMessage ) }],
     },
   };
 };
@@ -104,11 +104,11 @@ export const menuFocusAnimationOut = (): LayoutAnimResult => {
     },
     animations: {
       transform: [
-        { scale: withSpring(0.25, { mass: springyMenu.mass, stiffness: springyMenu.stiffness, damping: springyMenu.damping } ) },
-        { translateY: withSpring(-64, { mass: springy.mass, stiffness: springy.stiffness, damping: springy.damping } ) },
+        { scale: withSpring(0.25, springyMenu) },
+        { translateY: withSpring(-64, springy) },
       ],
-      opacity: withSpring(0, { mass: springyMenu.mass, stiffness: springyMenu.stiffness, damping: springyMenu.damping } ),
-      borderRadius: withSpring(20, { mass: springyMenu.mass, stiffness: springyMenu.stiffness, damping: springyMenu.damping } ),
+      opacity: withSpring(0, springyMenu),
+      borderRadius: withSpring(20, springyMenu),
     },
   };
 };
@@ -123,11 +123,11 @@ export const menuFocusAnimationIn = (): LayoutAnimResult => {
     },
     animations: {
       transform: [
-        { scale: withSpring(1, { mass: springyMenu.mass, stiffness: springyMenu.stiffness, damping: springyMenu.damping } ) },
-        { translateY: withSpring(0, { mass: springy.mass, stiffness: springy.stiffness, damping: springy.damping } ) },
+        { scale: withSpring(1, springyMenu) },
+        { translateY: withSpring(0, springy) },
       ],
-      opacity: withSpring(1, { mass: springyMenu.mass, stiffness: springyMenu.stiffness, damping: springyMenu.damping } ),
-      borderRadius: withSpring(28, { mass: springyMenu.mass, stiffness: springyMenu.stiffness, damping: springyMenu.damping } ),
+      opacity: withSpring(1, springyMenu),
+      borderRadius: withSpring(28, springyMenu),
     },
   };
 };

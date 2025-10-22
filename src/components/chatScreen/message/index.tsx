@@ -40,7 +40,7 @@ export default function Message({ message, seen, isLast }: MessageProps): React.
   const isMe: boolean = message?.isMe;
 
   const onPress = (out: boolean = false) => {
-    scale.value = withTiming(out ? 1 : 0.95, {easing: Easing.inOut(Easing.ease), duration: 350});
+    scale.value = withTiming(out ? 1 : 0.95, {easing: Easing.inOut(Easing.ease), duration: 300});
   };
 
   const onLongPress = () => {
@@ -64,7 +64,7 @@ export default function Message({ message, seen, isLast }: MessageProps): React.
       onPressIn={() => onPress()}
       onPressOut={() => onPress(true)}
       entering={zoomAnimationIn}
-      delayLongPress={350}
+      delayLongPress={300}
       style={styles.messageWrapper(isMe)}
     >
       <MessageBubble style={animatedBubbleStyles} message={message}/>
