@@ -6,18 +6,11 @@ import { normalSpring, quickSpring } from "@constants/easings";
 import { Haptics } from "react-native-nitro-haptics";
 import { BlurView } from "expo-blur";
 import { styles } from "./Menu.styles";
+import { styles as messageStyles } from "@components/chatScreen/message/Message.styles";
 import Icon from "../Icon";
-import { ICONS } from "@constants/icons";
-import { getFadeIn, getFadeOut } from "@constants/animations";
-
-export interface Option {
-  icon: keyof typeof ICONS;
-  label: string;
-  action: string;
-  color: string;
-}
-
-type Position = { top: number; left: number; width: number };
+import { getFadeIn, getFadeOut, layoutAnimationSpringy, messageFocusAnimationIn, messageFocusAnimationOut } from "@constants/animations";
+import { Position, Option, MessageInterface } from "@interfaces";
+import { MessageBubble } from "@components/chatScreen/message";
 
 type MenuProps = {
   trigger?: React.ReactNode;
@@ -27,6 +20,8 @@ type MenuProps = {
   onClose?: () => void;
   open?: boolean;
   bluredBackdrop?: boolean;
+  position?: Position;
+  message?: MessageInterface;
 };
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
@@ -39,11 +34,14 @@ export default function Menu({
   onClose,
   open,
   bluredBackdrop,
+  position,
+  message,
 }: MenuProps): React.ReactNode {
   const [_open, _setOpen] = useState(false);
-  const [position, setPosition] = useState<Position>({ top: 0, left: 0, width: 0 });
+  const [_position, _setPosition] = useState<Position>({ top: 0, left: 0, width: 0 });
   const triggerRef = useRef<any>(null);
 
+  const triggerPosition = position ? position : _position;
   const isControlled = open !== undefined;
   const isOpen = isControlled ? open! : _open;
 
@@ -58,7 +56,7 @@ export default function Menu({
     if (isOpen) return close();
 
     triggerRef.current?.measureInWindow((x: number, y: number, width: number) => {
-      setPosition({ top: y, left: x + width, width });
+      _setPosition({ top: y, left: x + width, width });
       _setOpen(true);
       Haptics.impact("medium");
       onOpen?.();
@@ -85,6 +83,7 @@ export default function Menu({
     <>
       {!isControlled && (
         <AnimatedPressable
+          delayLongPress={400}
           onLongPress={toggle}
           style={animatedPressableStyles}
           ref={triggerRef}
@@ -105,9 +104,14 @@ export default function Menu({
           </AnimatedPressable>
         )}
 
-        <View style={styles.menuWrapper({ top: position.top, open: isOpen })}>
-          <Animated.View style={[styles.menu, animatedViewStyles]}>
-            <BlurView tint='dark' style={styles.backdrop} intensity={128} />
+        <View style={styles.menuWrapper({ top: triggerPosition.top, open: isOpen })}>
+          {message && isOpen && (
+            <Animated.View entering={messageFocusAnimationIn} exiting={messageFocusAnimationOut} layout={layoutAnimationSpringy} style={messageStyles.messageWrapper(message.isMe)}>
+              <MessageBubble message={message} />
+            </Animated.View>
+          )}
+          <Animated.View layout={layoutAnimationSpringy} style={[styles.menu(bluredBackdrop), animatedViewStyles]}>
+            {!bluredBackdrop && <BlurView tint='dark' style={styles.backdrop} intensity={128} />}
             {options.map((option, index) => (
               <Pressable onPress={() => onSelectPressed(option.action)} style={styles.option} key={index}>
                 <Icon size={28} color={option.color} icon={option.icon} />

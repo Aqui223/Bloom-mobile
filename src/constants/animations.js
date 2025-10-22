@@ -1,8 +1,9 @@
 import { FadeIn, FadeOut, FadeInDown, FadeOutUp, withSpring, LinearTransition } from "react-native-reanimated";
-import { fastSpring, normalSpring, quickSpring } from "./easings";
+import { fastSpring, normalSpring, quickSpring, slowSpring } from "./easings";
 import physicsSpring from "@lib/physicSpring";
 
 const springy = physicsSpring({mass: quickSpring.mass, duration: 0.25, dampingRatio: 0.65})
+const springyMessage = physicsSpring({mass: quickSpring.mass, duration: 0.4, dampingRatio: 0.4})
 
 export const layoutAnimationSpringy = LinearTransition.springify().mass(springy.mass).damping(springy.damping).stiffness(springy.stiffness);
 export const layoutAnimation = LinearTransition.springify().mass(quickSpring.mass).damping(quickSpring.damping).stiffness(quickSpring.stiffness);
@@ -56,6 +57,34 @@ export const zoomAnimationIn = () => {
   const initialValues = {
     opacity: 0,
     transform: [{ scale: 0.5 }],
+  };
+  return {
+    initialValues,
+    animations,
+  };
+};
+
+export const messageFocusAnimationOut = () => {
+  "worklet";
+  const animations = {
+    transform: [{ scale: withSpring(1, springyMessage) }],
+  };
+  const initialValues = {
+    transform: [{ scale: 1.1 }],
+  };
+  return {
+    initialValues,
+    animations,
+  };
+};
+
+export const messageFocusAnimationIn = () => {
+  "worklet";
+  const animations = {
+    transform: [{ scale: withSpring(1.1, springyMessage) }],
+  };
+  const initialValues = {
+    transform: [{ scale: 0.95 }],
   };
   return {
     initialValues,

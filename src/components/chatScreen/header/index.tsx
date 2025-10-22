@@ -9,9 +9,8 @@ import Menu from "@components/ui/menu";
 import { useState } from "react";
 import Animated, { useAnimatedStyle, withSpring } from "react-native-reanimated";
 import { quickSpring } from "@constants/easings";
-import { Option } from "@components/ui/menu";
 import { staticColor } from "unistyles";
-import { Chat } from "@interfaces";
+import { Chat, Option } from "@interfaces";
 
 type HeaderProps = {
   chat?: Chat | null;
