@@ -16,7 +16,6 @@ export const styles = StyleSheet.create(theme => ({
   messageWrapper: (isMe: boolean) => ({
     gap: theme.spacing.md,
     position: "relative",
-    zIndex: 12222,
     transformOrigin: isMe ? "bottom-right" : "bottom-left",
     paddingBottom: theme.spacing.lg,
     alignItems: isMe ? "flex-end" : "flex-start",

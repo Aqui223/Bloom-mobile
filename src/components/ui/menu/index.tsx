@@ -5,7 +5,7 @@ import Animated from "react-native-reanimated";
 import { BlurView } from "expo-blur";
 import Icon from "../Icon";
 import { styles } from "./Menu.styles";
-import { getFadeIn, getFadeOut, menuFocusAnimationIn, menuFocusAnimationOut, messageFocusAnimationIn, messageFocusAnimationOut } from "@constants/animations";
+import { getFadeIn, getFadeOut, getMenuOptionEnter, getMenuOptionExit, menuFocusAnimationIn, menuFocusAnimationOut, messageFocusAnimationIn, messageFocusAnimationOut } from "@constants/animations";
 import type { MessageInterface, Option } from "@interfaces";
 import { MessageBubble } from "@components/chatScreen/message";
 import { styles as messageStyles } from "@components/chatScreen/message/Message.styles";
@@ -20,18 +20,18 @@ type MenuProps = {
   onSelect?: (value: string) => void;
 };
 
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable)
+
 export default function Menu({ isOpen, position, closeMenu, options, message, bluredBackdrop, onSelect }: MenuProps) {
   if (!isOpen) return null;
 
   return (
     <Portal>
-      <Animated.View entering={getFadeIn()} exiting={getFadeOut()} style={styles.backdrop}>
-        <Pressable onPress={closeMenu} style={styles.backdrop}>
+        <AnimatedPressable entering={getFadeIn()} exiting={getFadeOut()} onPress={closeMenu} style={styles.backdrop}>
           {bluredBackdrop && <BlurView style={styles.backdrop} intensity={48} tint='dark' />}
-        </Pressable>
-      </Animated.View>
+        </AnimatedPressable>
 
-      <View style={styles.menuWrapper({ top: position.top, open: isOpen })}>
+      <View style={styles.menuWrapper({ top: position.top })}>
          {message && (
               <Animated.View
                 entering={messageFocusAnimationIn}
@@ -47,8 +47,10 @@ export default function Menu({ isOpen, position, closeMenu, options, message, bl
           style={styles.menu(bluredBackdrop)}
         >
           {!bluredBackdrop && <BlurView tint='dark' style={styles.backdrop} intensity={128} />}
-          {options.map((option, index) => (
-            <Pressable
+          {options.map((option, index) => !option.separator ? (
+            <AnimatedPressable
+              exiting={getMenuOptionExit(index)}
+              entering={getMenuOptionEnter(index)}
               onPress={() => {
                 onSelect?.(option.action);
                 closeMenu();
@@ -58,7 +60,10 @@ export default function Menu({ isOpen, position, closeMenu, options, message, bl
             >
               <Icon size={28} color={option.color} icon={option.icon} />
               <Text style={styles.optionText(option.color)}>{option.label}</Text>
-            </Pressable>
+            </AnimatedPressable>
+          ) : (
+            <Animated.View  exiting={getMenuOptionExit(index)}
+              entering={getMenuOptionEnter(index)} style={styles.separator} key={index}/>
           ))}
         </Animated.View>
       </View>

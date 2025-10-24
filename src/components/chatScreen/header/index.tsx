@@ -20,7 +20,7 @@ const options: Option[] = [
   { label: "Открыть профиль", icon: "person", color: staticColor.white, action: "swag" },
   { label: "Поиск", icon: "magnifyingglass", color: staticColor.primary, action: "swag" },
   { label: "Сменить обои", icon: "image", color: staticColor.yellow, action: "swag" },
-  { label: "Удалить чат", icon: "lock", color: staticColor.orange, action: "swag" },
+  { label: "Удалить чат", icon: "trash", color: staticColor.orange, action: "swag" },
 ];
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);

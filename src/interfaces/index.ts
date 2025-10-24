@@ -21,8 +21,9 @@ export interface Chat {
 }
 
 export interface Option {
-  icon: keyof typeof ICONS;
-  label: string;
-  action: string;
-  color: string;
+  icon?: keyof typeof ICONS;
+  label?: string;
+  action?: string;
+  color?: string;
+  separator?: boolean
 }

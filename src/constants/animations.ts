@@ -38,18 +38,19 @@ export const layoutAnimation: ComplexAnimationBuilder = LinearTransition.springi
 
 
 const makeSpringEntry =
-  (Anim: { springify: () => ComplexAnimationBuilder }, massStep = 0.4) =>
+  (Anim: { springify: () => ComplexAnimationBuilder }, massStep = 0.4, easing = quickSpring) =>
   (i = 0): ComplexAnimationBuilder =>
     Anim.springify()
-      .damping(quickSpring.damping)
-      .mass(quickSpring.mass + i * massStep)
-      .stiffness(quickSpring.stiffness);
+      .damping(easing.damping)
+      .mass(easing.mass + i * massStep)
+      .stiffness(easing.stiffness);
 
 export const getFadeOut = makeSpringEntry(FadeOut, 0.4);
 export const getFadeIn = makeSpringEntry(FadeIn, 0.4);
 export const getCharEnter = makeSpringEntry(FadeInDown, 0.2);
 export const getCharExit = makeSpringEntry(FadeOutUp, 0.2);
-
+export const getMenuOptionEnter = makeSpringEntry(FadeInDown, 0.8, springyMenu);
+export const getMenuOptionExit = makeSpringEntry(FadeOutUp, 0.8, springyMenu)
 
 
 export const zoomAnimationOut = (): LayoutAnimResult => {

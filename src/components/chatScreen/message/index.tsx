@@ -12,9 +12,10 @@ import Animated, {
 } from "react-native-reanimated";
 import formatSentTime from "@lib/formatSentTime";
 import { zoomAnimationIn, zoomAnimationOut } from "@constants/animations";
-import { MessageInterface } from "@interfaces";
+import type { MessageInterface, Option } from "@interfaces";
 import { quickSpring } from "@constants/easings";
 import { Menu } from "@components/ui";
+import { staticColor } from "unistyles";
 import { useContextMenu } from "@hooks";
 
 type MessageProps = {
@@ -23,6 +24,15 @@ type MessageProps = {
   isLast?: boolean;
   style?: StyleProp<ViewStyle>;
 };
+
+const options: Option[] = [
+  { label: "Скопировать", icon: "file", color: staticColor.white, action: "swag" },
+  { label: "Ответить", icon: "arrow.left", color: staticColor.primary, action: "swag" },
+  { label: "Закрепить", icon: "pin", color: staticColor.pink, action: "swag" },
+  { separator: true },
+  { label: "Изменить", icon: "pencil", color: staticColor.yellow, action: "swag" },
+  { label: "Удалить сообщение", icon: "trash", color: staticColor.orange, action: "swag" },
+];
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
@@ -84,7 +94,7 @@ export default function Message({ message, seen, isLast }: MessageProps): React.
         position={menuPosition}
         message={message}
         bluredBackdrop
-        options={[{ icon: "compass", label: "swag", action: "sex", color: "#fff" }]}
+        options={options}
         isOpen={isOpen}
         closeMenu={closeMenu}
       />
