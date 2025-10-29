@@ -134,7 +134,7 @@ export default function (chat_id) {
                             content: message?.content,
                             author_id: message?.from_id,
                             date: new Date(message?.date),
-                            seen: new Date(),
+                            seen: null,
                         },
                         Realm.UpdateMode.Modified
                     );
