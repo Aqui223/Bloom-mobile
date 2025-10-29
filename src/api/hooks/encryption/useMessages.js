@@ -81,7 +81,7 @@ export default function (chat_id) {
                 .sorted("id", true)[0] ?? null;
 
             // get messages from api sent after last message 
-            const messages = await getChatMessages(chat_id, lastMessage?.id);
+            const messages = await getChatMessages(chat_id, lastMessage?.id || 0);
 
             // is chat in storage check
             const chat = await getChatFromStorage(chat_id);
@@ -101,6 +101,7 @@ export default function (chat_id) {
                             sskDecrypt(message?.ciphertext, message?.nonce, chat?.key),
                         chat_id: message?.chat_id,
                         id: message?.id,
+                        seen: message?.seen
                     };
                 } catch (error) {
                     // if kyber message sent by user (current session user) decrypt using only his keys
@@ -110,6 +111,7 @@ export default function (chat_id) {
                                 ...decrypt(message, myKeys, myKeys, true),
                                 chat_id: message?.chat_id,
                                 id: message?.id,
+                                seen: message?.seen
                             };
                         } catch { }
                     }
