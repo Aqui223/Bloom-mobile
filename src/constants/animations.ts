@@ -21,7 +21,7 @@ export type LayoutAnimResult = {
 
 
 
-const springy = physicsSpring({ mass: quickSpring.mass, duration: 0.25, dampingRatio: 0.65 }) as SpringTriple;
+export const springy = physicsSpring({ mass: quickSpring.mass, duration: 0.25, dampingRatio: 0.65 }) as SpringTriple;
 const springyMessage = physicsSpring({ mass: quickSpring.mass, duration: 0.2, dampingRatio: 2.5 }) as SpringTriple;
 const springyMenu = physicsSpring({ mass: quickSpring.mass, duration: 0.15, dampingRatio: 2.5 }) as SpringTriple;
 

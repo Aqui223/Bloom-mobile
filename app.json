@@ -13,7 +13,7 @@
     },
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "pw.bloom.app"
+      "bundleIdentifier": "pw.blooom.app"
     },
     "android": {
       "adaptiveIcon": {

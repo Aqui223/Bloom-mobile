@@ -13,6 +13,7 @@ export const styles = StyleSheet.create(theme => ({
 		justifyContent: "center",
 		flexDirection: "row",
 		height,
+		overflow: 'hidden',
 		aspectRatio: isIcon ? 1 : undefined,
 		paddingHorizontal,	
 		opacity: disabled ? theme.opacity.secondaryText : 1,

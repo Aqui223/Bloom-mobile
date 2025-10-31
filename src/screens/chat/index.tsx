@@ -3,13 +3,13 @@ import Footer from "@components/chatScreen/footer";
 import Message from "@components/chatScreen/message";
 import React, { useCallback, useEffect, useState } from "react";
 import { styles } from "./Chat.styles";
-import Animated from "react-native-reanimated";
+import Animated, { useAnimatedStyle, withSpring } from "react-native-reanimated";
 import Transition from "react-native-screen-transitions";
 import EmptyModal from "@components/chatScreen/emptyModal";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import useMessages from "@api/hooks/encryption/useMessages";
 import { Chat, MessageInterface } from "@interfaces";
-import { layoutAnimationSpringy } from "@constants/animations";
+import { layoutAnimationSpringy, springy } from "@constants/animations";
 import { useScreenScale } from "@hooks";
 
 interface ChatScreenProps {
@@ -25,6 +25,7 @@ export default function ChatScreen({ route }: ChatScreenProps) {
 
   const { messages, addMessage } = useMessages(chat?.id);
   const [seenId, setSeenId] = useState<number>(0);
+  const [footerHeight, setFooterHeight] = useState<number>(0);
   const [lastMessageId, setLastMessageId] = useState<number>(0);
   const { animatedScreenStyle } = useScreenScale();
 
@@ -42,6 +43,10 @@ export default function ChatScreen({ route }: ChatScreenProps) {
     setLastMessageId(messages[messages.length - 1]?.id);
   }, [messages]);
 
+  const animatedListStyles = useAnimatedStyle(() => ({
+    paddingTop: withSpring(footerHeight - 16, springy)
+  }))
+
   return (
     <Animated.View style={[styles.container, animatedScreenStyle]}>
       <Header chat={chat} />
@@ -54,11 +59,11 @@ export default function ChatScreen({ route }: ChatScreenProps) {
           inverted
           removeClippedSubviews
           contentContainerStyle={styles.listContent}
-          style={styles.list}
+          style={[styles.list, animatedListStyles]}
           showsVerticalScrollIndicator={false}
           itemLayoutAnimation={layoutAnimationSpringy}
         />
-        <Footer onSend={addMessage} />
+        <Footer onLayout={setFooterHeight} onSend={addMessage} />
       </KeyboardAvoidingView>
     </Animated.View>
   );
