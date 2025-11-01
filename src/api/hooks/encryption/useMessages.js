@@ -38,13 +38,13 @@ export default function (chat_id) {
     // ENCRYPT AND SEND MESSAGE
     //
 
-    const addMessage = async (content) => {
+    const addMessage = async (content, reply_to) => {
         try {
             // mmkv storage
             const storage = await createSecureStorage("user-storage");
 
             // send message socket
-            await sendMessage(content, chat_id, messages?.length, ws).catch(console.log);
+            await sendMessage(content, reply_to, chat_id, messages?.length, ws).catch(console.log);
 
             // payload
             const newMsg = {

@@ -26,12 +26,13 @@ export default function useAuth() {
         // set token and user_id variables in mmkv storage
         await storageRef.current?.set("token", res.data?.token);
         await storageRef.current?.set("user_id", JSON.stringify(res.data?.user?.id));
+        await storageRef.current?.set("user", JSON.stringify(res?.data));
 
         // set main screen (chats screen) if auth success
         navigation.replace(ROUTES.MAIN);
 
         // return response data
-        return res.data;
+        return res?.data;
       } catch (err) {
         setError(err.message || "Auth error");
         throw err;

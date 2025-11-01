@@ -23,6 +23,7 @@ export default function () {
                 });
 
                 setUser(response?.data);
+                Storage.set("user", JSON.stringify(response?.data));
             } catch (err) {
                 setError(err);
             } finally {

@@ -6,7 +6,7 @@ import encrypt from "../../lib/skid/encrypt";
 import { encrypt as sskEncrypt, decrypt as sskDecrypt } from "../../lib/skid/serversideKeyEncryption";
 import { createSecureStorage } from "../../lib/Storage";
 
-export default async function (content, chat_id, count, ws) {
+export default async function (content, reply_to, chat_id, count, ws) {
     // local storage
     const realm = await initRealm();
     // mmkv storage
@@ -29,6 +29,7 @@ export default async function (content, chat_id, count, ws) {
                 chat_id: chat_id,
                 ciphertext: encrypted.ciphertext,
                 nonce: encrypted.nonce,
+                reply_to,
                 encryption_type: "server"
             }));
 
@@ -48,6 +49,7 @@ export default async function (content, chat_id, count, ws) {
         type: "send",
         encryption_type: 'client',
         chat_id: chat_id,
+        reply_to,
         ...encrypted
     }));
 

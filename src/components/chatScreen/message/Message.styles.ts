@@ -10,13 +10,17 @@ export const styles = StyleSheet.create(theme => ({
     borderCurve: 'continuous',
     zIndex: 10,
     backgroundColor: isMe ? theme.colors.primary : theme.colors.foreground,
-    transformOrigin: isMe ? "bottom-right" : "bottom-left",
+    transformOrigin: isMe
+      ? { x: 'right', y: 'bottom' }
+      : { x: 'left', y: 'bottom' },
     alignItems: 'center',
   }),
   messageWrapper: (isMe: boolean) => ({
     gap: theme.spacing.md,
     position: "relative",
-    transformOrigin: isMe ? "bottom-right" : "bottom-left",
+    transformOrigin: isMe
+      ? { x: 'right', y: 'bottom' }
+      : { x: 'left', y: 'bottom' },
     paddingBottom: theme.spacing.lg,
     alignItems: isMe ? "flex-end" : "flex-start",
   }),
@@ -48,7 +52,7 @@ export const styles = StyleSheet.create(theme => ({
     position: "absolute",
     right: isMe ? 0 : undefined,
     left: isMe ? undefined : 0,
-    transform: isMe ? [{scale: 1}] : [{scaleX: -1}],
+    transform: isMe ? [{ scale: 1 }] : [{ scaleX: -1 }],
     bottom: 0,
   }),
 }));

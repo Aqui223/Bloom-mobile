@@ -11,9 +11,10 @@ import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller
 import { BlurView } from "expo-blur";
 import { GradientBlur } from "@components/ui";
 import MessageInput from "./MessageInput";
+import useChatScreenStore from "@stores/chatScreen";
 
 type FooterProps = {
-  onSend?: (value: string) => void;
+  onSend?: (content: string, reply_to: number) => void;
   onLayout?: (value: number) => void;
 };
 
@@ -24,13 +25,15 @@ export default function Footer({ onSend, onLayout }: FooterProps) {
   const { theme } = useUnistyles();
   const { progress } = useReanimatedKeyboardAnimation();
   const [value, setValue] = useState<string>("");
+  const { replyMessage, setReplyMessage } = useChatScreenStore();
 
   const hasValue: boolean = value.trim() !== "";
 
   const handleSend = () => {
     if (hasValue) {
-      onSend(value.trim());
+      onSend(value.trim(), replyMessage?.id);
       setValue("");
+      setReplyMessage(null);
     }
   };
 

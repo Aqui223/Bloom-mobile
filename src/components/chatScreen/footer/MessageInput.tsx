@@ -31,7 +31,7 @@ export default function MessageInput({ setValue, hasValue, value }: MessageInput
         intensity={40}
         tint='systemChromeMaterialDark'
       />
-      <ReplyBlock onCancel={() => setReplyMessage(null)} message={replyMessage.content} user={replyMessage.content}/>
+      <ReplyBlock onCancel={() => setReplyMessage(null)} message={replyMessage}/>
       <View style={styles.inputWrapperChild}>
         <TextInput
           style={styles.input}
