@@ -3,7 +3,7 @@ import { View, Text, Pressable } from "react-native";
 import Icon from "@components/ui/Icon";
 import { useNavigation } from "@react-navigation/native";
 import { useInsets } from "@hooks";
-import { Avatar, Button } from "@components/ui";
+import { Avatar, Button, GradientBlur } from "@components/ui";
 import { useUnistyles } from "react-native-unistyles";
 import { Menu } from "@components/ui";
 import Animated, { useAnimatedStyle, withSpring } from "react-native-reanimated";
@@ -14,6 +14,7 @@ import useContextMenu from "@hooks/useContextMenu";
 
 type HeaderProps = {
   chat?: Chat | null;
+  onLayout?: (value: number) => void;
 };
 
 const options: Option[] = [
@@ -25,7 +26,7 @@ const options: Option[] = [
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
-export default function Header({ chat }: HeaderProps): React.ReactNode {
+export default function Header({ chat, onLayout }: HeaderProps): React.ReactNode {
   const { theme } = useUnistyles();
   const {isOpen, triggerProps, closeMenu, menuPosition, triggerAnimatedStyle} = useContextMenu();
   const navigation = useNavigation();
@@ -36,7 +37,8 @@ export default function Header({ chat }: HeaderProps): React.ReactNode {
   });
 
   return (
-    <Animated.View style={[styles.header, { paddingTop: insets.top }, animatedViewStyles]}>
+    <Animated.View onLayout={(e) => onLayout(e.nativeEvent.layout.height)} style={[styles.header, { paddingTop: insets.top }, animatedViewStyles]}>
+      <GradientBlur direction="top-to-bottom"/>
       <Button variant="icon" onPress={() => navigation.goBack()}>
         <Icon icon="chevron.left" size={24} color={theme.colors.text} />
       </Button>

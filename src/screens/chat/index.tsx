@@ -26,6 +26,7 @@ export default function ChatScreen({ route }: ChatScreenProps) {
   const { messages, addMessage } = useMessages(chat?.id);
   const [seenId, setSeenId] = useState<number>(0);
   const [footerHeight, setFooterHeight] = useState<number>(0);
+  const [headerHeight, setHeaderHeight] = useState<number>(0);
   const [lastMessageId, setLastMessageId] = useState<number>(0);
   const { animatedScreenStyle } = useScreenScale();
 
@@ -43,13 +44,15 @@ export default function ChatScreen({ route }: ChatScreenProps) {
     setLastMessageId(messages[messages.length - 1]?.id);
   }, [messages]);
 
+  console.log(headerHeight)
+
   const animatedListStyles = useAnimatedStyle(() => ({
-    paddingTop: withSpring(footerHeight - 16, springy)
+    paddingTop: withSpring(footerHeight - 16, springy),
   }))
 
   return (
     <Animated.View style={[styles.container, animatedScreenStyle]}>
-      <Header chat={chat} />
+      <Header onLayout={setHeaderHeight} chat={chat} />
       <EmptyModal chat={chat} visible={messages.length === 0} />
       <KeyboardAvoidingView behavior='translate-with-padding' style={styles.list}>
         <TransitionList
@@ -58,7 +61,7 @@ export default function ChatScreen({ route }: ChatScreenProps) {
           keyExtractor={(item: MessageInterface) => String(item?.id)}
           inverted
           removeClippedSubviews
-          contentContainerStyle={styles.listContent}
+          contentContainerStyle={[styles.listContent, {paddingBottom: headerHeight}]}
           style={[styles.list, animatedListStyles]}
           showsVerticalScrollIndicator={false}
           itemLayoutAnimation={layoutAnimationSpringy}

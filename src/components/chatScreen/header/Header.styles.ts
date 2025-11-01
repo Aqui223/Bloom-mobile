@@ -4,10 +4,11 @@ export const styles = StyleSheet.create(theme => ({
     header: {
 		width: "100%",
 		paddingHorizontal: theme.spacing.lg,
-		backgroundColor: theme.colors.background,
 		paddingBottom: theme.spacing.lg,
         flexDirection: "row",
 		zIndex: 1,
+		top: 0,
+		position: 'absolute',
         alignItems: "center",
 		gap: theme.spacing.lg,
 	},
