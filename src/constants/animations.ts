@@ -1,4 +1,3 @@
-// animations.ts
 import {
   FadeIn,
   FadeOut,
@@ -22,8 +21,8 @@ export type LayoutAnimResult = {
 
 
 export const springy = physicsSpring({ mass: quickSpring.mass, duration: 0.25, dampingRatio: 0.65 }) as SpringTriple;
-const springyMessage = physicsSpring({ mass: quickSpring.mass, duration: 0.2, dampingRatio: 2.5 }) as SpringTriple;
-const springyMenu = physicsSpring({ mass: quickSpring.mass, duration: 0.15, dampingRatio: 2.5 }) as SpringTriple;
+export const springyMessage = physicsSpring({ mass: quickSpring.mass, duration: 0.2, dampingRatio: 2.5 }) as SpringTriple;
+export const springyMenu = physicsSpring({ mass: quickSpring.mass, duration: 0.15, dampingRatio: 2.5 }) as SpringTriple;
 
 export const layoutAnimationSpringy: ComplexAnimationBuilder = LinearTransition.springify()
   .mass(springy.mass)

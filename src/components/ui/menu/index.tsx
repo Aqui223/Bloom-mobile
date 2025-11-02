@@ -17,11 +17,12 @@ type MenuProps = {
   options: Option[];
   message?: MessageInterface;
   bluredBackdrop?: boolean;
+  right?: boolean
 };
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable)
 
-export default function Menu({ isOpen, position, closeMenu, options, message, bluredBackdrop }: MenuProps) {
+export default function Menu({ isOpen, position, closeMenu, options, message, bluredBackdrop, right = true }: MenuProps) {
   if (!isOpen) return null;
 
   return (
@@ -30,7 +31,7 @@ export default function Menu({ isOpen, position, closeMenu, options, message, bl
           {bluredBackdrop && <BlurView style={styles.backdrop} intensity={48} tint='dark' />}
         </AnimatedPressable>
 
-      <View style={styles.menuWrapper({ top: position.top })}>
+      <View style={styles.menuWrapper(position.top)}>
          {message && (
               <Animated.View
                 entering={messageFocusAnimationIn}
@@ -43,7 +44,7 @@ export default function Menu({ isOpen, position, closeMenu, options, message, bl
         <Animated.View
           entering={menuFocusAnimationIn}
           exiting={menuFocusAnimationOut}
-          style={styles.menu(bluredBackdrop)}
+          style={styles.menu(bluredBackdrop, right)}
         >
           {!bluredBackdrop && <BlurView tint='dark' style={styles.backdrop} intensity={128} />}
           {options.map((option, index) => !option.separator ? (

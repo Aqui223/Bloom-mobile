@@ -9,7 +9,7 @@ import Animated, {
   withSpring,
   withTiming,
 } from "react-native-reanimated";
-import { zoomAnimationIn } from "@constants/animations";
+import { springyMenu, zoomAnimationIn } from "@constants/animations";
 import type { MessageInterface, Option } from "@interfaces";
 import { quickSpring } from "@constants/easings";
 import { Menu } from "@components/ui";
@@ -49,7 +49,7 @@ export default function Message({ message, seen, isLast }: MessageProps): React.
   };
 
   const animatedBubbleStyles = useAnimatedStyle(() => {
-    return { transform: [{ scale: withSpring(isOpen ? 1.1 : scale.value, quickSpring) }], opacity: isOpen ? 0 : 1};
+    return { transform: [{ scale: withSpring(isOpen ? 1.1 : scale.value, springyMenu) }], opacity: withSpring(isOpen ? 0 : 1, springyMenu)};
   });
 
   return (
@@ -69,6 +69,7 @@ export default function Message({ message, seen, isLast }: MessageProps): React.
         message={message}
         bluredBackdrop
         options={options}
+        right={isMe}
         isOpen={isOpen}
         closeMenu={closeMenu}
       />

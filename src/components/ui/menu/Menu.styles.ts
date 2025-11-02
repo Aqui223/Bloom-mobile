@@ -1,9 +1,5 @@
 import { StyleSheet } from "react-native-unistyles";
 
-type MenuWrapperStyleProps = {
-  top?: number;
-};
-
 export const styles = StyleSheet.create(theme => ({
   backdrop: {
     position: "absolute",
@@ -12,7 +8,7 @@ export const styles = StyleSheet.create(theme => ({
     left: 0,
     bottom: 0,
   },
-  menuWrapper: ({ top }: MenuWrapperStyleProps) => ({
+  menuWrapper: (top: number) => ({
     position: "absolute",
     right: 0,
     left: 0,
@@ -20,10 +16,10 @@ export const styles = StyleSheet.create(theme => ({
     top,
     zIndex: 10,
   }),
-  menu: (bluredBackdrop: boolean) => ({
+  menu: (bluredBackdrop: boolean, right: boolean) => ({
     paddingVertical: theme.spacing.sm,
-    transformOrigin: 'top right',
-    alignSelf: 'flex-end',
+    transformOrigin: right ? 'top right' : 'top left',
+    alignSelf: right ? 'flex-end' : 'flex-start',
     backgroundColor: bluredBackdrop ? theme.colors.foreground : 'transparent',
     borderCurve: 'continuous',
     overflow: 'hidden',
