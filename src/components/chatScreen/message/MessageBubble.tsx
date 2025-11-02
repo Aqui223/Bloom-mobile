@@ -18,7 +18,7 @@ export default function MessageBubble({ message, style }: MessageBubbleProps): R
   const isMe: boolean = message?.isMe;
   return (
     <Animated.View style={[styles.message(isMe), style]}>
-      <ReplyBlock isMe={isMe} message={message.reply_to} />
+      <ReplyBlock message={message.reply_to} />
       
       <View style={styles.messsageContent(message?.content?.length <= 2)}>
         <Text style={styles.text(isMe)}>{message?.content}</Text>
