@@ -24,9 +24,9 @@ export default function ReplyBlock({ message, onCancel }: ReplyBlockProps): Reac
     (async () => {
       const storage = await createSecureStorage("user-storage");
       const chat = await getChatFromStorage(message?.chat_id);
-      const user_id = JSON.parse(storage.getString("user"))?.id;
-      const username = user_id === message?.author_id
-        ? JSON.parse(storage.getString("user"))?.username
+      const user = JSON.parse(storage.getString("user"))?.user;
+      const username = user?.id === message?.author_id
+        ? user?.username
         : chat?.keys?.recipient?.username;
       setUsername(username || "anon");
     })();
