@@ -5,20 +5,23 @@ export const styles = StyleSheet.create(theme => ({
         padding: theme.spacing.xs,
         paddingBottom: 0,
     },
-    replyChild: {
-        borderTopLeftRadius: theme.radius.sm,
-        borderTopRightRadius: theme.radius.sm,
+    replyChild: (isSend: boolean, isMe: boolean) => ({
+        borderTopLeftRadius: isSend ? theme.radius.md : theme.radius.sm,
+        borderTopRightRadius: isSend ? theme.radius.md : theme.radius.sm,
         borderBottomLeftRadius: theme.radius.xs,
         borderBottomRightRadius: theme.radius.xs,
-        backgroundColor: theme.colors.foregroundTransparent,
+        backgroundColor: isMe ? theme.colors.whiteBackdrop : theme.colors.foregroundTransparent,
         borderCurve: 'continuous',
-        flex: 1,
+        width: 'auto',
+        maxWidth: '100%',
         flexDirection: 'row'
-    },
+    }),
     replyTo: {
         gap: theme.spacing.xs,
         padding: theme.spacing.md,
-        flex: 1,
+        flexShrink: 1,
+        flexGrow: 1,
+        minWidth: 0
     },
     replyToName: {
         color: theme.colors.text,
@@ -28,7 +31,7 @@ export const styles = StyleSheet.create(theme => ({
     replyToMessage: {
         color: theme.colors.secondaryText,
         fontFamily: theme.fontFamily.medium,
-        fontSize: theme.fontSize.sm
+        fontSize: theme.fontSize.sm,
     },
     button: {
         backgroundColor: 'transparent'

@@ -1,34 +1,31 @@
 import { StyleSheet } from "react-native-unistyles";
 
-export const styles = StyleSheet.create(theme => ({
+export const styles = StyleSheet.create((theme) => ({
   message: (isMe: boolean) => ({
-    padding: theme.spacing.md,
     maxWidth: "82%",
-    minWidth: 56,
-    paddingHorizontal: theme.spacing.lg,
     borderRadius: theme.radius.lg,
-    borderCurve: 'continuous',
+    borderCurve: "continuous",
     zIndex: 10,
     backgroundColor: isMe ? theme.colors.primary : theme.colors.foreground,
-    transformOrigin: isMe
-      ? { x: 'right', y: 'bottom' }
-      : { x: 'left', y: 'bottom' },
-    alignItems: 'center',
+    transformOrigin: isMe ? "bottom-right" : "botom-left",
   }),
   messageWrapper: (isMe: boolean) => ({
     gap: theme.spacing.md,
     position: "relative",
-    transformOrigin: isMe
-      ? { x: 'right', y: 'bottom' }
-      : { x: 'left', y: 'bottom' },
+    transformOrigin: isMe ? "bottom-right" : "bottom-left",
     paddingBottom: theme.spacing.lg,
     alignItems: isMe ? "flex-end" : "flex-start",
+  }),
+  messsageContent: (isSmall: boolean) => ({
+    paddingHorizontal: isSmall ? theme.spacing.xl : theme.spacing.lg,
+    padding: theme.spacing.md,
+    width: "100%",
   }),
   text: (isMe: boolean) => ({
     fontSize: theme.fontSize.md,
     fontFamily: theme.fontFamily.medium,
     color: isMe ? theme.colors.white : theme.colors.text,
-    textAlign: "left"
+    textAlign: "left",
   }),
   metaRow: {
     flexDirection: "row",

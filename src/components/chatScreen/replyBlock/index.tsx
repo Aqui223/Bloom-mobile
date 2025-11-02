@@ -7,38 +7,30 @@ import { getFadeIn, getFadeOut, layoutAnimationSpringy } from "@constants/animat
 import { useUnistyles } from "react-native-unistyles";
 import getChatFromStorage from "@lib/getChatFromStorage";
 import { createSecureStorage } from "@lib/Storage";
-
-type Message = {
-  author_id: number;
-  chat_id: number;
-  content: string,
-  date: Date,
-  id: number,
-  isMe: boolean,
-  seen?: Date
-};
+import { MessageInterface } from "@interfaces";
 
 type ReplyBlockProps = {
-  message: Message;
+  message: MessageInterface;
   onCancel?: () => void;
+  isMe?: boolean;
 };
 
 const AnimatedButton = Animated.createAnimatedComponent(Button);
 
-export default function ReplyBlock({ message, onCancel }: ReplyBlockProps): React.JSX.Element {
+export default function ReplyBlock({ message, onCancel, isMe }: ReplyBlockProps): React.JSX.Element {
   const { theme } = useUnistyles();
   const [username, setUsername] = useState("");
 
   useEffect(() => {
     (async () => {
-      const storage = await createSecureStorage("user-storage")
+      const storage = await createSecureStorage("user-storage");
       const chat = await getChatFromStorage(message?.chat_id);
-      const username = message?.isMe ?
-        JSON.parse(storage.getString("user"))?.username :
-        chat?.keys?.recipient?.username;
-      setUsername(username || "anon")
-    })()
-  }, [message])
+      const username = message?.isMe
+        ? JSON.parse(storage.getString("user"))?.username
+        : chat?.keys?.recipient?.username;
+      setUsername(username || "anon");
+    })();
+  }, [message]);
 
   return (
     message && (
@@ -47,11 +39,15 @@ export default function ReplyBlock({ message, onCancel }: ReplyBlockProps): Reac
           exiting={getFadeOut()}
           entering={getFadeIn()}
           layout={layoutAnimationSpringy}
-          style={styles.replyChild}
+          style={styles.replyChild(!onCancel, isMe)}
         >
           <View style={styles.replyTo}>
-            <Text style={styles.replyToName} numberOfLines={1}>В ответ {username}</Text>
-            <Text style={styles.replyToMessage} numberOfLines={1}>{message?.content}</Text>
+            <Text style={styles.replyToName} numberOfLines={1}>
+              В ответ {username}
+            </Text>
+            <Text style={styles.replyToMessage} numberOfLines={1}>
+              {message?.content}
+            </Text>
           </View>
           {onCancel && (
             <AnimatedButton

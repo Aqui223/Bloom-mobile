@@ -16,6 +16,7 @@ export const staticColor = {
 	orangePlaceholder: "#FF531B80",
 	primaryBackdrop: "#0A84FF33",
 	primaryPlaceholder: "#0A84FF80",
+	whiteBackdrop: '#ffffff33',
 };
 
 const base = {
