@@ -12,12 +12,11 @@ import { MessageInterface } from "@interfaces";
 type ReplyBlockProps = {
   message: MessageInterface;
   onCancel?: () => void;
-  isMe?: boolean;
 };
 
 const AnimatedButton = Animated.createAnimatedComponent(Button);
 
-export default function ReplyBlock({ message, onCancel, isMe }: ReplyBlockProps): React.JSX.Element {
+export default function ReplyBlock({ message, onCancel }: ReplyBlockProps): React.JSX.Element {
   const { theme } = useUnistyles();
   const [username, setUsername] = useState("");
 
@@ -25,8 +24,9 @@ export default function ReplyBlock({ message, onCancel, isMe }: ReplyBlockProps)
     (async () => {
       const storage = await createSecureStorage("user-storage");
       const chat = await getChatFromStorage(message?.chat_id);
-      const username = message?.isMe
-        ? JSON.parse(storage.getString("user"))?.username
+      const user = JSON.parse(storage.getString("user"))?.user;
+      const username = user?.id === message?.author_id
+        ? user?.username
         : chat?.keys?.recipient?.username;
       setUsername(username || "anon");
     })();
@@ -39,7 +39,7 @@ export default function ReplyBlock({ message, onCancel, isMe }: ReplyBlockProps)
           exiting={getFadeOut()}
           entering={getFadeIn()}
           layout={layoutAnimationSpringy}
-          style={styles.replyChild(!onCancel, isMe)}
+          style={styles.replyChild(!onCancel, message?.isMe)}
         >
           <View style={styles.replyTo}>
             <Text style={styles.replyToName} numberOfLines={1}>

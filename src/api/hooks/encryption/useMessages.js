@@ -46,7 +46,7 @@ export default function (chat_id) {
             const storage = await createSecureStorage("user-storage");
 
             // send message socket
-            await sendMessage(content, reply_to, chat_id, messages?.length, ws).catch(console.log);
+            sendMessage(content, reply_to, chat_id, messages?.length, ws).catch(console.log);
 
             let _reply_to;
             if (reply_to) {
