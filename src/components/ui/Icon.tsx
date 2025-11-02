@@ -11,7 +11,7 @@ type IconProps = {
 	color?: string;
 	icon: keyof typeof ICONS;
 	style?: StyleProp<ViewStyle>;
-	animatedProps?: AnimatedProps<typeof Path>;
+	animatedProps?: AnimatedProps<typeof AnimatedPath>;
 };
 
 export default function Icon({ size = 24, color = "white", icon, style, animatedProps }: IconProps): React.ReactNode {

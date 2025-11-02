@@ -10,11 +10,13 @@ import { useChatList } from "@api/providers/ChatsContext";
 import useChatsScreenStore from "@stores/ChatsScreen";
 import ChatItem from "@components/chatsScreen/chat/ChatItem";
 import { createSecureStorage } from "@lib/Storage";
+import useTabBarStore from "@stores/tabBar";
 
 const AnimatedFlashList = Animated.createAnimatedComponent(FlashList);
 
 export default function ChatsScreen() {
   const { headerHeight } = useChatsScreenStore();
+  const { tabBarHeight } = useTabBarStore();
   const [userId, setUserId] = useState();
   const chats = useChatList();
   const { scrollY, listRef, scrollHandler } = useSnapScroll(56, 100);
@@ -35,11 +37,8 @@ export default function ChatsScreen() {
         data={chats}
         renderItem={({ item, index }) => <ChatItem item={item} index={index} userId={parseInt(userId)} />}
         keyExtractor={(item) => item?.id.toString()}
-        // Props for testing scrollY
-        // data={[1,2,3,4,5,6,7,8,9,10,11,12,13,14]}
-        // renderItem={() => <View style={{ height: 100, backgroundColor: "red", marginBottom: 10, width: '100%' }} />}
         estimatedItemSize={100}
-        contentContainerStyle={{ paddingTop: headerHeight }}
+        contentContainerStyle={{ paddingTop: headerHeight, paddingBottom: tabBarHeight }}
         onScroll={scrollHandler}
         scrollEventThrottle={16}
         removeClippedSubviews

@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from "react-native-screen-transitions";
-import MainTabNavigator from "./tabBar/TabBar.navigator";
+import MainTabNavigator from "./tabBar";
 import { ChatScreen } from "@screens";
 import { ROUTES } from "@constants/Routes";
 import { useInsets } from "@hooks";
