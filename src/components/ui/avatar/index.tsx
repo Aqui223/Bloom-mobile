@@ -22,8 +22,8 @@ export default function Avatar({ size = "md", square = false, style, image, imag
 	const { theme } = useUnistyles();
 
 	const SIZE_MAP: Record<Size, number> = {
-		sm: 36,
-		md: 40,
+		sm: 40,
+		md: 44,
 		lg: 56,
 		xl: 68,
 		"2xl": 120,

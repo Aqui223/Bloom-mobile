@@ -44,12 +44,12 @@ export default function Loader({ interval = 125, size = 26, segments = 8, color 
 
 function Bar({index, progress, radius, segments, color}: BarProps): React.JSX.Element {
   const animatedViewStyles = useAnimatedStyle((): ViewStyle => {
-    const scale = withSpring(index === progress ? 1.4 : 1, quickSpring)
+    const scaleY = withSpring(index === progress ? 1.25 : 1, quickSpring)
     const opacity = withSpring(index === progress ? 1 : 0.35, quickSpring);
     const translateY = withSpring(index === progress ? -radius - 1 : -radius)
 
     return {
-      transform: [{ rotate: `${(index * 360) / segments}deg` }, { translateY }, { scale }],
+      transform: [{ rotate: `${(index * 360) / segments}deg` }, { translateY }, { scaleY }],
       opacity,
     };
   }, [progress]);
