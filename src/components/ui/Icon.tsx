@@ -14,7 +14,7 @@ type IconProps = {
 	animatedProps?: AnimatedProps<typeof AnimatedPath>;
 };
 
-export default function Icon({ size = 24, color = "white", icon, style, animatedProps }: IconProps): React.ReactNode {
+export default function Icon({ size = 26, color = "white", icon, style, animatedProps }: IconProps): React.ReactNode {
 	const pathData = ICONS[icon];
     
 	return (

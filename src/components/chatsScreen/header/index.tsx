@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { Icon, Button } from "@components/ui";
 import Animated from "react-native-reanimated";
 import useChatsScreenStore from "@stores/ChatsScreen";
-import Title from "./title";
+import Title from "./Title";
 import { useWebSocket } from "@api/providers/WebSocketContext";
 import { GradientBlur } from "@components/ui";
 import { useUnistyles, StyleSheet } from "react-native-unistyles";

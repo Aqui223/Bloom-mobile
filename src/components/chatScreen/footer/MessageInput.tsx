@@ -52,22 +52,24 @@ export default function MessageInput({ setValue, hasValue, value }: MessageInput
             layout={layoutAnimationSpringy}
             style={styles.button(true)}
             key='smile'
+            size="sm"
             exiting={zoomAnimationOut}
             entering={zoomAnimationIn}
             variant='icon'
           >
-            <Icon icon='face.smile' color={theme.colors.text} />
+            <Icon icon='face.smile' size={24} color={theme.colors.text} />
           </AnimatedButton>
         ) : (
           <AnimatedButton
             layout={layoutAnimationSpringy}
             style={styles.button(true)}
             key='waveform'
+            size="sm"
             exiting={zoomAnimationOut}
             entering={zoomAnimationIn}
             variant='icon'
           >
-            <Icon icon='waveform' color={theme.colors.text} />
+            <Icon icon='waveform' size={24} color={theme.colors.text} />
           </AnimatedButton>
         )}
       </View>

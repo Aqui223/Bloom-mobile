@@ -18,9 +18,9 @@ type ButtonProps = {
 } & React.ComponentProps<typeof Pressable>;
 
 const SIZE_MAP: Record<Size, number> = {
-	sm: 36,
-	md: 40,
-	lg: 44,
+	sm: 40,
+	md: 44,
+	lg: 48,
 };
 
 export default function Button({ ref, variant = "text", size = "md", children, icon, disabled = false, style, blur = false, ...props }: ButtonProps): React.ReactNode {
