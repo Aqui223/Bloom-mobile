@@ -1,4 +1,4 @@
-import { createSecureStorage } from "@lib/Storage";
+import { createSecureStorage } from "@lib/storage";
 
 export default async function (chat_id) {
     const Storage = await createSecureStorage("user-storage");

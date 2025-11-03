@@ -11,7 +11,7 @@ import { useChatList } from "@api/providers/ChatsContext";
 import { useWebSocket } from "@api/providers/WebSocketContext";
 import { Avatar } from "@components/ui";
 import { useEffect, useState } from "react";
-import { createSecureStorage } from "@lib/Storage";
+import { createSecureStorage } from "@lib/storage";
 
 export default function Chat({ chat, index }) {
 	const { theme } = useUnistyles();

@@ -4,7 +4,7 @@ import Realm from "realm";
 import decrypt from "../../lib/skid/decrypt";
 import encrypt from "../../lib/skid/encrypt";
 import { encrypt as sskEncrypt, decrypt as sskDecrypt } from "../../lib/skid/serversideKeyEncryption";
-import { createSecureStorage } from "../../lib/Storage";
+import { createSecureStorage } from "../../lib/storage";
 
 export default async function (content, reply_to, chat_id, count, ws) {
     // local storage

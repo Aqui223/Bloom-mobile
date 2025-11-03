@@ -6,7 +6,7 @@ import { styles } from "./replyBlock.styles";
 import { getFadeIn, getFadeOut, layoutAnimationSpringy } from "@constants/animations";
 import { useUnistyles } from "react-native-unistyles";
 import getChatFromStorage from "@lib/getChatFromStorage";
-import { createSecureStorage } from "@lib/Storage";
+import { createSecureStorage } from "@lib/storage";
 import { MessageInterface } from "@interfaces";
 
 type ReplyBlockProps = {

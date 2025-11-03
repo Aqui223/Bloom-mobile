@@ -9,7 +9,7 @@ import { useSnapScroll } from "@hooks";
 import { useChatList } from "@api/providers/ChatsContext";
 import useChatsScreenStore from "@stores/ChatsScreen";
 import ChatItem from "@components/chatsScreen/chat/ChatItem";
-import { createSecureStorage } from "@lib/Storage";
+import { createSecureStorage } from "@lib/storage";
 import useTabBarStore from "@stores/tabBar";
 
 const AnimatedFlashList = Animated.createAnimatedComponent(FlashList);

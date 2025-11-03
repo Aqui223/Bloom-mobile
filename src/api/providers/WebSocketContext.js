@@ -1,4 +1,4 @@
-import { createSecureStorage } from "@lib/Storage";
+import { createSecureStorage } from "@lib/storage";
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { AppState } from "react-native";
 import { WEBSOCKET_URL } from "@constants/Api";

@@ -3,7 +3,7 @@ import { useWebSocket } from "./WebSocketContext";
 import getChats from "../lib/chats/getChats";
 import setChatKeysToStorage from "@lib/setChatKeysToStorage";
 import generateKeys from "@lib/skid/generateKeys";
-import { createSecureStorage } from "@lib/Storage";
+import { createSecureStorage } from "@lib/storage";
 import initRealm from "@lib/initRealm";
 
 const ChatsContext = createContext(null);

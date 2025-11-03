@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createSecureStorage } from "@lib/Storage";
+import { createSecureStorage } from "@lib/storage";
 import { API_URL } from "@constants/Api";
 import generateKeys from "@lib/skid/generateKeys";
 import getChatFromStorage from "@lib/getChatFromStorage";

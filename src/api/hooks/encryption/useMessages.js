@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useWebSocket } from "@api/providers/WebSocketContext";
 import { useMessagesList } from "@api/providers/MessagesContext";
 import sendMessage from "@api/lib/sendMessage";
-import { createSecureStorage } from "@lib/Storage";
+import { createSecureStorage } from "@lib/storage";
 import initRealm from "@lib/initRealm";
 import Realm from "realm";
 import getChatMessages from "src/api/lib/messages/getChatMessages";

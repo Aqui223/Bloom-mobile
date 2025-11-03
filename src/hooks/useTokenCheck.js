@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { createSecureStorage } from "@lib/Storage";
+import { createSecureStorage } from "@lib/storage";
 
 export default function useTokenCheck() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
