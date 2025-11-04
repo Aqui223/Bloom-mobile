@@ -4,13 +4,14 @@ import Message from "@components/chatScreen/message";
 import React, { useCallback, useEffect, useState } from "react";
 import { styles } from "./Chat.styles";
 import Animated, { useAnimatedStyle, withSpring } from "react-native-reanimated";
-import Transition from "react-native-screen-transitions";
+
 import EmptyModal from "@components/chatScreen/emptyModal";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import useMessages from "@api/hooks/encryption/useMessages";
 import { Chat, MessageInterface } from "@interfaces";
 import { layoutAnimationSpringy, springy } from "@constants/animations";
 import { useScreenScale } from "@hooks";
+import { FlashList } from "@shopify/flash-list";
 
 interface ChatScreenProps {
   route: {
@@ -18,7 +19,7 @@ interface ChatScreenProps {
   };
 }
 
-const TransitionList = Transition.createTransitionAwareComponent(Animated.FlatList);
+const AnimatedFlashList = Animated.createAnimatedComponent(FlashList)
 
 export default function ChatScreen({ route }: ChatScreenProps) {
   const { chat } = route.params as { chat: Chat };
@@ -44,8 +45,8 @@ export default function ChatScreen({ route }: ChatScreenProps) {
     setLastMessageId(messages[messages.length - 1]?.id);
   }, [messages]);
 
-  const animatedListStyles = useAnimatedStyle(() => ({
-    paddingTop: withSpring(footerHeight - 16, springy),
+  const animatedSpacerStyles = useAnimatedStyle(() => ({
+    height: withSpring(footerHeight - 16, springy),
   }))
 
   return (
@@ -53,15 +54,19 @@ export default function ChatScreen({ route }: ChatScreenProps) {
       <Header onLayout={setHeaderHeight} chat={chat} />
       <EmptyModal chat={chat} visible={messages.length === 0} />
       <KeyboardAvoidingView behavior='translate-with-padding' style={styles.list}>
-        <TransitionList
-          data={[...messages]?.reverse()}
+        <AnimatedFlashList
+          data={messages}
           renderItem={renderItem}
           keyExtractor={(item: MessageInterface) => String(item?.id)}
-          inverted
-          removeClippedSubviews
-          contentContainerStyle={[styles.listContent, {paddingBottom: headerHeight}]}
-          style={[styles.list, animatedListStyles]}
-          showsVerticalScrollIndicator={false}
+           maintainVisibleContentPosition={{
+   autoscrollToBottomThreshold: 0.2,
+   startRenderingFromBottom: true,
+ }}
+          windowSize={150}
+          contentContainerStyle={[styles.listContent, {paddingTop: headerHeight}]}
+          ListFooterComponent={<Animated.View pointerEvents="none" style={animatedSpacerStyles}/>}
+          style={styles.list}
+          showsVerticalScrollIndicator={false} 
           itemLayoutAnimation={layoutAnimationSpringy}
         />
         <Footer onLayout={setFooterHeight} onSend={addMessage} />

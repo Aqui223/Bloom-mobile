@@ -25,7 +25,6 @@ export const styles = StyleSheet.create((theme) => ({
     width: 44,
   },
   buttonsWrapper: {
-    backgroundColor: theme.colors.foregroundBlur,
     borderRadius: theme.radius.full,
     borderCurve: "continuous",
     position: "absolute",
