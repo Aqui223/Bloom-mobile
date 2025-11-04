@@ -16,8 +16,8 @@ export function generateMnemonic(wordsCount) {
 
 export function deriveKeyFromMnemonic (mnemonic) {
   const seed = bip39.mnemonicToSeedSync(mnemonic);
-  if (!bitsMap[mnemonic?.trim()?.split(" ")?.length]) throw new Error('Invalid word count. Use 12, 15, 18, 21, or 24.');
-  return hkdf(sha256, seed, new TextEncoder().encode("mnemonic-key"), new Uint8Array([]), bitsMap[mnemonic?.trim()?.split(" ")?.length] / 8);
+  if (!bitsMap[mnemonic.trim().split(/\s+/)?.length]) throw new Error('Invalid word count. Use 12, 15, 18, 21, or 24.');
+  return hkdf(sha256, seed, new TextEncoder().encode("mnemonic-key"), new Uint8Array([]), bitsMap[mnemonic.trim().split(/\s+/)?.length] / 8);
 }
 
 async function encrypt(content, mnemonic) {
