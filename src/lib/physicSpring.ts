@@ -16,4 +16,4 @@ export default function physicsSpring({ mass, duration, dampingRatio = 0.6 }: Sp
   };
 }
 
-// I am really like this spring function i hope y'all like it as much as i am 😜
+// I am really like this spring function i hope y'all like it as much as i am 😜   chlen
