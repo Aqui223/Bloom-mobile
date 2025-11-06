@@ -1,78 +1,61 @@
-import React from "react";
-import { Pressable, StyleProp, ViewStyle } from "react-native";
+import React, { useEffect } from "react";
+import { Pressable } from "react-native";
 import { styles } from "./Message.styles";
-import Animated, {
-  Easing,
-  LayoutAnimationConfig,
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring,
-  withTiming,
-} from "react-native-reanimated";
-import { springyMenu, zoomAnimationIn } from "@constants/animations";
-import type { MessageInterface, Option } from "@interfaces";
-import { quickSpring } from "@constants/easings";
-import { Menu } from "@components/ui";
-import { staticColor } from "unistyles";
-import { useContextMenu } from "@hooks";
-import useChatScreenStore from "@stores/chatScreen";
+import Animated, { Easing, FadeIn, LayoutAnimationConfig, useAnimatedStyle, useSharedValue, withSpring, withTiming } from "react-native-reanimated";
+import type { MessageInterface } from "@interfaces";
 import MessageBubble from "./MessageBubble";
 import MessageStatus from "./MessageStatus";
+import { springy } from "@constants/animations";
 
 type MessageProps = {
-  message: MessageInterface | null;
-  seen?: boolean;
-  isLast?: boolean;
-  style?: StyleProp<ViewStyle>;
+	message: MessageInterface | null;
+	seen?: boolean;
+	isLast?: boolean;
+	shift?: number;
+	messagesLenght?: number;
 };
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
-export default function Message({ message, seen, isLast }: MessageProps): React.JSX.Element {
-  const scale = useSharedValue(1);
-  const { setReplyMessage } = useChatScreenStore();
-  const { isOpen, closeMenu, menuPosition, triggerProps } = useContextMenu({ scaleBackground: true });
+export default function Message({ message, seen, isLast, shift, messagesLenght }: MessageProps): React.JSX.Element {
+	const scale = useSharedValue(1);
 
-  const isMe: boolean = message?.isMe;
+	const translate = useSharedValue(shift - 16);
 
-  const options: Option[] = [
-  { label: "Скопировать", icon: "file", color: staticColor.white, action: "swag" },
-  { label: "Ответить", icon: "arrow.left", color: staticColor.primary, action: () => setReplyMessage(message) },
-  { label: "Закрепить", icon: "pin", color: staticColor.pink, action: "swag" },
-  { separator: true },
-  { label: "Изменить", icon: "pencil", color: staticColor.yellow, action: "swag" },
-  { label: "Удалить сообщение", icon: "trash", color: staticColor.orange, action: "swag" },
-];
+	const isMe: boolean = message?.isMe;
 
-  const onPress = (out: boolean = false) => {
-    scale.value = withTiming(out ? 1 : 0.95, {easing: Easing.inOut(Easing.ease), duration: 300});
-  };
+	const onPress = (out: boolean = false) => {
+		scale.value = withTiming(out ? 1 : 0.95, { easing: Easing.inOut(Easing.ease), duration: 300 });
+	};
 
-  const animatedBubbleStyles = useAnimatedStyle(() => {
-    return { transform: [{ scale: withSpring(isOpen ? 1.1 : scale.value, springyMenu) }], opacity: withSpring(isOpen ? 0 : 1, springyMenu)};
-  });
+	const animatedPressabelStyles = useAnimatedStyle(() => ({
+		transform: [
+			{
+				translateY: -translate.value,
+			},
+		],
+	}));
 
-  return (
-    <AnimatedPressable
-      onPressIn={() => onPress()}
-      onPressOut={() => onPress(true)}
-      entering={zoomAnimationIn}
-      {...triggerProps}
-      style={styles.messageWrapper(isMe)}
-    >
-      <MessageBubble style={animatedBubbleStyles} message={message}/>
-      <LayoutAnimationConfig skipEntering skipExiting>
-        <MessageStatus message={message} isLast={isLast} isMe={isMe} seen={seen}/>
-      </LayoutAnimationConfig>
-      <Menu
-        position={menuPosition}
-        message={message}
-        bluredBackdrop
-        options={options}
-        right={isMe}
-        isOpen={isOpen}
-        closeMenu={closeMenu}
-      />
-    </AnimatedPressable>
-  );
+	useEffect(() => {
+		translate.value = 0;
+		translate.value = withSpring(shift - 16, springy);
+	}, [messagesLenght]);
+
+	useEffect(() => {
+		translate.value = withSpring(shift - 16, springy);
+	}, [shift]);
+
+	return (
+		<AnimatedPressable
+			entering={FadeIn}
+			onPressIn={() => onPress()}
+			onPressOut={() => onPress(true)}
+			style={[styles.messageWrapper(isMe), animatedPressabelStyles]}
+		>
+			<MessageBubble message={message} />
+			<LayoutAnimationConfig skipEntering skipExiting>
+				<MessageStatus message={message} isLast={isLast} isMe={isMe} seen={seen} />
+			</LayoutAnimationConfig>
+		</AnimatedPressable>
+	);
 }
