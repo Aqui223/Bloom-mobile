@@ -6,6 +6,7 @@ import getChatFromStorage from "@lib/getChatFromStorage";
 import decrypt from "@lib/skid/decrypt";
 import { decrypt as sskDecrypt } from "@lib/skid/serversideKeyEncryption";
 import useStorageStore from "@stores/storage";
+import getReplyToMessageFromStorage from "@api/lib/messages/getReplyToMessageFromStorage";
 
 const MessagesContext = createContext(null);
 
@@ -45,9 +46,7 @@ export default function MessagesProvider({ children }) {
                 let reply_to;
                 if (message?.reply_to) {
                     try {
-                        const reply_to_message = realm
-                            .objects("Message")
-                            .filtered("id == $0", message?.reply_to?.id)[0]
+                        const reply_to_message = getReplyToMessageFromStorage(realm, message?.reply_to?.id);
 
                         if (reply_to_message) {
                             reply_to = reply_to_message
