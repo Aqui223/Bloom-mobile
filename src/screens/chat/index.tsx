@@ -64,7 +64,7 @@ export default function ChatScreen({ route }: ChatScreenProps) {
 		<View style={[styles.container, animatedScreenStyle]}>
 			<Header onLayout={setHeaderHeight} chat={chat} />
 			<EmptyModal chat={chat} visible={messages.length === 0} />
-			<KeyboardAvoidingView behavior='translate-with-padding' style={styles.list}>
+			<KeyboardAvoidingView behavior='position' style={styles.list}>
 				<FlashList
 					data={messages}
 					renderItem={renderItem}

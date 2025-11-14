@@ -3,3 +3,6 @@ export { default as Button } from "./button/index";
 export { default as Avatar } from "./avatar/index";
 export { default as Menu } from "./menu/index";
 export { default as GradientBlur } from "./GradientBlur";
+export { default as Input } from "./input/index";
+export { default as Loader } from "./loader/index";
+export { default as Separator} from "./separator/index";

@@ -63,7 +63,7 @@ const base = {
 	},
 	opacity: {
 		/** 35% */ secondaryText: 0.35,
-		/** 70% */ contentText: 0.7,
+		/** 50% */ contentText: 0.5,
 	},
 };
 

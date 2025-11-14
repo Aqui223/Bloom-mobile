@@ -1,25 +1,34 @@
 import { StyleSheet } from "react-native-unistyles";
+import { SIZE_MAP } from ".";
 
 type ButtonStyleProps = {
-	height: number;
+	size: number;
 	isIcon: boolean;
 	paddingHorizontal: number;
 	disabled: boolean;
-	blur: boolean
-};	
+	blur: boolean;
+	isTextIcon: boolean;
+};
 
 export const styles = StyleSheet.create(theme => ({
-	button: ({height, isIcon, paddingHorizontal, disabled, blur}:ButtonStyleProps) => ({
+	button: ({ size, isIcon, paddingHorizontal, disabled, blur, isTextIcon }: ButtonStyleProps) => ({
 		alignItems: "center",
 		justifyContent: "center",
 		flexDirection: "row",
-		height,
-		overflow: 'hidden',
+		height: size,
+		width: size >= SIZE_MAP['lg'] ? "100%" : "auto",
+		overflow: "hidden",
 		aspectRatio: isIcon ? 1 : undefined,
-		paddingHorizontal,	
+		paddingHorizontal,
+		borderCurve: 'continuous',
 		opacity: disabled ? theme.opacity.secondaryText : 1,
-		borderRadius: theme.radius.lg,
-        backgroundColor: blur ? theme.colors.foregroundBlur : theme.colors.foreground,
-		minWidth: 36,
+		borderRadius: size >= SIZE_MAP['lg'] ? theme.radius.sm : theme.radius.full,
+		backgroundColor: blur ? theme.colors.foregroundBlur : theme.colors.foreground,
+		gap: isTextIcon ? theme.spacing.md : 0,
+	}),
+	label: (size: number) => ({
+		color: theme.colors.text,
+		fontSize: size >= SIZE_MAP['lg'] ? theme.fontSize.lg : theme.fontSize.md,
+		fontFamily: theme.fontFamily.medium,
 	}),
 }));
