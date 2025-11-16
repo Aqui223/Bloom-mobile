@@ -3,7 +3,7 @@ import { ROUTES } from "@constants/routes";
 import { SignUpEmailScreen, WelcomeScreen } from "../screens";
 import { screenTransition } from "./transition";
 import { View } from "react-native";
-import AuthActions from "@components/auth/welcome/actions";
+import AuthHeader from "@components/auth/header";
 
 const Stack = createNativeStackNavigator();
 
@@ -15,8 +15,8 @@ const AuthNavigator = () => {
        {...({ id: "authNavigator"} as any)}
        layout={({ children, state, navigation }) => (
         <View style={{flex: 1, justifyContent: 'flex-end'}}>
+          <AuthHeader navigation={navigation}/>
           {children}
-          <AuthActions navigation={navigation}/>
         </View>
       )}
         screenOptions={{

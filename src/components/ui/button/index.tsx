@@ -2,8 +2,8 @@ import React, { useMemo } from "react";
 import { Pressable, StyleProp, Text, TextStyle, ViewStyle } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { styles } from "./Button.styles";
-import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
-import { layoutAnimation } from "@constants/animations";
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from "react-native-reanimated";
+import { quickSpring } from "@constants/easings";
 
 export type Size = "sm" | "md" | "lg" | "xl";
 type Variant = "icon" | "text" | "textIcon";
@@ -63,7 +63,7 @@ export default function Button({
 	}
 
 	const handlePress = (inn: boolean = true) => {
-		opacity.value = withTiming(inn ? 0.85 : 1, { duration: 0.25, easing: Easing.inOut(Easing.ease) });
+		opacity.value = withSpring(inn ? 0.8 : 1, quickSpring);
 	};
 
 	const animatedPressabelStyle = useAnimatedStyle(() => ({
@@ -84,7 +84,7 @@ export default function Button({
 			{...props}
 		>
 			{icon}
-			{label && <Animated.Text layout={layoutAnimation} style={[styles.label(SIZE_MAP[size]), labelStyle]}>{label}</Animated.Text>}
+			{label && <Text style={[styles.label(SIZE_MAP[size]), labelStyle]}>{label}</Text>}
 			{children}
 		</AnimatedPressable>
 	);
