@@ -3,6 +3,7 @@ import { Pressable, StyleProp, Text, TextStyle, ViewStyle } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import { styles } from "./Button.styles";
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
+import { layoutAnimation } from "@constants/animations";
 
 export type Size = "sm" | "md" | "lg" | "xl";
 type Variant = "icon" | "text" | "textIcon";
@@ -83,7 +84,7 @@ export default function Button({
 			{...props}
 		>
 			{icon}
-			{label && <Text style={[styles.label(SIZE_MAP[size]), labelStyle]}>{label}</Text>}
+			{label && <Animated.Text layout={layoutAnimation} style={[styles.label(SIZE_MAP[size]), labelStyle]}>{label}</Animated.Text>}
 			{children}
 		</AnimatedPressable>
 	);

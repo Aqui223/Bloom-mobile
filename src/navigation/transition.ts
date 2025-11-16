@@ -1,9 +1,9 @@
 import { interpolate } from "react-native-reanimated";
-import { fastSpring } from "@constants/easings";
+import { quickSpring } from "@constants/easings";
 
-export const screenTransition = () => ({
+export const screenTransition = (gestures = true) => ({
   enableTransitions: true,
-  gestureEnabled: true,
+  gestureEnabled: gestures,
   gestureDirection: ["horizontal"],
   screenStyleInterpolator: ({ layouts: { screen }, progress, focused }) => {
     "worklet";
@@ -20,7 +20,7 @@ export const screenTransition = () => ({
     };
   },
   transitionSpec: {
-    open: fastSpring,
-    close: fastSpring,
+    open: quickSpring,
+    close: quickSpring,
   },
 } as any);

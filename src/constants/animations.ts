@@ -23,6 +23,7 @@ export type LayoutAnimResult = {
 export const springy = physicsSpring({ mass: quickSpring.mass, duration: 0.25, dampingRatio: 0.65 }) as SpringTriple;
 export const springyMessage = physicsSpring({ mass: quickSpring.mass, duration: 0.2, dampingRatio: 2.5 }) as SpringTriple;
 export const springyMenu = physicsSpring({ mass: quickSpring.mass, duration: 0.15, dampingRatio: 2.5 }) as SpringTriple;
+export const springyChar = (i: number = 0) => physicsSpring({ mass: quickSpring.mass, duration: 0.35 + i * 0.07, dampingRatio: 0.65 }) as SpringTriple;
 
 export const layoutAnimationSpringy: ComplexAnimationBuilder = LinearTransition.springify()
   .mass(springy.mass)
@@ -37,17 +38,17 @@ export const layoutAnimation: ComplexAnimationBuilder = LinearTransition.springi
 
 
 const makeSpringEntry =
-  (Anim: { springify: () => ComplexAnimationBuilder }, massStep = 0.4) =>
-  (i = 0, easing = quickSpring): ComplexAnimationBuilder =>
+  (Anim: { springify: () => ComplexAnimationBuilder }) =>
+  (easing = quickSpring): ComplexAnimationBuilder =>
     Anim.springify()
       .damping(easing.damping)
-      .mass(easing.mass + i * massStep)
+      .mass(easing.mass)
       .stiffness(easing.stiffness);
 
-export const getFadeOut = makeSpringEntry(FadeOut, 0.4);
-export const getFadeIn = makeSpringEntry(FadeIn, 0.4);
-export const getCharEnter = makeSpringEntry(FadeInDown, 0.1);
-export const getCharExit = makeSpringEntry(FadeOutUp, 0.1);
+export const getFadeOut = makeSpringEntry(FadeOut);
+export const getFadeIn = makeSpringEntry(FadeIn);
+export const getCharEnter = makeSpringEntry(FadeInDown);
+export const getCharExit = makeSpringEntry(FadeOutUp);
 
 
 export const zoomAnimationOut = (): LayoutAnimResult => {

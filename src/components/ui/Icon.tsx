@@ -12,13 +12,14 @@ type IconProps = {
 	icon: keyof typeof ICONS;
 	style?: StyleProp<ViewStyle>;
 	animatedProps?: AnimatedProps<typeof AnimatedPath>;
+	ref?: React.Ref<any>;
 };
 
-export default function Icon({ size = 26, color = "white", icon, style, animatedProps }: IconProps): React.JSX.Element {
+export default function Icon({ size = 26, color = "white", icon, style, animatedProps, ref }: IconProps): React.JSX.Element {
 	const pathData = ICONS[icon];
     
 	return (
-		<Svg style={style} width={size} height={size} viewBox='0 0 24 24' fill='none'>
+		<Svg ref={ref} style={style} width={size} height={size} viewBox='0 0 24 24' fill='none'>
 			{animatedProps ? <AnimatedPath animatedProps={animatedProps} fill={color} d={pathData} /> : <Path fill={color} d={pathData} />}
 		</Svg>
 	);
