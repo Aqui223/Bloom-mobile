@@ -1,13 +1,13 @@
 import { StyleSheet } from "react-native-unistyles";
 
 export const styles = StyleSheet.create(theme => ({
-	actionsContainer: insets => ({ 
+	actionsContainer: { 
         width: "100%", 
-        gap: 16, 
+        gap: theme.spacing.lg, 
         paddingHorizontal: 20, 
         flexDirection: "column", 
-        paddingBottom: insets
-     }),
+        paddingBottom: theme.spacing.xl,
+     },
     separatorContainer: {
         paddingHorizontal: theme.spacing.lg,
     },

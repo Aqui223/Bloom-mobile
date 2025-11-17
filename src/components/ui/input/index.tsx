@@ -20,7 +20,7 @@ type InputProps = {
 const SIZE_MAP: Record<Size, number> = {
 	sm: 40,
 	md: 44,
-	lg: 52,
+	lg: 48,
 };
 
 export default function Input({ size, setValue, value, ref, viewStyle, style, icon, button, disabled, ...props }: InputProps): React.JSX.Element {

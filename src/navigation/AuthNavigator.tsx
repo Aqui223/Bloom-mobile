@@ -4,6 +4,7 @@ import { SignUpEmailScreen, WelcomeScreen } from "../screens";
 import { screenTransition } from "./transition";
 import { View } from "react-native";
 import AuthHeader from "@components/auth/header";
+import AuthFooter from "@components/auth/footer";
 
 const Stack = createNativeStackNavigator();
 
@@ -17,6 +18,7 @@ const AuthNavigator = () => {
         <View style={{flex: 1, justifyContent: 'flex-end'}}>
           <AuthHeader navigation={navigation}/>
           {children}
+          <AuthFooter navigation={navigation}/>
         </View>
       )}
         screenOptions={{

@@ -1,22 +1,34 @@
 import { Button, Icon } from "@components/ui";
 import Animated, { useAnimatedStyle, withSpring } from "react-native-reanimated";
 import { styles } from "./Header.styles";
+import React, { useEffect } from "react";
 import { useInsets } from "@hooks";
 import { quickSpring } from "@constants/easings";
+import useAuthStore from "@stores/auth";
 
-export default function AuthHeader({ navigation }) {
+export default function AuthHeader({ navigation }): React.JSX.Element {
+  const realIndex = navigation.getState().index;
+
+  const { index, setIndex } = useAuthStore();
   const insets = useInsets();
 
-  const currentRoute = navigation.getState()?.index;
+	useEffect(() => {
+		if (realIndex > index) setIndex(realIndex);
+	}, [realIndex]);
 
-  const animatedViewStyle = useAnimatedStyle(() => ({
-    opacity: withSpring(currentRoute === 0 ? 0 : 1, quickSpring),
-    transform: [{ translateY: withSpring(currentRoute === 0 ? "-20%" : "0%", quickSpring) }],
-  }));
+	const back = () => {
+		setIndex(Math.max(0, index - 1));
+		navigation.goBack();
+	};
 
-  return (
-    <Animated.View style={[styles.header(insets.top), animatedViewStyle]}>
-      <Button onPress={() => navigation.goBack()} variant='icon' icon={<Icon icon='chevron.left' size={26} />} />
-    </Animated.View>
-  );
+	const animatedViewStyle = useAnimatedStyle(() => ({
+		opacity: withSpring(index === 0 ? 0 : 1, quickSpring),
+		transform: [{ translateY: withSpring(index === 0 ? "-20%" : "0%", quickSpring) }],
+	}));
+
+	return (
+		<Animated.View style={[styles.header(insets.top), animatedViewStyle]}>
+			<Button onPress={back} variant='icon' icon={<Icon icon='chevron.left' size={26} />} />
+		</Animated.View>
+	);
 }
