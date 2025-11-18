@@ -20,7 +20,7 @@ export const styles = StyleSheet.create(theme => ({
 		aspectRatio: isIcon ? 1 : undefined,
 		paddingHorizontal,
 		borderCurve: 'continuous',
-		borderRadius: size >= SIZE_MAP['lg'] ? theme.radius.sm : theme.radius.full,
+		borderRadius: theme.radius.full,
 		backgroundColor: blur ? theme.colors.foregroundBlur : theme.colors.foreground,
 		gap: isTextIcon ? theme.spacing.md : 0,
 	}),

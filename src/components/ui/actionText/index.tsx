@@ -19,7 +19,7 @@ export default function ActionText({ children, actionText, onPress, style, ...pr
 		<Text style={[styles.text, style]} {...props}>
 			{parts[0]}
 			<Text style={[styles.actionText, style]} onPress={onPress}>
-				{actionText}
+				{" "}{actionText}{" "}
 			</Text>
 			{parts[1]}
 		</Text>

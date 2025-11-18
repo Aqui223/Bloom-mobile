@@ -7,7 +7,11 @@ export const styles = StyleSheet.create(theme => ({
         paddingBottom: insets
      }),
      buttonLabel: {
+        fontSize: theme.fontSize.lg,
         fontFamily: theme.fontFamily.semibold,
         color: theme.colors.text,
     },
+    partsContainer: {
+        flexDirection: "row",
+    }
 }));

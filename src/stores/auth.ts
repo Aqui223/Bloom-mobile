@@ -6,7 +6,9 @@ type AuthStore = {
  email: string,
  setEmail: (newEmail: string) => void,
  emailValid: boolean,
- setEmailValid: (newEmailValid: boolean) => void;
+ setEmailValid: (newEmailValid: boolean) => void,
+ otp: string,
+ setOtp: (newOtp: string) => void,
 }
 
 const useAuthStore = create<AuthStore>((set) => ({
@@ -15,7 +17,9 @@ const useAuthStore = create<AuthStore>((set) => ({
   email: '',
   setEmail: (newEmail) => set({ email: newEmail }),
   emailValid: false,
-  setEmailValid: (newEmailValid) => set({ emailValid: newEmailValid })
+  setEmailValid: (newEmailValid) => set({ emailValid: newEmailValid }),
+  otp: '',
+  setOtp: (newOtp) => set({ otp: newOtp}),
 }));
 
 export default useAuthStore;
