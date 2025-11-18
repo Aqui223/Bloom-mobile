@@ -1,23 +1,23 @@
 import React, { useEffect } from "react";
-import { View } from "react-native";
 import { Button, Icon } from "@components/ui";
 import { ROUTES } from "@constants/routes";
 import { styles } from "./Footer.styles";
 import { useInsets } from "@hooks";
 import { useUnistyles } from "react-native-unistyles";
 import useAuthStore from "@stores/auth";
-import Animated, { useAnimatedStyle, interpolateColor, withSpring, useSharedValue } from "react-native-reanimated";
+import Animated, { useAnimatedStyle, interpolateColor, interpolate, withSpring, useSharedValue } from "react-native-reanimated";
 import { quickSpring } from "@constants/easings";
 import { getFadeIn, getFadeOut, layoutAnimationSpringy } from "@constants/animations";
+import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
 
 const AnimatedButton = Animated.createAnimatedComponent(Button);
-const AnimatedIcon = Animated.createAnimatedComponent(Icon);
 
 export default function AuthFooter({ navigation }): React.JSX.Element {
 	const insets = useInsets();
 	const { theme } = useUnistyles();
 	const { index, emailValid, otp } = useAuthStore();
 	const progress = useSharedValue(0);
+	const { progress: progressKeyboard, height } = useReanimatedKeyboardAnimation();
 	const labelProgress = useSharedValue(1);
 
 	const firstScreen = index === 0;
@@ -27,19 +27,30 @@ export default function AuthFooter({ navigation }): React.JSX.Element {
 
 	const disabledMap = [false, !emailValid, otp.length >= 1];
 
-	const progMap = [0, emailValid ? 1 : 2, otp.length >= 6 ? 1 : 2];
+	const progMap = [0, emailValid ? 2 : 1, otp.length >= 6 ? 2 : 1];
 
 	const onPress = () => navigateMap[index]?.();
 	const disabled = disabledMap[index] ?? false;
-	const progValue = progMap[index] ?? 0;
+	const progValue = progMap[index];
 
 	const animatedButtonStyle = useAnimatedStyle(() => ({
-		backgroundColor: interpolateColor(progress.value, [0, 1, 2], [theme.colors.foreground, theme.colors.primary, theme.colors.foreground]),
+		backgroundColor: interpolateColor(progress.value, [0, 1, 2], [theme.colors.foreground, theme.colors.foreground, theme.colors.primary]),
 	}));
 
-	const animatedLabelStyle = useAnimatedStyle(() => ({
-		color: interpolateColor(labelProgress.value, [0, 1, 2], [theme.colors.text, theme.colors.white, theme.colors.secondaryText]),
-	}));
+	const animatedViewStyle = useAnimatedStyle(
+		() => ({
+			transform: [{ translateY: height.value }],
+			paddingBottom: interpolate(progressKeyboard.value, [0, 1], [insets.bottom, theme.spacing.lg], "clamp"),
+		}),
+		[index]
+	);
+
+	const animatedLabelStyle = useAnimatedStyle(
+		() => ({
+			color: interpolateColor(labelProgress.value, [0, 1, 2], [theme.colors.text, theme.colors.secondaryText, theme.colors.white]),
+		}),
+		[index]
+	);
 
 	useEffect(() => {
 		labelProgress.value = withSpring(progValue, quickSpring);
@@ -47,12 +58,16 @@ export default function AuthFooter({ navigation }): React.JSX.Element {
 	}, [index, emailValid, otp]);
 
 	return (
-		<View style={styles.footer(insets.bottom)}>
+		<Animated.View style={[styles.footer, animatedViewStyle]}>
 			<AnimatedButton
 				disabled={disabled}
 				onPress={onPress}
 				icon={
-					firstScreen && <AnimatedIcon key='footerIcon' entering={getFadeIn()} exiting={getFadeOut()} size={28} color={theme.colors.text} icon='at' />
+					firstScreen && (
+						<Animated.View entering={getFadeIn()} exiting={getFadeOut()}>
+							<Icon key='footerIcon' size={28} color={theme.colors.text} icon='at' />
+						</Animated.View>
+					)
 				}
 				size='xl'
 				variant='textIcon'
@@ -72,6 +87,6 @@ export default function AuthFooter({ navigation }): React.JSX.Element {
 					))}
 				</Animated.View>
 			</AnimatedButton>
-		</View>
+		</Animated.View>
 	);
 }

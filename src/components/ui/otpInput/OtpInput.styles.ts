@@ -13,7 +13,7 @@ export const styles = StyleSheet.create(theme => ({
   },
   cell: {
     flex: 1,
-    height: 60,
+    aspectRatio: 3/4,
     borderRadius: theme.radius.sm,
     backgroundColor: theme.colors.foreground,
     borderCurve: 'continuous',
@@ -33,8 +33,7 @@ export const styles = StyleSheet.create(theme => ({
   },
   indicator: {
     position: "absolute",
-    width: 40,
-    height: 60,
+    aspectRatio: 3/4,
     zIndex: 2,
     borderRadius: theme.radius.sm + 2,
     borderWidth: 2,

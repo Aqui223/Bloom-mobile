@@ -1,11 +1,12 @@
 import { StyleSheet } from "react-native-unistyles";
 
 export const styles = StyleSheet.create(theme => ({
-	footer: insets => ({ 
+	footer:{ 
         width: "100%", 
-        paddingHorizontal: 20, 
-        paddingBottom: insets
-     }),
+        position: 'absolute',
+        bottom: 0,
+        paddingHorizontal: 20,
+     },
      buttonLabel: {
         fontSize: theme.fontSize.lg,
         fontFamily: theme.fontFamily.semibold,
