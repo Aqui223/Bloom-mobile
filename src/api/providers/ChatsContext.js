@@ -58,7 +58,6 @@ export default function ChatsProvider({ children }) {
                     try {
                         message = JSON.parse(msg?.data);
                     } catch (error) {
-                        console.log(error);
                         return;
                     }
 
@@ -110,9 +109,7 @@ export default function ChatsProvider({ children }) {
                             return next;
                         });
                     }
-                } catch (error) {
-                    console.log(error)
-                }
+                } catch {}
             });
         }
     }, [ws]);

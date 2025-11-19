@@ -91,5 +91,5 @@ export default async function getChats(ws) {
 
     // return api response
     return response.data;
-  } catch (err) { console.log(err) }
+  } catch (err) { }
 }

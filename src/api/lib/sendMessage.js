@@ -35,7 +35,6 @@ export default async function (content, reply_to, chat_id, count, ws) {
 
             return
         } catch (error) {
-            console.log(error)
             return
         }
     }

@@ -41,7 +41,6 @@ export default function (realm, mmkv, ws, content, reply_to, messages, setMessag
         };
 
         setMessages(prev => mergeAndSort(prev, [newMsg]));
-    } catch (error) {
-        console.log(error);
+    } catch {
     }
 }

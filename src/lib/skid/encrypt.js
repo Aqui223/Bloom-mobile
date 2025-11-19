@@ -65,7 +65,5 @@ export default function encrypt(content, sender, receiver, counter) {
             signed_payload: JSON.stringify(toSign, null, 2),
             signature
         }
-    } catch (error) {
-        console.log(error)
-    }
+    } catch {}
 }

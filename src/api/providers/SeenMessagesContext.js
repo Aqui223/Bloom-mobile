@@ -25,7 +25,6 @@ export default function SeenMessagesProvider({ children }) {
                 try {
                     message = JSON.parse(msg?.data);
                 } catch (error) {
-                    console.log(error);
                     return;
                 }
 

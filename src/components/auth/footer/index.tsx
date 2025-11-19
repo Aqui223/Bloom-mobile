@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Icon } from "@components/ui";
 import { ROUTES } from "@constants/routes";
 import { styles } from "./Footer.styles";
@@ -9,27 +9,59 @@ import Animated, { useAnimatedStyle, interpolateColor, interpolate, withSpring, 
 import { quickSpring } from "@constants/easings";
 import { getFadeIn, getFadeOut, layoutAnimationSpringy } from "@constants/animations";
 import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
+import axios from "axios";
+import { API_URL } from "@constants/Api";
+import useStorageStore from "@stores/storage";
 
 const AnimatedButton = Animated.createAnimatedComponent(Button);
 
 export default function AuthFooter({ navigation }): React.JSX.Element {
 	const insets = useInsets();
 	const { theme } = useUnistyles();
-	const { index, emailValid, otp } = useAuthStore();
+	const { index, email, emailValid, otp, setError } = useAuthStore();
 	const progress = useSharedValue(0);
 	const { progress: progressKeyboard, height } = useReanimatedKeyboardAnimation();
 	const labelProgress = useSharedValue(1);
+	const { mmkv } = useStorageStore();
 
 	const firstScreen = index === 0;
 	const label = firstScreen ? "Продолжить с Почтой" : "Продолжить";
 
 	const navigateMap = [() => navigation.navigate(ROUTES.auth.signup.email), () => navigation.navigate(ROUTES.auth.signup.otp)];
 
-	const disabledMap = [false, !emailValid, otp.length >= 1];
+	const disabledMap = [false, !emailValid, otp.length < 6];
 
 	const progMap = [0, emailValid ? 2 : 1, otp.length >= 6 ? 2 : 1];
 
-	const onPress = () => navigateMap[index]?.();
+	const onPress = async () => {
+		if (index === 0) {
+			navigateMap[index]?.();
+		} else if (index === 1) {
+			const isUserExists = await axios.get(API_URL + "/user/exists?email=" + email).then(res => res?.data?.exists).catch(() => undefined);
+			if (isUserExists === undefined) return setError("Failed to check is user exists");
+
+			if (isUserExists) {
+				axios.post(API_URL + "/auth/request-code", { email }).then(res => res?.data).catch();
+				navigateMap[index]?.()
+			} else {
+				const sendRegister = await axios.post(API_URL + "/auth/register", { email }).then(() => true).catch(error => error?.response?.data || null);
+				if (sendRegister?.error) setError("Failed to send register request");
+				else if (sendRegister) navigateMap[index]?.();
+			}
+		} else if (index === 2) {
+			const sendVerifyCode = await axios.post(API_URL + "/auth/verify-code", { email, code: otp }).then(res => res?.data).catch(error => error?.response?.data || null)
+
+			if (sendVerifyCode?.token) {
+				// final code
+
+				// mmkv.set("token", sendVerifyCode?.token)
+				// mmkv.set("user_id", sendVerifyCode?.user?.id)
+				// mmkv.set("user", JSON.stringify(sendVerifyCode?.user))
+			}
+			else setError("Wrong code")
+		}
+	};
+
 	const disabled = disabledMap[index] ?? false;
 	const progValue = progMap[index];
 

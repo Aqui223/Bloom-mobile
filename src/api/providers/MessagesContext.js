@@ -27,7 +27,6 @@ export default function MessagesProvider({ children }) {
                 try {
                     message = JSON.parse(msg?.data);
                 } catch (error) {
-                    console.log(error);
                     return;
                 }
 
@@ -147,9 +146,7 @@ export default function MessagesProvider({ children }) {
                                 reply_to: reply_to_json
                             }, Realm.UpdateMode.Modified);
                         });
-                    } catch (error) {
-                        console.log(error)
-                    }
+                    } catch {}
                 }
             });
         }

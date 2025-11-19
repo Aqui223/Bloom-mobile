@@ -16,5 +16,5 @@ export default async function (chat_id, after_id = 0) {
     });
 
     return response.data;
-  } catch (err) { console.log(err) }
+  } catch { }
 }
