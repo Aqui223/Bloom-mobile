@@ -12,6 +12,8 @@ type AuthStore = {
   error: string,
   setError: (newError: string) => void,
   footerHeight: number,
+  password: string,
+  setPasssword: (newPassword: string) => void
 }
 
 const useAuthStore = create<AuthStore>((set) => ({
@@ -25,7 +27,9 @@ const useAuthStore = create<AuthStore>((set) => ({
   setOtp: (newOtp) => set({ otp: newOtp }),
   error: '',
   setError: (newError) => set({ error: newError }),
-  footerHeight: 52,
+  footerHeight: 68,
+  password: '',
+  setPasssword: (newPassword) => set({ password: newPassword }),
 }));
 
 export default useAuthStore;

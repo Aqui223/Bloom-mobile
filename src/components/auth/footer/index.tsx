@@ -18,45 +18,62 @@ const AnimatedButton = Animated.createAnimatedComponent(Button);
 export default function AuthFooter({ navigation }): React.JSX.Element {
 	const insets = useInsets();
 	const { theme } = useUnistyles();
-	const { index, email, emailValid, otp, setError } = useAuthStore();
+	const { index, email, emailValid, otp, setError, password } = useAuthStore();
 	const progress = useSharedValue(0);
 	const { progress: progressKeyboard, height } = useReanimatedKeyboardAnimation();
 	const labelProgress = useSharedValue(1);
 	const { mmkv } = useStorageStore();
 
-	const firstScreen = index === 0;
-	const label = firstScreen ? "Продолжить с Почтой" : "Продолжить";
+	const navigateMap = [
+		() => navigation.navigate(ROUTES.auth.signup.email),
+		() => navigation.navigate(ROUTES.auth.signup.otp),
+		() => navigation.navigate(ROUTES.auth.signup.password),
+	];
 
-	const navigateMap = [() => navigation.navigate(ROUTES.auth.signup.email), () => navigation.navigate(ROUTES.auth.signup.otp)];
+	const firstScreen = index === 0;
+	const label = firstScreen ? "Продолжить с Почтой" : index === navigateMap.length ? "Завершить" : "Продолжить";
 
 	const disabledMap = [false, !emailValid, otp.length < 6];
 
-	const progMap = [0, emailValid ? 2 : 1, otp.length >= 6 ? 2 : 1];
+	const progMap = [0, emailValid ? 2 : 1, otp.length >= 6 ? 2 : 1, password.length >= 8 ? 2 : 1];
 
 	const onPress = async () => {
 		if (index === 0) {
 			navigateMap[index]?.();
 		} else if (index === 1) {
-			const isUserExists = await axios.get(API_URL + "/user/exists?email=" + email).then(res => res?.data?.exists).catch(() => undefined);
+			const isUserExists = await axios
+				.get(API_URL + "/user/exists?email=" + email)
+				.then(res => res?.data?.exists)
+				.catch(() => undefined);
 			if (isUserExists === undefined) return setError("Failed to check is user exists");
 
 			if (isUserExists) {
-				axios.post(API_URL + "/auth/request-code", { email }).then(res => res?.data).catch();
-				navigateMap[index]?.()
+				axios
+					.post(API_URL + "/auth/request-code", { email })
+					.then(res => res?.data)
+					.catch();
+				navigateMap[index]?.();
 			} else {
-				const sendRegister = await axios.post(API_URL + "/auth/register", { email }).then(() => true).catch(error => error?.response?.data || null);
+				const sendRegister = await axios
+					.post(API_URL + "/auth/register", { email })
+					.then(() => true)
+					.catch(error => error?.response?.data || null);
 				if (sendRegister?.error) setError("Failed to send register request");
 				else if (sendRegister) navigateMap[index]?.();
 			}
 		} else if (index === 2) {
-			const sendVerifyCode = await axios.post(API_URL + "/auth/verify-code", { email, code: otp }).then(res => res?.data).catch(error => error?.response?.data || null)
+			const sendVerifyCode = await axios
+				.post(API_URL + "/auth/verify-code", { email, code: otp })
+				.then(res => res?.data)
+				.catch(error => error?.response?.data || null);
 
 			if (sendVerifyCode?.token) {
-				mmkv.set("token", sendVerifyCode?.token)
-				mmkv.set("user_id", sendVerifyCode?.user?.id)
-				mmkv.set("user", JSON.stringify(sendVerifyCode?.user))
-			}
-			else setError("Wrong code")
+				navigateMap[index]?.();
+				console.log(123)
+				mmkv.set("token", sendVerifyCode?.token);
+				mmkv.set("user_id", sendVerifyCode?.user?.id);
+				mmkv.set("user", JSON.stringify(sendVerifyCode?.user));
+			} else setError("Wrong code");
 		}
 	};
 
@@ -71,15 +88,13 @@ export default function AuthFooter({ navigation }): React.JSX.Element {
 		() => ({
 			transform: [{ translateY: height.value }],
 			paddingBottom: interpolate(progressKeyboard.value, [0, 1], [insets.bottom, theme.spacing.lg], "clamp"),
-		}),
-		[index]
+		})
 	);
 
 	const animatedLabelStyle = useAnimatedStyle(
 		() => ({
 			color: interpolateColor(labelProgress.value, [0, 1, 2], [theme.colors.text, theme.colors.secondaryText, theme.colors.white]),
-		}),
-		[index]
+		})
 	);
 
 	useEffect(() => {

@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from "react-native-screen-transitions";
 import { ROUTES } from "@constants/routes";
-import { SignUpEmailScreen, SignUpOTP, WelcomeScreen } from "../screens";
+import { SignupEmailScreen, SignupOTP, SignupPassword, WelcomeScreen } from "../screens";
 import { screenTransition } from "./transition";
 import { View } from "react-native";
 import AuthHeader from "@components/auth/header";
@@ -29,9 +29,9 @@ const AuthNavigator = () => {
       >
         <Stack.Screen name={ROUTES.auth.welcome} component={WelcomeScreen} />
         <Stack.Screen name={ROUTES.auth.login} component={WelcomeScreen} options={screenTransition(false)} />
-        <Stack.Screen name={ROUTES.auth.signup.email} component={SignUpEmailScreen} options={screenTransition(false)} />
-        <Stack.Screen name={ROUTES.auth.signup.otp} component={SignUpOTP} options={screenTransition(false)} />
-        <Stack.Screen name={ROUTES.auth.signup.password} component={WelcomeScreen} options={screenTransition(false)} />
+        <Stack.Screen name={ROUTES.auth.signup.email} component={SignupEmailScreen} options={screenTransition(false)} />
+        <Stack.Screen name={ROUTES.auth.signup.otp} component={SignupOTP} options={screenTransition(false)} />
+        <Stack.Screen name={ROUTES.auth.signup.password} component={SignupPassword} options={screenTransition(false)} />
       </Stack.Navigator>
     </>
   );

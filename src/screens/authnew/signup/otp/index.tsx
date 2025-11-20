@@ -7,7 +7,7 @@ import Animated, {useAnimatedStyle} from "react-native-reanimated";
 import { useInsets } from "@hooks";
 import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
 
-export default function SignUpOTP(): React.JSX.Element {
+export default function SignupOTP(): React.JSX.Element {
     const { email, otp, setOtp } = useAuthStore();
     const keyboard = useReanimatedKeyboardAnimation();
 	const insets = useInsets();

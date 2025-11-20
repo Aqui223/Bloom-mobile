@@ -1,5 +1,5 @@
 import React from "react";
-import { styles } from "./Email.styles";
+import { styles } from "./Password.styles";
 import AuthTitleTemplate from "@components/auth/titleTemplate";
 import AuthEmailInput from "@components/auth/email/Input";
 import { ActionText } from "@components/ui";
@@ -7,7 +7,7 @@ import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import { useInsets } from "@hooks";
 
-export default function SignupEmail(): React.JSX.Element {
+export default function SignupPassword(): React.JSX.Element {
 	const keyboard = useReanimatedKeyboardAnimation();
 	const insets = useInsets();
 
@@ -17,9 +17,9 @@ export default function SignupEmail(): React.JSX.Element {
 
 	return (
 		<Animated.View style={[styles.container(52 + insets.bottom), animatedStyles]}>
-			<AuthTitleTemplate image={require("@assets/emojiIcons/envelope.webp")} title='Введите почту' />
+			<AuthTitleTemplate image={require("@assets/emojiIcons/key.webp")} title='Пароль и юзернейм' />
             <AuthEmailInput/>
-            <ActionText children="После этого мы отправим 6-значный код подтверждения на вашу почту"/>
+            <ActionText actionText="облачного хранения ключей" children="Пароль должен состоять из 8-64 любых символов. Он будет использоваться для"/>
 		</Animated.View>
 	);
 }
