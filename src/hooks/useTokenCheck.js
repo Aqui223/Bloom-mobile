@@ -14,23 +14,12 @@ export default function useTokenCheck() {
         storageInstance = await createSecureStorage("user-storage");
         const token = storageInstance.getString("token");
         setIsAuthenticated(!!token);
-
-        listener = storageInstance.addOnValueChangedListener((changedKey) => {
-          if (changedKey === "token") {
-            const nextToken = storageInstance.getString("token");
-            setIsAuthenticated(!!nextToken);
-          }
-        });
       } finally {
         setIsLoading(false);
       }
     };
 
     init();
-
-    return () => {
-      listener?.remove?.();
-    };
   }, []);
 
   return { isAuthenticated, isLoading };
