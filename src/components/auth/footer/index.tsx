@@ -50,8 +50,7 @@ export default function AuthFooter({ navigation }): React.JSX.Element {
 			if (isUserExists) {
 				axios
 					.post(API_URL + "/auth/request-code", { email })
-					.then(res => res?.data)
-					.catch();
+					.catch(console.log);
 				navigateMap[index]?.();
 			} else {
 				const sendRegister = await axios
@@ -69,11 +68,10 @@ export default function AuthFooter({ navigation }): React.JSX.Element {
 
 			if (sendVerifyCode?.token) {
 				navigateMap[index]?.();
-				console.log(123)
 				mmkv.set("token", sendVerifyCode?.token);
-				mmkv.set("user_id", sendVerifyCode?.user?.id);
+				mmkv.set("user_id", String(sendVerifyCode?.user?.id));
 				mmkv.set("user", JSON.stringify(sendVerifyCode?.user));
-			} else setError("Wrong code");
+			} else console.log("Wrong code");
 		}
 	};
 

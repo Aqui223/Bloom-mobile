@@ -1,12 +1,14 @@
 import { Button } from "@components/ui";
 import { Icon, Separator } from "@components/ui";
-import React from "react";
+import React, { useEffect } from "react";
 import { Image, Platform, View } from "react-native";
 import { styles } from "./Actions.styles";
 import { useUnistyles } from "react-native-unistyles";
+import useGoogleOauth2 from "@api/hooks/useGoogleOauth2";
 
 export default function AuthActions(): React.JSX.Element {
   const { theme } = useUnistyles();
+  const { result, loading, error, startGoogleAuth } = useGoogleOauth2();
 
   const iOS = Platform.OS === "ios";
 
@@ -17,6 +19,12 @@ export default function AuthActions(): React.JSX.Element {
       <Image style={styles.imageIcon} source={require("@assets/logos/google.webp")} />
     );
 
+  const onPress = async (method: string) => {
+    if (method === "google") {
+      await startGoogleAuth();
+    }
+  }
+
   return (
     <View style={styles.actionsContainer}>
       <Button
@@ -24,6 +32,7 @@ export default function AuthActions(): React.JSX.Element {
         labelStyle={styles.buttonLabel(true)}
         icon={focusedIcon(iOS)}
         label={iOS ? "Продолжить с Apple" : "Продолжить с Google"}
+        onPress={() => onPress(iOS ? "apple" : "google")}
         size='xl'
         variant='textIcon'
       />
@@ -33,6 +42,7 @@ export default function AuthActions(): React.JSX.Element {
         labelStyle={styles.buttonLabel(false)}
         icon={focusedIcon(!iOS, true)}
         label={!iOS ? "Продолжить с Apple" : "Продолжить с Google"}
+        onPress={() => onPress(!iOS ? "apple" : "google")}
         size='xl'
         variant='textIcon'
       />
