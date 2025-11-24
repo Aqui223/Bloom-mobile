@@ -1,63 +1,55 @@
 import React, { useEffect } from "react";
 import { Pressable } from "react-native";
-import Animated, {
-  interpolateColor,
-  useAnimatedProps,
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring,
-} from "react-native-reanimated";
+import Animated, { interpolateColor, useAnimatedProps, useAnimatedStyle, useSharedValue, withSpring } from "react-native-reanimated";
 import { useUnistyles } from "react-native-unistyles";
 import { quickSpring } from "@constants/easings";
 import Icon from "@components/ui/Icon";
-import { styles } from "./tabBar.styles";
+import { styles } from "./TabBar.styles";
 
 interface TabBarItemProps {
-  route: { name: "tab_chats" | "tab_search" | "tab_settings" };
-  focused: boolean;
-  onPress: () => void;
+	route: { name: "tab_chats" | "tab_search" | "tab_settings" };
+	focused: boolean;
+	onPress: () => void;
 }
 
 const TAB_ICONS = {
-  tab_chats: "message",
-  tab_search: "compass",
-  tab_settings: "gear",
+	tab_chats: "message",
+	tab_search: "compass",
+	tab_settings: "gear",
 } as const;
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 export default function TabBarItem({ route, focused, onPress }: TabBarItemProps): React.JSX.Element {
-  const { theme } = useUnistyles();
-  const opacity = useSharedValue(0.35);
-  const scale = useSharedValue(1);
+	const { theme } = useUnistyles();
+	const color = useSharedValue(0.35);
+	const scale = useSharedValue(1);
 
-  const tabColor = {
-    tab_chats: theme.colors.cyan,
-    tab_search: theme.colors.yellow,
-    tab_settings: theme.colors.orange,
-  }[route.name];
+	const tabColor = {
+		tab_chats: theme.colors.primary,
+		tab_search: theme.colors.yellow,
+		tab_settings: theme.colors.purple,
+	}[route.name];
 
-  const animatedStyle = useAnimatedStyle(() => ({
-    opacity: opacity.value,
-    transform: [{ scale: scale.value }],
-  }));
+	const iconScale = (out: boolean = false) => {
+		scale.value = withSpring(out ? 1 : 1.1, quickSpring);
+	};
 
-  const animatedProps = useAnimatedProps(() => ({
-    fill: interpolateColor(opacity.value, [0.35, 1], [theme.colors.text, tabColor]),
-  }));
+	const animatedStyle = useAnimatedStyle(() => ({
+		transform: [{ scale: scale.value }],
+	}));
 
-  useEffect(() => {
-    opacity.value = withSpring(focused ? 1 : 0.35, quickSpring);
-  }, [focused]);
+	const animatedProps = useAnimatedProps(() => ({
+		fill: interpolateColor(color.value, [1, 2], [theme.colors.text, tabColor]),
+	}));
 
-  return (
-    <AnimatedPressable
-      style={[styles.tabBarItem, animatedStyle]}
-      onPress={onPress}
-      onPressIn={() => (scale.value = withSpring(0.9, quickSpring))}
-      onPressOut={() => (scale.value = withSpring(1, quickSpring))}
-    >
-      <Icon animatedProps={animatedProps} size={30} icon={TAB_ICONS[route.name]} />
-    </AnimatedPressable>
-  );
+	useEffect(() => {
+		color.value = withSpring(focused ? 2 : 1, quickSpring);
+	}, [focused]);
+
+	return (
+		<AnimatedPressable style={[styles.tabBarItem, animatedStyle]} onPress={onPress} onPressIn={() => iconScale()} onPressOut={() => iconScale(true)}>
+			<Icon animatedProps={animatedProps} size={30} icon={TAB_ICONS[route.name]} />
+		</AnimatedPressable>
+	);
 }
