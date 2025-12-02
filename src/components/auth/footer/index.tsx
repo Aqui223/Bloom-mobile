@@ -8,7 +8,6 @@ import Animated, {
 } from "react-native-reanimated";
 import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
 import { useUnistyles } from "react-native-unistyles";
-import { ROUTES } from "@constants/routes";
 import { Button, Icon } from "@components/ui";
 import { styles } from "./Footer.styles";
 import { useInsets, useAuthFooter } from "@hooks";
@@ -29,8 +28,8 @@ export default function AuthFooter({ navigation }): React.JSX.Element {
   const animatedButtonStyle = useAnimatedStyle(() => ({
     backgroundColor: interpolateColor(
       progress.value,
-      [0, 1, 2],
-      [theme.colors.foreground, theme.colors.foreground, theme.colors.primary]
+      [0, 1, 2, 3],
+      [theme.colors.foreground, theme.colors.foreground, theme.colors.primary, theme.colors.red]
     ),
   }));
 
@@ -42,15 +41,14 @@ export default function AuthFooter({ navigation }): React.JSX.Element {
   const animatedLabelStyle = useAnimatedStyle(() => ({
     color: interpolateColor(
       labelProgress.value,
-      [0, 1, 2],
-      [theme.colors.text, theme.colors.secondaryText, theme.colors.white]
+      [0, 1, 2, 3],
+      [theme.colors.text, theme.colors.secondaryText, theme.colors.white, theme.colors.white]
     ),
   }));
 
   useEffect(() => {
     labelProgress.value = withSpring(progressValue, quickSpring);
     progress.value = withSpring(progressValue, quickSpring);
-	 navigation.navigate(ROUTES.auth.signup.password)
   }, [progressValue]);
 
   return (

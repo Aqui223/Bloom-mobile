@@ -10,6 +10,7 @@ export const staticColor = {
 	yellow: "#FFB566",
 	cyan: "#28A8E9",
 	purple: "#B84DFF",
+	red: "#FF3B30",
 
 	// Backdrops
 	whiteBackdrop: "#ffffff80",
@@ -21,6 +22,7 @@ export const staticColor = {
 	yellowBackdrop: "#ffb56680",
 	cyanBackdrop: "#28a8e980",
 	purpleBackdrop: "#b84dff80",
+	redBackdrop: "#FF3B3080",
 };
 
 const base = {

@@ -6,7 +6,7 @@ import { API_URL } from "@constants/Api";
 import { ROUTES } from "@constants/routes";
 
 export default function useAuthFooter(navigation: any) {
-  const { index, email, emailValid, otp, password, setError } = useAuthStore();
+  const { index, email, emailValid, otp, password, setError, error } = useAuthStore();
   const { mmkv } = useStorageStore();
 
   const isDisabled = useMemo(() => {
@@ -21,8 +21,9 @@ export default function useAuthFooter(navigation: any) {
     if (index === 1) return emailValid ? 2 : 1;
     if (index === 2) return otp.length >= 6 ? 2 : 1;
     if (index === 3) return password.length >= 6 ? 2 : 1;
+    if (error) return 3;
     return password.length >= 8 ? 2 : 1;
-  }, [index, emailValid, otp, password]);
+  }, [index, emailValid, otp, password, error]);
 
   const label = index === 0 ? "Продолжить с Почтой" : index === 3 ? "Завершить" : "Продолжить";
 
@@ -59,7 +60,7 @@ export default function useAuthFooter(navigation: any) {
             mmkv.set("user", JSON.stringify(user));
             navigation.navigate(ROUTES.auth.signup.password);
           } else {
-            console.log("Wrong code");
+            setError("Неверный код подтверждения. Попробуйте ещë раз")
           }
           break;
         }
