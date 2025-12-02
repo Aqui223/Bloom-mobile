@@ -1,7 +1,7 @@
 import React from "react";
 import { styles } from "./Password.styles";
 import AuthTitleTemplate from "@components/auth/titleTemplate";
-import { ActionText, Input } from "@components/ui";
+import { ActionText } from "@components/ui";
 import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import { useInsets } from "@hooks";
@@ -18,9 +18,9 @@ export default function SignupPassword(): React.JSX.Element {
 
 	return (
 		<Animated.View style={[styles.container(84 + insets.bottom), animatedStyles]}>
-			<AuthTitleTemplate icon="lock" title='Пароль и ник' />
-            <AuthPasswordInput/>
+			<AuthTitleTemplate icon="lock" title='Пароль и ник' />	
 			<AuthNickInput/>
+            <AuthPasswordInput/>
             <ActionText actionText="синхранизации ключей" children="Пароль должен состоять из 8-64 любых символов. Он используется для"/>
 		</Animated.View>
 	);
