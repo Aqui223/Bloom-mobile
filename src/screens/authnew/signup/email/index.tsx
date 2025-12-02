@@ -17,7 +17,7 @@ export default function SignupEmail(): React.JSX.Element {
 
 	return (
 		<Animated.View style={[styles.container(52 + insets.bottom), animatedStyles]}>
-			<AuthTitleTemplate image={require("@assets/emojiIcons/envelope.webp")} title='Введите почту' />
+			<AuthTitleTemplate icon="at" title='Введите почту' />
             <AuthEmailInput/>
             <ActionText children="После этого мы отправим 6-значный код подтверждения на вашу почту"/>
 		</Animated.View>

@@ -14,7 +14,7 @@ export default function Separator({ label, style, ref }: SeparatorProps): React.
 			<View style={styles.line} />
 			{label && (
 				<>
-					<Text style={styles.label}>{label}</Text> <View style={styles.line} />
+					<Text style={styles.label}>{label}</Text><View style={styles.line} />
 				</>
 			)}
 		</View>

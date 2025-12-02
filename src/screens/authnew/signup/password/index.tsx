@@ -17,9 +17,9 @@ export default function SignupPassword(): React.JSX.Element {
 
 	return (
 		<Animated.View style={[styles.container(52 + insets.bottom), animatedStyles]}>
-			<AuthTitleTemplate image={require("@assets/emojiIcons/key.webp")} title='Пароль и юзернейм' />
+			<AuthTitleTemplate icon="lock" title='Пароль и ник' />
             <AuthEmailInput/>
-            <ActionText actionText="облачного хранения ключей" children="Пароль должен состоять из 8-64 любых символов. Он будет использоваться для"/>
+            <ActionText actionText="синхранизации ключей" children="Пароль должен состоять из 8-64 любых символов. Он используется для"/>
 		</Animated.View>
 	);
 }

@@ -4,12 +4,12 @@ export const styles = StyleSheet.create(theme => ({
 	actionsContainer: { 
         width: "100%", 
         gap: theme.spacing.lg, 
-        paddingHorizontal: 20, 
+        paddingHorizontal: theme.spacing.xxxl, 
         flexDirection: "column", 
         paddingBottom: theme.spacing.xl,
      },
     separatorContainer: {
-        paddingHorizontal: theme.spacing.lg,
+        paddingHorizontal: theme.spacing.xl,
     },
     button: (focus) => ({
         backgroundColor: focus ? theme.colors.text : theme.colors.foreground,

@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native-unistyles";
 export const styles = StyleSheet.create(theme => ({
     titleContainer: {
         width: '100%',
-        gap: theme.spacing.md,
+        gap: theme.spacing.sm,
         justifyContent: 'center',
         alignItems: 'center',
     },

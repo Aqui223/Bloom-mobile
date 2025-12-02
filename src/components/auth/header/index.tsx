@@ -7,10 +7,11 @@ import { quickSpring } from "@constants/easings";
 import useAuthStore from "@stores/auth";
 
 export default function AuthHeader({ navigation }): React.JSX.Element {
-	const realIndex = navigation.getState().index;
-
 	const { index, setIndex } = useAuthStore();
 	const insets = useInsets();
+
+  const realIndex = navigation.getState().index;
+  const disabled = index === 0 || index === 3
 
 	const back = () => {
 		setIndex(Math.max(0, index - 1));
@@ -18,8 +19,8 @@ export default function AuthHeader({ navigation }): React.JSX.Element {
 	};
 
 	const animatedViewStyle = useAnimatedStyle(() => ({
-		opacity: withSpring(index === 0 ? 0 : 1, quickSpring),
-		transform: [{ translateY: withSpring(index === 0 ? "-20%" : "0%", quickSpring) }],
+		opacity: withSpring(disabled ? 0 : 1, quickSpring),
+		transform: [{ translateY: withSpring(disabled ? "-20%" : "0%", quickSpring) }],
 	}));
 
 	useEffect(() => {

@@ -8,7 +8,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
 import { useUnistyles } from "react-native-unistyles";
-
+import { ROUTES } from "@constants/routes";
 import { Button, Icon } from "@components/ui";
 import { styles } from "./Footer.styles";
 import { useInsets, useAuthFooter } from "@hooks";
@@ -50,6 +50,7 @@ export default function AuthFooter({ navigation }): React.JSX.Element {
   useEffect(() => {
     labelProgress.value = withSpring(progressValue, quickSpring);
     progress.value = withSpring(progressValue, quickSpring);
+	 navigation.navigate(ROUTES.auth.signup.password)
   }, [progressValue]);
 
   return (
@@ -71,7 +72,7 @@ export default function AuthFooter({ navigation }): React.JSX.Element {
         <Animated.View layout={layoutAnimationSpringy} style={styles.partsContainer}>
           {label.split(" ").map((part, i) => (
             <Animated.Text
-              key={`${part}-${i}`} // Уникальный ключ
+              key={`${part}-${i}`}
               entering={getFadeIn()}
               exiting={getFadeOut()}
               layout={layoutAnimationSpringy}

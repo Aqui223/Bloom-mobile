@@ -18,7 +18,7 @@ export default function SignupOTP(): React.JSX.Element {
 
 	return (
 		<Animated.View style={[styles.container(52 + insets.bottom), animatedStyles]}>
-			<AuthTitleTemplate image={require("@assets/emojiIcons/monkey.webp")} title='Проверка почты' />
+			<AuthTitleTemplate icon="id" title='Проверка почты' />
             <OTPInput value={otp} onChange={setOtp}/>
             <ActionText children="Введите 6-значный код, который был отправлен на" actionText={email}/>
 		</Animated.View>

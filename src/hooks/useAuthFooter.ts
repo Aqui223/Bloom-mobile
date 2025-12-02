@@ -12,6 +12,7 @@ export default function useAuthFooter(navigation: any) {
   const isDisabled = useMemo(() => {
     if (index === 1) return !emailValid;
     if (index === 2) return otp.length < 6;
+    if (index === 3) return password.length < 6
     return false;
   }, [index, emailValid, otp]);
 
@@ -19,6 +20,7 @@ export default function useAuthFooter(navigation: any) {
     if (index === 0) return 0;
     if (index === 1) return emailValid ? 2 : 1;
     if (index === 2) return otp.length >= 6 ? 2 : 1;
+    if (index === 3) return password.length >= 6 ? 2 : 1;
     return password.length >= 8 ? 2 : 1;
   }, [index, emailValid, otp, password]);
 
