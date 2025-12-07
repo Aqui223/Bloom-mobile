@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { ViewStyle, useWindowDimensions } from "react-native";
-import Animated, { useSharedValue, useAnimatedStyle, withSpring } from "react-native-reanimated";
+import Animated, { useSharedValue, useAnimatedStyle, withSpring, interpolateColor } from "react-native-reanimated";
 import { useInsets } from "@hooks";
 import { useUnistyles } from "react-native-unistyles";
 import { styles } from "./TabBar.styles";
@@ -22,8 +22,10 @@ export default function TabBarIndicator({ index = 0, count = 3 }: TabBarIndicato
 	const x = useSharedValue(0);
 	const scaleX = useSharedValue(1);
 	const scaleY = useSharedValue(1);
+	const colorProgress = useSharedValue(0);
 
-	const tabWidth = (width - theme.spacing.xxxl * 2 - theme.spacing.xs * 2 - (54 + theme.spacing.md)) / count;
+	const tabWidth = 70;
+	const colors = [theme.colors.primaryBackdrop, theme.colors.yellowBackdrop, theme.colors.purpleBackdrop]
 
 	useEffect(() => {
 		if (count <= 0) return;
@@ -38,9 +40,11 @@ export default function TabBarIndicator({ index = 0, count = 3 }: TabBarIndicato
 			scaleX.value = withSpring(1, springyTabBar);
 		});
 
-		scaleY.value = withSpring(0.9, springyTabBar, () => {
+		scaleY.value = withSpring(0.875, springyTabBar, () => {
 			scaleY.value = withSpring(1, springyTabBar);
 		});
+
+		colorProgress.value = withSpring(index, springyTabBar)
 	}, [index, count, tabWidth]);
 
 	const animatedStyle = useAnimatedStyle(
@@ -52,6 +56,7 @@ export default function TabBarIndicator({ index = 0, count = 3 }: TabBarIndicato
 				{ scale: withSpring(isSearch ? 0.5 : 1, springyTabBar) },
 			],
 			opacity: withSpring(isSearch ? 0 : 1, springyTabBar),
+			backgroundColor: interpolateColor(colorProgress.value, colors.map((_, i) => i), colors)
 		})
 	);
 

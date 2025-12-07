@@ -45,7 +45,7 @@ export default function TabBarItem({ route, focused, onPress }: TabBarItemProps)
 					scale: withSpring(focused ? scale.value : isSearch ? 0.5 : scale.value, quickSpring),
 				},
 				{
-					translateX: route.name === "tab_search" ? 0 : withSpring(isSearch ? (route.name === "tab_chats" ? 13 : -13) : 0, springyTabBar),
+					translateX: route.name === "tab_search" ? "0%" : withSpring(isSearch ? (route.name === "tab_chats" ? "100%" : "-100%") : "0%", springyTabBar),
 				},
 			],
 			opacity: withSpring(focused ? 1 : isSearch ? 0 : 1, quickSpring),
