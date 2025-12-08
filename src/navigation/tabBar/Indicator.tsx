@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { ViewStyle, useWindowDimensions } from "react-native";
+import { ViewStyle } from "react-native";
 import Animated, { useSharedValue, useAnimatedStyle, withSpring, interpolateColor } from "react-native-reanimated";
 import { useInsets } from "@hooks";
 import { useUnistyles } from "react-native-unistyles";
@@ -13,7 +13,6 @@ type TabBarIndicatorProps = {
 };
 
 export default function TabBarIndicator({ index = 0, count = 3 }: TabBarIndicatorProps): React.JSX.Element {
-	const { width } = useWindowDimensions();
 	const insets = useInsets();
 	const { theme } = useUnistyles();
 	const prevIndex = useRef(index);
@@ -31,12 +30,11 @@ export default function TabBarIndicator({ index = 0, count = 3 }: TabBarIndicato
 		if (count <= 0) return;
 
 		const target = tabWidth * index;
-		const direction = Math.sign(index - prevIndex.current) || 1;
 		prevIndex.current = index;
 
 		x.value = withSpring(target, springyTabBar);
 
-		scaleX.value = withSpring(1 + 0.2 * direction, springyTabBar, () => {
+		scaleX.value = withSpring(1 + 0.2, springyTabBar, () => {
 			scaleX.value = withSpring(1, springyTabBar);
 		});
 
