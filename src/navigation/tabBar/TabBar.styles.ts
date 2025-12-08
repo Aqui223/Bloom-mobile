@@ -40,6 +40,7 @@ export const styles = StyleSheet.create((theme) => ({
   searchButton: {
     width: 54,
     height: 54,
+    zIndex: 1,
     padding: 10,
     overflow: "hidden",
     borderRadius: theme.radius.full,
