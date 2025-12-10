@@ -18,15 +18,33 @@ export type LayoutAnimResult = {
   animations: Record<string, any>;
 };
 
+export * from "./easings";
+export const springy = physicsSpring({
+  mass: quickSpring.mass,
+  duration: 0.25,
+  dampingRatio: 0.65,
+}) as SpringTriple;
 
-export * from "./easings"
-export const springy = physicsSpring({ mass: quickSpring.mass, duration: 0.25, dampingRatio: 0.65 }) as SpringTriple;
-export const springyMessage = physicsSpring({ mass: quickSpring.mass, duration: 0.2, dampingRatio: 2.5 }) as SpringTriple;
-export const springyMenu = physicsSpring({ mass: quickSpring.mass, duration: 0.15, dampingRatio: 2.5 }) as SpringTriple;
-export const springyChar = (i: number = 0) => physicsSpring({ mass: quickSpring.mass, duration: 0.35 + i * 0.07, dampingRatio: 0.65 }) as SpringTriple;
-export const springyTabBar = physicsSpring({ mass: quickSpring.mass, duration: 0.2, dampingRatio: 0.8 }) as SpringTriple;
+export const springyMessage = physicsSpring({
+  mass: quickSpring.mass,
+  duration: 0.2,
+  dampingRatio: 2.5,
+}) as SpringTriple;
 
+export const springyMenu = physicsSpring({
+  mass: quickSpring.mass,
+  duration: 0.15,
+  dampingRatio: 2.5,
+}) as SpringTriple;
 
+export const springyChar = (i: number = 0) =>
+  physicsSpring({ mass: quickSpring.mass, duration: 0.35 + i * 0.07, dampingRatio: 0.65 }) as SpringTriple;
+
+export const springyTabBar = physicsSpring({
+  mass: quickSpring.mass,
+  duration: 0.2,
+  dampingRatio: 0.8,
+}) as SpringTriple;
 
 export const layoutAnimationSpringy: ComplexAnimationBuilder = LinearTransition.springify()
   .mass(springy.mass)
@@ -39,25 +57,20 @@ export const layoutAnimation: ComplexAnimationBuilder = LinearTransition.springi
   .stiffness(quickSpring.stiffness);
 
 export const makeLayoutAnimation = (easing: SpringTriple = quickSpring): ComplexAnimationBuilder =>
-    LinearTransition.springify()
-      .damping(easing.damping)
-      .mass(easing.mass)
-      .stiffness(easing.stiffness);
+  LinearTransition.springify().damping(easing.damping).mass(easing.mass).stiffness(easing.stiffness);
 
 
 
 const makeSpringEntry =
   (Anim: { springify: () => ComplexAnimationBuilder }) =>
   (easing: SpringTriple = quickSpring): ComplexAnimationBuilder =>
-    Anim.springify()
-      .damping(easing.damping)
-      .mass(easing.mass)
-      .stiffness(easing.stiffness);
+    Anim.springify().damping(easing.damping).mass(easing.mass).stiffness(easing.stiffness);
 
 export const getFadeOut = makeSpringEntry(FadeOut);
 export const getFadeIn = makeSpringEntry(FadeIn);
 export const getCharEnter = makeSpringEntry(FadeInDown);
 export const getCharExit = makeSpringEntry(FadeOutUp);
+
 
 
 export const zoomAnimationOut = (): LayoutAnimResult => {
@@ -85,9 +98,9 @@ export const zoomAnimationIn = (): LayoutAnimResult => {
 export const messageFocusAnimationOut = (): LayoutAnimResult => {
   "worklet";
   return {
-    initialValues: { transform: [{ scale: 1.1 }]},
+    initialValues: { transform: [{ scale: 1.1 }] },
     animations: {
-      transform: [{ scale: withSpring(1, springyMessage ) }],
+      transform: [{ scale: withSpring(1, springyMessage) }],
     },
   };
 };
@@ -95,9 +108,31 @@ export const messageFocusAnimationOut = (): LayoutAnimResult => {
 export const messageFocusAnimationIn = (): LayoutAnimResult => {
   "worklet";
   return {
-    initialValues: { transform: [{ scale: 0.95 }]},
+    initialValues: { transform: [{ scale: 0.95 }] },
     animations: {
-      transform: [{ scale: withSpring(1.1, springyMessage ) }],
+      transform: [{ scale: withSpring(1.1, springyMessage) }],
+    },
+  };
+};
+
+export const paperplaneAnimationOut = (): LayoutAnimResult => {
+  "worklet";
+  return {
+    initialValues: { transform: [{ translateX: 0 }, { translateY: 0 }], opacity: 1 },
+    animations: {
+      transform: [{ translateX: withSpring(26, quickSpring) }, { translateY: withSpring(-26, quickSpring) }],
+      opacity: withSpring(0, quickSpring),
+    },
+  };
+};
+
+export const paperplaneAnimationIn = (): LayoutAnimResult => {
+  "worklet";
+  return {
+    initialValues: { transform: [{ translateX: -26 }, { translateY: 26 }], opacity: 0 },
+    animations: {
+      transform: [{ translateX: withSpring(0, quickSpring) }, { translateY: withSpring(0, quickSpring) }],
+      opacity: withSpring(1, quickSpring),
     },
   };
 };
