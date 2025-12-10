@@ -17,10 +17,12 @@ export const styles = StyleSheet.create((theme) => ({
     pointerEvents: disabled ? "none" : "auto",
     alignItems: "center",
   }),
-  input: (icon: boolean) => ({
+  input: (icon: boolean, size: number) => ({
     flex: 1,
     paddingLeft: icon ? 0 : theme.spacing.lg,
-    paddingVertical: 10,
+    paddingVertical: (size - 20) / 2,
+    paddingRight: theme.spacing.lg,
+    textAlignVertical: 'center',
     height: "auto",
     color: theme.colors.text,
     fontSize: theme.fontSize.md,

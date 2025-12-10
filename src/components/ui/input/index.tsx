@@ -33,7 +33,7 @@ export default function Input({ size, ref, viewStyle, style, icon, button, disab
 				selectionColor={theme.colors.secondaryText}
 				keyboardAppearance='dark'
 				placeholderTextColor={theme.colors.secondaryText}
-				style={[styles.input(!!icon), style]}
+				style={[styles.input(!!icon, SIZE_MAP[size]), style]}
 				{...props}
 			/>
 
