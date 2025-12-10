@@ -1,0 +1,62 @@
+import { useWindowDimensions } from "react-native";
+import {
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+  interpolate,
+  AnimatedStyle,
+} from "react-native-reanimated";
+import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
+import { springyTabBar } from "@constants/animations";
+import useTabBarStore from "@stores/tabBar";
+import { useUnistyles } from "react-native-unistyles";
+
+type SearchButtonAnimation = {
+  animatedPressableStyle: AnimatedStyle;
+  animatedIconStyle: AnimatedStyle;
+  pressableOpacity: (toFull: boolean) => void;
+  searchWidth: number;
+  isDismiss: boolean;
+};
+
+export default function useSearchButtonAnimation(): SearchButtonAnimation {
+  const opacity = useSharedValue(1);
+  const defaultWidth = useSharedValue(54);
+  const { width } = useWindowDimensions();
+  const { theme } = useUnistyles();
+  const { progress: keyboardProgress } = useReanimatedKeyboardAnimation();
+  const { isSearch, isSearchFocused, searchValue } = useTabBarStore();
+
+  const searchWidth = width - 48 - theme.spacing.md;
+  const isDismiss = isSearchFocused || searchValue.trim().length > 0;
+
+  defaultWidth.value = isSearch ? searchWidth - theme.spacing.xxxl * 2 : 54;
+
+  const animatedPressableStyle = useAnimatedStyle(() => {
+    const baseWidth = isDismiss ? defaultWidth.value - 48 - theme.spacing.md : defaultWidth.value;
+
+    return {
+      opacity: opacity.value,
+      width: interpolate(keyboardProgress.value, [0, 1], [baseWidth, searchWidth - theme.spacing.lg * 2]),
+      height: withSpring(isSearch ? 48 : 54, springyTabBar),
+    };
+  });
+
+  const animatedIconStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ scale: withSpring(isSearch ? 24 / 30 : 1, springyTabBar) }],
+    };
+  });
+
+  const pressableOpacity = (toFull = true) => {
+    opacity.value = withSpring(toFull ? 1 : 0.8, springyTabBar);
+  };
+
+  return {
+    animatedPressableStyle,
+    animatedIconStyle,
+    pressableOpacity,
+    searchWidth,
+    isDismiss,
+  };
+}
