@@ -22,6 +22,7 @@ export default function SettingsScreen() {
       <Animated.FlatList
         ref={listRef}
         onScroll={scrollHandler}
+        showsVerticalScrollIndicator={false}
         scrollEventThrottle={16}
         data={[1,2,3,4,5,6,7,8,9]}
         renderItem={({ item }) => (

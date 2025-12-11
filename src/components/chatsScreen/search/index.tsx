@@ -57,7 +57,7 @@ export default function Search(): React.JSX.Element {
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps='handled'
         contentContainerStyle={{ paddingBottom: tabBarHeight, paddingTop: headerHeight }}
-        scrollIndicatorInsets={{ top: 0, bottom: tabBarHeight - insets.realBottom }}
+        scrollIndicatorInsets={{ top: headerHeight - insets.realTop, bottom: tabBarHeight - insets.realBottom }}
         data={users}
         renderItem={renderItem}
       />

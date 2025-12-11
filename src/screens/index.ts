@@ -1,4 +1,4 @@
-export { default as ChatsScreen } from './Chats'
+export { default as ChatsScreen } from './chats'
 export { default as SettingsScreen } from './settings'
 export { default as ChatScreen } from './chat'
 export { default as WelcomeScreen } from './auth/welcome'
