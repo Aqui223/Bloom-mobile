@@ -1,7 +1,7 @@
 import React from "react";
 import { styles } from "./Footer.styles";
 import { layoutAnimationSpringy } from "@constants/animations";
-import { useUnistyles } from "react-native-unistyles";
+import { StyleSheet, useUnistyles } from "react-native-unistyles";
 import { BlurView } from "expo-blur";
 import Animated from "react-native-reanimated";
 import ReplyBlock from "../replyBlock";
@@ -23,7 +23,7 @@ export default function MessageInput({ setValue, hasValue, value }: MessageInput
     <Animated.View style={styles.inputWrapper} layout={layoutAnimationSpringy}>
       <AnimatedBlurView
         layout={layoutAnimationSpringy}
-        style={styles.blur}
+        style={StyleSheet.absoluteFill}
         intensity={40}
         tint='systemChromeMaterialDark'
       />

@@ -19,11 +19,13 @@ export const styles = StyleSheet.create(theme => ({
     borderCurve: "continuous",
     zIndex: 1,
   },
-  blur: {
-    top: 0,
+  buttonBackground: {
+    backgroundColor: theme.colors.primary,
+    borderRadius: theme.radius.full,
+    position: "absolute",
     left: 0,
-    bottom: 0,
     right: 0,
-    position: 'absolute',
-  },
+    bottom: 0,
+    top: 0,
+  }
 }));

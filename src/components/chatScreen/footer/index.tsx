@@ -2,12 +2,10 @@ import { styles } from "./Footer.styles";
 import { useInsets } from "@hooks";
 import Icon from "@components/ui/Icon";
 import { useUnistyles } from "react-native-unistyles";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Animated, {
   interpolate,
-  interpolateColor,
   useAnimatedStyle,
-  useSharedValue,
   withSpring,
 } from "react-native-reanimated";
 import {
@@ -35,7 +33,6 @@ export default function Footer({ onSend, onLayout }: FooterProps) {
   const { theme } = useUnistyles();
   const { progress: keyboardProgress } = useReanimatedKeyboardAnimation();
   const [value, setValue] = useState<string>("");
-  const sendAnimationProgress = useSharedValue(0);
   const { replyMessage, setReplyMessage } = useChatScreenStore();
 
   const hasValue: boolean = value.trim() !== "";
@@ -55,19 +52,12 @@ export default function Footer({ onSend, onLayout }: FooterProps) {
     };
   });
 
-  const animatedButtonStyle = useAnimatedStyle(
+  const animatedButtonBackgroundStyle = useAnimatedStyle(
     (): ViewStyle => ({
-      backgroundColor: interpolateColor(
-        sendAnimationProgress.value,
-        [0, 1],
-        [theme.colors.foregroundBlur, theme.colors.primary]
-      ),
+      transform: [{ scale: withSpring(hasValue ? 1 : 0, quickSpring)}],
+      opacity: withSpring(hasValue ? 1 : 0, quickSpring)
     })
   );
-
-  useEffect(() => {
-    sendAnimationProgress.value = withSpring(hasValue ? 1 : 0, quickSpring);
-  }, [hasValue]);
 
   return (
     <Animated.View
@@ -90,13 +80,14 @@ export default function Footer({ onSend, onLayout }: FooterProps) {
         entering={zoomAnimationIn}
         onPress={handleSend}
         blur
-        style={animatedButtonStyle}
         variant='icon'
       >
         {hasValue ? (
+          <>
+          <Animated.View style={[animatedButtonBackgroundStyle, styles.buttonBackground]}/>
           <Animated.View key="paperplane" entering={paperplaneAnimationIn} exiting={paperplaneAnimationOut}>
             <Icon icon='paperplane' size={26} color={theme.colors.white} />
-          </Animated.View>
+          </Animated.View></>
         ) : (
           <Animated.View key="waveform" entering={zoomAnimationIn} exiting={zoomAnimationOut}>
             <Icon icon='waveform' size={26} color={theme.colors.white} />

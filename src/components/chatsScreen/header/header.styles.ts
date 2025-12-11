@@ -7,7 +7,7 @@ export const styles = StyleSheet.create((theme) => ({
     zIndex: 2,
     width: "100%",
     paddingHorizontal: theme.spacing.lg,
-    paddingBottom: theme.spacing.lg,
+    paddingBottom: theme.spacing.md,
     alignItems: "center",
     gap: theme.spacing.lg,
   },
