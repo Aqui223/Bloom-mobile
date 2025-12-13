@@ -82,7 +82,9 @@ export default function MessagesProvider({ children }) {
                                 ...decrypted,
                                 chat_id: message?.chat_id,
                                 id: message?.id,
-                                reply_to: reply_to_json
+                                reply_to: reply_to_json,
+                                nonce: message?.nonce,
+                                raw: message
                             }]);
 
                             // add decrypted message to local storage
@@ -94,6 +96,7 @@ export default function MessagesProvider({ children }) {
                                     author_id: decrypted?.from_id,
                                     date: new Date(),
                                     seen: null,
+                                    nonce: message?.nonce,
                                     reply_to: reply_to_json
                                 }, Realm.UpdateMode.Modified);
                             });
@@ -115,7 +118,8 @@ export default function MessagesProvider({ children }) {
                                 ...decrypt(message, myKeys, recipientKeys, false),
                                 chat_id: message?.chat_id,
                                 id: message?.id,
-                                reply_to: reply_to_json
+                                reply_to: reply_to_json,
+                                nonce: message?.nonce,
                             };
                         } catch (error) {
                             // if kyber message sent by user (current session user) decrypt using only his keys
@@ -125,7 +129,8 @@ export default function MessagesProvider({ children }) {
                                         ...decrypt(message, myKeys, myKeys, true),
                                         chat_id: message?.chat_id,
                                         id: message?.id,
-                                        reply_to: reply_to_json
+                                        reply_to: reply_to_json,
+                                        nonce: message?.nonce,
                                     };
                                 } catch { }
                             }
@@ -143,10 +148,11 @@ export default function MessagesProvider({ children }) {
                                 author_id: decrypted?.from_id,
                                 date: new Date(),
                                 seen: null,
+                                nonce: message?.nonce,
                                 reply_to: reply_to_json
                             }, Realm.UpdateMode.Modified);
                         });
-                    } catch {}
+                    } catch { }
                 }
             });
         }

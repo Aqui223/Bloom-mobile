@@ -9,11 +9,22 @@ export default function (mmkv, setMessages, newMessages, chat_id, messages, clea
         const filtered = filterMessagesByChatId(mmkv, chat_id, newMessages);
 
         if (filtered.length > 0) {
-            setMessages(prev => mergeAndSort(prev, filtered));
+            const newFilteredMessages = filtered.map(newMessage => {
+                const isMessageAlreadyExists = messages.find(message => message?.nonce === newMessage?.nonce);
+                const { raw, ...message } = newMessage;
+
+                if (isMessageAlreadyExists) {
+                    return { ...isMessageAlreadyExists, ...message, isFake: false, nonce: raw?.nonce };
+                }
+
+                return { ...message, nonce: raw?.nonce };
+            })
+            
+            setMessages(prev => mergeAndSort(prev, newFilteredMessages));
         }
 
         // clear context messages history
         clearNewMessages();
-    } catch {}
+    } catch { }
 
 }

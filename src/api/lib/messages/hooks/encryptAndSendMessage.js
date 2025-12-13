@@ -2,10 +2,10 @@ import sendMessage from "@api/lib/sendMessage";
 import mergeAndSort from "@api/lib/utils/mergeAndSort";
 import getReplyToMessageFromStorage from "../getReplyToMessageFromStorage";
 
-export default function (realm, mmkv, ws, content, reply_to, messages, setMessages, chat_id) {
+export default async function (realm, mmkv, ws, content, reply_to, messages, setMessages, chat_id) {
     try {
         // send message socket
-        sendMessage(content, reply_to, chat_id, messages?.length, ws).catch(console.log);
+        const nonce = await sendMessage(content, reply_to, chat_id, messages?.length, ws).catch(console.log);
 
         let _reply_to;
         if (reply_to) {
@@ -27,11 +27,14 @@ export default function (realm, mmkv, ws, content, reply_to, messages, setMessag
             seen: _reply_to?.seen
         } : null
 
+        const lastId = messages?.length > 0 ? messages[messages.length - 1].id : 0;
+
         // payload
         const newMsg = {
-            id: messages[messages.length - 1]?.id + 1,
+            id: lastId + 1,
             isMe: true,
             isFake: true,
+            nonce,
             chat_id,
             content,
             author_id: parseInt(mmkv?.getString("user_id")),

@@ -44,7 +44,7 @@ export default function ChatScreen({ route }: ChatScreenProps): React.JSX.Elemen
 		({ item }: { item: MessageInterface }) => {
 			return (
 				<Message
-					key={item?.id}
+					key={item?.nonce}
 					seen={seenId === item?.id}
 					isLast={lastMessageId === item?.id}
 					message={item}
@@ -57,7 +57,7 @@ export default function ChatScreen({ route }: ChatScreenProps): React.JSX.Elemen
 	);
 
 	const keyExtractor = useCallback((item: MessageInterface) => {
-		return String(item.id);
+		return String(item.nonce);
 	}, []);
 
 	return (

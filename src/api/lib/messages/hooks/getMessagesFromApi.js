@@ -55,6 +55,7 @@ export default async function (realm, mmkv, setMessages, chat_id) {
                 chat_id: message?.chat_id,
                 id: message?.id,
                 seen: message?.seen,
+                nonce: message?.nonce,
                 reply_to: reply_to ? {
                     id: message?.reply_to?.id,
                     chat_id: message?.chat_id,
@@ -73,6 +74,7 @@ export default async function (realm, mmkv, setMessages, chat_id) {
                         chat_id: message?.chat_id,
                         id: message?.id,
                         seen: message?.seen,
+                        nonce: message?.nonce,
                         reply_to: reply_to ? {
                             id: message?.reply_to?.id,
                             chat_id: message?.chat_id,
@@ -106,6 +108,7 @@ export default async function (realm, mmkv, setMessages, chat_id) {
                     author_id: message?.from_id,
                     date: new Date(message?.date),
                     seen: null,
+                    nonce: message?.nonce,
                     reply_to: message?.reply_to
                 },
                 Realm.UpdateMode.Modified

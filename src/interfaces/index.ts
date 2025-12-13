@@ -8,6 +8,7 @@ export interface MessageInterface {
   author_id: number,
   chat_id: number,
   seen?: Date,
+  nonce?: string,
   reply_to?: MessageInterface,
 }
 

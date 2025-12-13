@@ -60,7 +60,7 @@ export default function (chat_id) {
 
     useEffect(() => {
         getNewMessagesFromMessageSocket(mmkv, setMessages, newMessages, chat_id, messages, clearNewMessages);
-    }, [newMessages, chat_id]);
+    }, [newMessages, chat_id, messages]);
 
     //
     // GET CHANGES OF SEEN MESSAGES STATUS

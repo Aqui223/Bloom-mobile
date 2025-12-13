@@ -15,14 +15,14 @@ export default async function (content, reply_to, chat_id, count, ws) {
         // get chat from mmkv storage
         const chatData = await getChatFromStorage(chat_id);
 
-        let message;
+        let encrypted;
 
         // if recipient dont assigned keys use skid soft mode
         if (!chatData?.keys?.recipient?.kyberPublicKey) {
             try {
                 // skid soft mode (or serversidekey = ssk) encryption
                 // need message content, current user id, chat key
-                const encrypted = sskEncrypt(content, parseInt(storage?.getString("user_id")), chatData?.key);
+                encrypted = sskEncrypt(content, parseInt(storage?.getString("user_id")), chatData?.key);
 
                 // send message socket
                 ws.send(JSON.stringify({
@@ -34,7 +34,7 @@ export default async function (content, reply_to, chat_id, count, ws) {
                     encryption_type: "server"
                 }));
 
-                return
+                return encrypted?.nonce;
             } catch (error) {
                 return
             }
@@ -42,7 +42,7 @@ export default async function (content, reply_to, chat_id, count, ws) {
 
         // IF HEAVY SKID ENCRYPTION TYPE
         // encrypt message
-        const encrypted = encrypt(content, { ...chatData?.keys?.my, id: parseInt(storage.getString("user_id")) }, chatData?.keys?.recipient, count);
+        encrypted = encrypt(content, { ...chatData?.keys?.my, id: parseInt(storage.getString("user_id")) }, chatData?.keys?.recipient, count);
 
         // send encrypted message socket
         ws.send(JSON.stringify({
@@ -53,7 +53,7 @@ export default async function (content, reply_to, chat_id, count, ws) {
             ...encrypted
         }));
 
-        return
+        return encrypted?.nonce;
     } catch {
     }
 }
