@@ -47,7 +47,7 @@ export default function Chat({ chat, isSearch = false }: ChatProps) {
       return navigation.navigate(ROUTES.chat, { chat: { ...chat, id: existingChat.id } });
     }
 
-    ws.send(JSON.stringify({ type: "create_chat", recipient: chat?.id }));
+    ws.send(JSON.stringify({ type: "create_chat", recipient: targetId }));
 
     const handleMessage = (event: MessageEvent) => {
       try {
