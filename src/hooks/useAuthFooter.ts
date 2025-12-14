@@ -2,7 +2,7 @@ import { useCallback, useMemo } from "react";
 import axios from "axios";
 import useAuthStore from "@stores/auth";
 import useStorageStore from "@stores/storage";
-import { API_URL } from "@constants/Api";
+import { API_URL } from "@constants/api";
 import { ROUTES } from "@constants/routes";
 import { decryptKeys, encryptKeys, hashPassword } from "@lib/skid/encryptKeys";
 import { Buffer } from '@craftzdog/react-native-buffer';

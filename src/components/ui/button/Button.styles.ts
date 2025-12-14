@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native-unistyles";
-import { SIZE_MAP } from ".";
+import { SIZE_MAP } from "./constats";
 
 type ButtonStyleProps = {
 	size: number;

@@ -3,7 +3,7 @@ import useStorageStore from "@stores/storage";
 import axios from "axios";
 import { useState } from "react";
 import { InAppBrowser } from 'react-native-inappbrowser-reborn'
-import { API_URL } from "@constants/Api";
+import { API_URL } from "@constants/api";
 import useTokenTriggerStore from "@stores/tokenTriggerStore";
 
 export default function () {

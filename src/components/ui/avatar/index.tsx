@@ -1,4 +1,4 @@
-import { CDN_URL } from "@constants/Api";
+import { CDN_URL } from "@constants/api";
 import { EMOJI_AVATARS } from "@constants/emojiAvatars";
 import FastImage, { ImageStyle as FastImageStyle } from "@d11/react-native-fast-image";
 import React, { useMemo } from "react";

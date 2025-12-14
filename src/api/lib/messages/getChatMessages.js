@@ -1,6 +1,6 @@
 import axios from "axios";
 import { createSecureStorage } from "@lib/storage";
-import { API_URL } from "@constants/Api";
+import { API_URL } from "@constants/api";
 
 export default async function (chat_id, after_id = 0) {
   try {

@@ -4,7 +4,7 @@ import { styles } from "./EmptyModal.styles";
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
 import { zoomAnimationIn, zoomAnimationOut } from "@constants/animations";
-import { Icon } from "@components/ui";
+import Icon from "../Icon";
 import { ICONS } from "@constants/icons";
 import { useUnistyles } from "react-native-unistyles";
 import { staticColor } from "unistyles";

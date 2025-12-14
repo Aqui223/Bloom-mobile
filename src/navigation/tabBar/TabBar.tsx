@@ -41,7 +41,7 @@ export default function TabBar({ state, navigation }) {
 
     if (tabBarWidth.value <= 1 && !isContainer) tabBarWidth.value = layout.width;
 
-    if (tabBarHeight === 0 && isContainer) setTabBarHeight(layout.height);
+    if (tabBarHeight <= 1 && isContainer) setTabBarHeight(layout.height);
   }, []);
 
   const onPress = useCallback((route, focused: boolean) => {

@@ -1,6 +1,6 @@
 import { encryptKeys } from "@lib/skid/encryptKeys";
 import getKeys from "./getKeys";
-import { API_URL } from "@constants/Api";
+import { API_URL } from "@constants/api";
 import axios from "axios";
 
 export default async function (mmkv, keys) {

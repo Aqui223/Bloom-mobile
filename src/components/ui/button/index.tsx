@@ -6,8 +6,8 @@ import Animated, { useAnimatedStyle, useSharedValue, withSpring } from "react-na
 import { quickSpring } from "@constants/easings";
 import { layoutAnimation } from "@constants/animations";
 import { BlurView } from "expo-blur";
+import { SIZE_MAP, Size } from "./constats";
 
-export type Size = "sm" | "md" | "lg" | "xl";
 type Variant = "icon" | "text" | "textIcon";
 
 type ButtonProps = {
@@ -22,12 +22,6 @@ type ButtonProps = {
 	blur?: boolean;
 } & React.ComponentProps<typeof Pressable>;
 
-export const SIZE_MAP: Record<Size, number> = {
-	sm: 40,
-	md: 44,
-	lg: 48,
-	xl: 52,
-};
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { API_URL } from "@constants/Api";
+import { API_URL } from "@constants/api";
 
 export default function useUserSearch(query = "") {
     const [loading, setLoading] = useState(false);

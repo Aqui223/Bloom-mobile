@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import axios from "axios";
-import { API_URL } from "@constants/Api";
+import { API_URL } from "@constants/api";
 import { createSecureStorage } from "@lib/storage";
 import { ROUTES } from "@constants/routes";
 import { useNavigation } from "@react-navigation/native";
