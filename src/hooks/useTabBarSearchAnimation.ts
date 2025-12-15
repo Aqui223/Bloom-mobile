@@ -5,6 +5,7 @@ import {
   withSpring,
   interpolate,
   AnimatedStyle,
+  runOnJS,
 } from "react-native-reanimated";
 import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
 import { springyTabBar } from "@constants/animations";
@@ -31,7 +32,6 @@ export default function useSearchButtonAnimation(): SearchButtonAnimation {
   const [isLayoutAnimation, setIsLayoutAnimation] = useState<boolean>(false);
 
   const searchWidth = width - 48 - theme.spacing.md;
-  let layoutTimer: ReturnType<typeof setTimeout>;
   const isDismiss = isSearchFocused || searchValue.trim().length > 0;
 
   const animatedPressableStyle = useAnimatedStyle(() => {
@@ -55,15 +55,10 @@ export default function useSearchButtonAnimation(): SearchButtonAnimation {
   };
 
   useEffect(() => {
-    defaultWidth.value = withSpring(isSearch ? searchWidth - theme.spacing.xxxl * 2 : 54, springyTabBar);
-    if (isSearch) {
-      layoutTimer = setTimeout(() => {
-        setIsLayoutAnimation(true);
-      }, 300);
-    } else {
-      clearTimeout(layoutTimer);
-      setIsLayoutAnimation(false);
-    }
+    setIsLayoutAnimation(false);
+    defaultWidth.value = withSpring(isSearch ? searchWidth - theme.spacing.xxxl * 2 : 54, springyTabBar, (finished: boolean) => {
+      if (finished) runOnJS(setIsLayoutAnimation)(true);
+    });
   }, [isSearch]);
 
   return {
