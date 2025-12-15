@@ -1,6 +1,9 @@
 import { styles } from "./Search.styles";
-import Animated, { useAnimatedScrollHandler, useSharedValue, withSpring } from "react-native-reanimated";
-import useUsersSearch from "@api/hooks/useUsersSearch";
+import Animated, {
+  useAnimatedScrollHandler,
+  useSharedValue,
+} from "react-native-reanimated";
+import useUsersSearch from "src/hooks/api/useUsersSearch";
 import useTabBarStore from "@stores/tabBar";
 import { getFadeIn, getFadeOut } from "@constants/animations";
 import { AnimatedLegendList } from "@legendapp/list/reanimated";
@@ -12,13 +15,17 @@ import SearchHeader from "./header";
 import { EmptyModal } from "@components/ui";
 
 export default function Search(): React.JSX.Element {
-  const { isSearch, searchValue, tabBarHeight, isSearchFocused } = useTabBarStore();
+  const { isSearch, searchValue, tabBarHeight } = useTabBarStore();
   const insets = useInsets();
   const scrollY = useSharedValue<number>(0);
   const [headerHeight, setHeaderHeight] = useState<number>(0);
-  const { users, loading, error, addPage } = useUsersSearch(searchValue);
+  const { users, status, loadMore } = useUsersSearch(searchValue);
 
-  const isSearchValue = searchValue.trim().length > 0;
+  const ss = ""
+
+  const isStoryEmpty: boolean = !!ss && isSearch;
+  const isEmpty: boolean = status === "empty" || status === "error";
+
 
   const keyExtractor = useCallback((item: SearchUser) => {
     return String(item.id);
@@ -37,20 +44,37 @@ export default function Search(): React.JSX.Element {
   return isSearch ? (
     <Animated.View entering={getFadeIn()} exiting={getFadeOut()} style={styles.container}>
       <SearchHeader scrollY={scrollY} setHeaderHeight={setHeaderHeight} />
-       <AnimatedLegendList
+      <AnimatedLegendList
         key='search'
         onScroll={scrollHandler}
-        onEndReached={() => addPage()}
+        onEndReached={() => loadMore()}
         keyExtractor={keyExtractor}
         style={styles.list}
-        keyboardDismissMode="on-drag"
+        keyboardDismissMode='on-drag'
         keyboardShouldPersistTaps='handled'
         contentContainerStyle={{ paddingBottom: tabBarHeight, paddingTop: headerHeight }}
-        scrollIndicatorInsets={{ top: headerHeight - insets.realTop, bottom: tabBarHeight - insets.realBottom }}
+        scrollIndicatorInsets={{
+          top: headerHeight - insets.realTop,
+          bottom: tabBarHeight - insets.realBottom,
+        }}
         data={users}
         renderItem={renderItem}
       />
-      <EmptyModal text="В истории поиска пусто... Введите свой первый запрос!" icon="magnifyingglass" color="primary" visible={!isSearchValue}/>
+      {isStoryEmpty ? (
+        <EmptyModal
+          key='emptyStory'
+          text='В истории поиска пусто... Введите свой первый запрос!'
+          icon='magnifyingglass'
+          color='primary'
+        />
+      ) : isEmpty ? (
+        <EmptyModal
+          key='emptyResult'
+          text={`К сожалению... по запросу "${searchValue}" ничего не найдено. Попробуйте снова`}
+          icon='eye.slashed'
+          color='red'
+        />
+      ) : null}
     </Animated.View>
   ) : null;
 }

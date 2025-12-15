@@ -15,7 +15,6 @@ type EmptyModalProps = {
   icon?: keyof typeof ICONS;
   iconElement?: React.JSX.Element;
   color: keyof typeof staticColor;
-  visible: boolean;
 };
 
 export default function EmptyModal({
@@ -24,7 +23,6 @@ export default function EmptyModal({
   icon,
   iconElement,
   color,
-  visible = true,
   ...props
 }: EmptyModalProps): React.JSX.Element {
   const { theme } = useUnistyles();
@@ -35,7 +33,6 @@ export default function EmptyModal({
   });
 
   return (
-    visible && (
       <Animated.View style={[styles.wrapper, animatedStyles]}>
         <Animated.View
           entering={reversedZoomAnimationIn}
@@ -53,6 +50,5 @@ export default function EmptyModal({
           <Text style={styles.title}>{text}</Text>
         </Animated.View>
       </Animated.View>
-    )
   );
 }

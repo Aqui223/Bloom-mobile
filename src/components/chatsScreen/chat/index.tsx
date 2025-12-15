@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo, useCallback } from "react";
-import { View, Text, Pressable } from "react-native";
+import { View, Text, Pressable as Pressable } from "react-native";
 import Animated, { LayoutAnimationConfig } from "react-native-reanimated";
 import { useUnistyles } from "react-native-unistyles";
 import { useNavigation } from "@react-navigation/native";
@@ -9,7 +9,13 @@ import { Avatar } from "@components/ui";
 import { useChatList } from "@api/providers/ChatsContext";
 import { useWebSocket } from "@api/providers/WebSocketContext";
 import { ROUTES } from "@constants/routes";
-import { getCharEnter, getCharExit, layoutAnimationSpringy, springyChar } from "@constants/animations";
+import {
+  getCharEnter,
+  getCharExit,
+  getFadeIn,
+  layoutAnimationSpringy,
+  springyChar,
+} from "@constants/animations";
 import { styles } from "./Chat.styles";
 import type { ChatView } from "@interfaces";
 
@@ -17,6 +23,8 @@ type ChatProps = {
   chat: ChatView;
   isSearch?: boolean;
 };
+
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 export default function Chat({ chat, isSearch = false }: ChatProps) {
   const { theme } = useUnistyles();
@@ -28,7 +36,10 @@ export default function Chat({ chat, isSearch = false }: ChatProps) {
   const recipient = chat?.recipient;
   const targetId = recipient?.id || chat?.id;
 
-  const timeChars = !isSearch ? useMemo(() => chat?.lastMessage?.time?.split("") || [], [chat?.lastMessage?.time]) : null;
+  const timeChars = useMemo(
+    () => (!isSearch ? chat?.lastMessage?.time?.split("") || [] : null),
+    [chat?.lastMessage?.time]
+  );
 
   useEffect(() => {
     createSecureStorage("user-storage").then(async (storage) => {
@@ -64,12 +75,11 @@ export default function Chat({ chat, isSearch = false }: ChatProps) {
   }, [chats, userId, targetId, chat, navigation, ws]);
 
   return (
-    <LayoutAnimationConfig skipEntering skipExiting>
-      <Pressable onPress={navigateToChatScreen} style={styles.chat}>
+    <AnimatedPressable entering={getFadeIn()} onPress={navigateToChatScreen} style={styles.chat}>
+      <LayoutAnimationConfig skipEntering skipExiting>
         <View style={styles.avatarWrapper}>
           <Avatar size={!isSearch ? "lg" : "md"} image={chat?.avatar} username={recipient?.username} />
         </View>
-
         <View style={styles.content}>
           <View style={styles.headerRow}>
             <View style={styles.nameWrapper}>
@@ -109,8 +119,8 @@ export default function Chat({ chat, isSearch = false }: ChatProps) {
           ) : (
             <Text style={styles.secondary}>@{recipient?.username}</Text>
           )}
-        </View>
-      </Pressable>
-    </LayoutAnimationConfig>
+        </View>{" "}
+      </LayoutAnimationConfig>
+    </AnimatedPressable>
   );
 }
