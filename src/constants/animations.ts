@@ -95,6 +95,17 @@ export const zoomAnimationIn = (): LayoutAnimResult => {
   };
 };
 
+export const reversedZoomAnimationIn = (): LayoutAnimResult => {
+  "worklet";
+  return {
+    initialValues: { opacity: 0, transform: [{ scale: 1.25 }] },
+    animations: {
+      opacity: withSpring(1, quickSpring),
+      transform: [{ scale: withSpring(1, quickSpring) }],
+    },
+  };
+};
+
 export const messageFocusAnimationOut = (): LayoutAnimResult => {
   "worklet";
   return {

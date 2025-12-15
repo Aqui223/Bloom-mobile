@@ -3,7 +3,7 @@ import { StyleProp, Text, View, ViewStyle } from "react-native";
 import { styles } from "./EmptyModal.styles";
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
-import { zoomAnimationIn, zoomAnimationOut } from "@constants/animations";
+import { getFadeOut, reversedZoomAnimationIn } from "@constants/animations";
 import Icon from "../Icon";
 import { ICONS } from "@constants/icons";
 import { useUnistyles } from "react-native-unistyles";
@@ -38,8 +38,8 @@ export default function EmptyModal({
     visible && (
       <Animated.View style={[styles.wrapper, animatedStyles]}>
         <Animated.View
-          entering={zoomAnimationIn}
-          exiting={zoomAnimationOut}
+          entering={reversedZoomAnimationIn}
+          exiting={getFadeOut()}
           style={[styles.modal, style]}
           {...props}
         >
