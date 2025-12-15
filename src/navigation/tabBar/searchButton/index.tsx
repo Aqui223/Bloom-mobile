@@ -27,6 +27,7 @@ export default function TabBarSearchButton(): React.JSX.Element {
     animatedIconStyle,
     pressableOpacity,
     isDismiss,
+    isLayoutAnimation
   } = useSearchButtonAnimation();
 
   return (
@@ -36,7 +37,7 @@ export default function TabBarSearchButton(): React.JSX.Element {
         onPress={() => setIsSearch(!isSearch)}
         onTouchStart={() => pressableOpacity(false)}
         onTouchEnd={() => pressableOpacity(true)}
-        // layout={customLayout}
+        layout={isLayoutAnimation ? customLayout : null}
       >
         <BlurView style={StyleSheet.absoluteFill} intensity={40} tint="systemChromeMaterialDark" />
 
@@ -52,13 +53,12 @@ export default function TabBarSearchButton(): React.JSX.Element {
           <Button
             size="lg"
             variant="icon"
-            style={styles.cancelButton}
+            blur
             onPress={() => {
               ref.current?.blur();
               setSearchValue("");
             }}
           >
-            <BlurView style={StyleSheet.absoluteFill} intensity={40} tint="systemChromeMaterialDark" />
             <Icon icon="x" size={26} color={theme.colors.text} />
           </Button>
         </Animated.View>

@@ -10,7 +10,7 @@ import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller
 import { springyTabBar } from "@constants/animations";
 import useTabBarStore from "@stores/tabBar";
 import { useUnistyles } from "react-native-unistyles";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 type SearchButtonAnimation = {
   animatedPressableStyle: AnimatedStyle;
@@ -18,6 +18,7 @@ type SearchButtonAnimation = {
   pressableOpacity: (toFull: boolean) => void;
   searchWidth: number;
   isDismiss: boolean;
+  isLayoutAnimation: boolean;
 };
 
 export default function useSearchButtonAnimation(): SearchButtonAnimation {
@@ -27,9 +28,10 @@ export default function useSearchButtonAnimation(): SearchButtonAnimation {
   const { theme } = useUnistyles();
   const { progress: keyboardProgress } = useReanimatedKeyboardAnimation();
   const { isSearch, isSearchFocused, searchValue } = useTabBarStore();
+  const [isLayoutAnimation, setIsLayoutAnimation] = useState<boolean>(false);
 
   const searchWidth = width - 48 - theme.spacing.md;
-
+  let layoutTimer: ReturnType<typeof setTimeout>;
   const isDismiss = isSearchFocused || searchValue.trim().length > 0;
 
   const animatedPressableStyle = useAnimatedStyle(() => {
@@ -53,8 +55,16 @@ export default function useSearchButtonAnimation(): SearchButtonAnimation {
   };
 
   useEffect(() => {
-      defaultWidth.value = withSpring(isSearch ? searchWidth - theme.spacing.xxxl * 2 : 54, springyTabBar);
-  }, [isSearch])
+    defaultWidth.value = withSpring(isSearch ? searchWidth - theme.spacing.xxxl * 2 : 54, springyTabBar);
+    if (isSearch) {
+      layoutTimer = setTimeout(() => {
+        setIsLayoutAnimation(true);
+      }, 300);
+    } else {
+      clearTimeout(layoutTimer);
+      setIsLayoutAnimation(false);
+    }
+  }, [isSearch]);
 
   return {
     animatedPressableStyle,
@@ -62,5 +72,6 @@ export default function useSearchButtonAnimation(): SearchButtonAnimation {
     pressableOpacity,
     searchWidth,
     isDismiss,
+    isLayoutAnimation,
   };
 }

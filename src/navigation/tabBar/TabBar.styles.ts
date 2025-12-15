@@ -55,7 +55,4 @@ export const styles = StyleSheet.create((theme) => ({
     height: 48,
     paddingLeft: 10,
   },
-  cancelButton: {
-    backgroundColor: theme.colors.foregroundBlur,
-  },
 }));
