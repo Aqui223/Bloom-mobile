@@ -147,3 +147,25 @@ export const paperplaneAnimationIn = (): LayoutAnimResult => {
     },
   };
 };
+
+export const charAnimationOut = (): LayoutAnimResult => {
+  "worklet";
+  return {
+    initialValues: { opacity: 1, transform: [{ scale: 1 }, { translateY: "0%" }] },
+    animations: {
+      opacity: withSpring(0, quickSpring),
+      transform: [{ scale: withSpring(0.5, quickSpring) }, {translateY: withSpring("100%", quickSpring)}],
+    },
+  };
+};
+
+export const charAnimationIn = (): LayoutAnimResult => {
+  "worklet";
+  return {
+    initialValues: { opacity: 0, transform: [{ scale: 0.5 }, { translateY: "-100%" }] },
+    animations: {
+      opacity: withSpring(1, quickSpring),
+      transform: [{ scale: withSpring(1, quickSpring) }, {translateY: withSpring("0%", quickSpring)}],
+    },
+  };
+};

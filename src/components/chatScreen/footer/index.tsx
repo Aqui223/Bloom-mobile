@@ -6,13 +6,11 @@ import { useState } from "react";
 import Animated, {
   interpolate,
   useAnimatedStyle,
-  withSpring,
 } from "react-native-reanimated";
 import {
   layoutAnimationSpringy,
   paperplaneAnimationIn,
   paperplaneAnimationOut,
-  quickSpring,
 } from "@constants/animations";
 import { Button, GradientBlur } from "@components/ui";
 import { zoomAnimationIn, zoomAnimationOut } from "@constants/animations";
@@ -52,13 +50,6 @@ export default function Footer({ onSend, onLayout }: FooterProps) {
     };
   });
 
-  const animatedButtonBackgroundStyle = useAnimatedStyle(
-    (): ViewStyle => ({
-      transform: [{ scale: withSpring(hasValue ? 1 : 0, quickSpring)}],
-      opacity: withSpring(hasValue ? 1 : 0, quickSpring)
-    })
-  );
-
   return (
     <Animated.View
       onLayout={(e) => onLayout(e.nativeEvent.layout.height)}
@@ -84,7 +75,7 @@ export default function Footer({ onSend, onLayout }: FooterProps) {
       >
         {hasValue ? (
           <>
-          <Animated.View style={[animatedButtonBackgroundStyle, styles.buttonBackground]}/>
+          <Animated.View entering={zoomAnimationIn} style={ styles.buttonBackground}/>
           <Animated.View key="paperplane" entering={paperplaneAnimationIn} exiting={paperplaneAnimationOut}>
             <Icon icon='paperplane' size={26} color={theme.colors.white} />
           </Animated.View></>
