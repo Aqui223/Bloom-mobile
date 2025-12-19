@@ -8,7 +8,7 @@ interface ChatItemProps {
 	userId: string | number;
 }
 
-export default function ChatItem({ item, userId }: ChatItemProps) {
+export default function ChatItem({ item, userId }: ChatItemProps): React.JSX.Element {
 	const numericUserId = typeof userId === "string" ? parseInt(userId) : userId;
 
 	const recipient = useMemo(() => item.members?.find(member => member.id !== numericUserId), [item, item.members, numericUserId]);
@@ -32,7 +32,7 @@ export default function ChatItem({ item, userId }: ChatItemProps) {
 			lastMessage,
 			recipient,
 			id: item.id,
-			avatar: "https://i.pinimg.com/736x/e9/83/3b/e9833b429842c971097ab6e9ad3bf6ca.jpg",
+			avatar: "",
 			unreadCount: 0,
 		}),
 		[item.id, lastMessage, recipient]

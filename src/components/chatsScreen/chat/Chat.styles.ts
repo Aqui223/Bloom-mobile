@@ -6,7 +6,7 @@ export const styles = StyleSheet.create(theme => ({
     paddingRight: theme.spacing.lg,
     alignItems: 'center',
     paddingLeft: theme.spacing.lg,
-    gap: theme.spacing.md
+    gap: theme.spacing.lg
   },
   avatarWrapper: {
     padding: theme.spacing.lg,
@@ -20,8 +20,6 @@ export const styles = StyleSheet.create(theme => ({
   content: {
     flex: 1,
     gap: theme.spacing.xs + 2,
-    borderBottomColor: theme.colors.foreground,
-    borderBottomWidth: 1,
     paddingVertical: theme.spacing.lg,
   },
   headerRow: {
@@ -32,13 +30,8 @@ export const styles = StyleSheet.create(theme => ({
   name: {
     fontSize: theme.fontSize.md,
     color: theme.colors.text,
-    fontFamily: theme.fontFamily.semibold,
-  },
-  nameWrapper: {
     flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    gap: theme.spacing.sm,
+    fontFamily: theme.fontFamily.semibold,
   },
   metaRow: {
     flexDirection: "row",
@@ -50,4 +43,14 @@ export const styles = StyleSheet.create(theme => ({
     color: theme.colors.secondaryText,
     fontFamily: theme.fontFamily.medium,
   },
+  separator: {
+    left: 0,
+    right: 0,
+    marginLeft: 52 + theme.spacing.lg * 2,
+    height: 1,
+    bottom: 0,
+    marginRight: theme.spacing.lg,
+    position: 'absolute',
+    backgroundColor: theme.colors.foreground
+  }
 }));

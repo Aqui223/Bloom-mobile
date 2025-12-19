@@ -9,6 +9,7 @@ import {
   getCharExit,
   getFadeIn,
   getFadeOut,
+  layoutAnimation,
   layoutAnimationSpringy,
   springyChar,
 } from "@constants/animations";
@@ -24,9 +25,9 @@ type ChatProps = {
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 const AnimatedCheckbox = Animated.createAnimatedComponent(Checkbox);
 
-export default function Chat({ chat, isSearch = false }: ChatProps) {
+export default function Chat({ chat, isSearch = false }: ChatProps): React.JSX.Element {
   const { theme } = useUnistyles();
-  const { selected, edit, pinned, openChat, pin, select } = useChatItem(chat);
+  const { selected, edit, pinned, animatedIconStyle, animatedTextStyle, openChat, pin, select } = useChatItem(chat);
 
   const recipient = chat?.recipient;
 
@@ -41,18 +42,16 @@ export default function Chat({ chat, isSearch = false }: ChatProps) {
         {edit && (
           <AnimatedCheckbox entering={getFadeIn()} exiting={getFadeOut()} onTouch={select} value={selected} />
         )}
-        <Animated.View layout={layoutAnimationSpringy} style={styles.avatarWrapper}>
+        <Animated.View layout={layoutAnimation} style={styles.avatarWrapper}>
           <Avatar size={!isSearch ? "lg" : "md"} image={chat?.avatar} username={recipient?.username} />
         </Animated.View>
-        <Animated.View layout={layoutAnimationSpringy} style={styles.content}>
+        <Animated.View layout={layoutAnimation} style={styles.content}>
           <View style={styles.headerRow}>
-            <View style={styles.nameWrapper}>
-              <Text style={styles.name}>{recipient?.username}</Text>
-            </View>
+            <Text style={styles.name}>{recipient?.username}</Text>
 
-            <Animated.View layout={layoutAnimationSpringy} style={styles.metaRow}>
+            <Animated.View layout={layoutAnimation} style={styles.metaRow}>
               {!isSearch && (
-                <View style={styles.charStack}>
+                <Animated.View style={[styles.charStack, animatedTextStyle]}>
                   {timeChars.map((char, i) => (
                     <Animated.Text
                       key={`${char}-${i}`}
@@ -64,9 +63,11 @@ export default function Chat({ chat, isSearch = false }: ChatProps) {
                       {char}
                     </Animated.Text>
                   ))}
-                </View>
+                </Animated.View>
               )}
-              <Icon icon='chevron.right' size={16} color={theme.colors.secondaryText} />
+              <Animated.View style={animatedIconStyle}>
+                <Icon icon='chevron.right' size={16} color={theme.colors.secondaryText} />
+              </Animated.View>
             </Animated.View>
           </View>
 
@@ -85,6 +86,7 @@ export default function Chat({ chat, isSearch = false }: ChatProps) {
           )}
         </Animated.View>
       </LayoutAnimationConfig>
+      <View style={styles.separator} />
     </AnimatedPressable>
   );
 }

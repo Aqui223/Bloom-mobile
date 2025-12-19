@@ -1,10 +1,9 @@
 import Header from "@components/chatsScreen/header";
 import Search from "@components/chatsScreen/search";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback } from "react";
 import { useChatList } from "@api/providers/ChatsContext";
 import useChatsScreenStore from "@stores/chats";
 import ChatItem from "@components/chatsScreen/chat/ChatItem";
-import { createSecureStorage } from "@lib/storage";
 import useTabBarStore from "@stores/tabBar";
 import Animated, { useAnimatedStyle, withSpring } from "react-native-reanimated";
 import { fastSpring } from "@constants/easings";
@@ -14,11 +13,12 @@ import type { Chat } from "@interfaces";
 import { LegendList } from "@legendapp/list";
 import { useInsets } from "@hooks";
 import { EmptyModal } from "@components/ui";
+import useTokenTriggerStore from "@stores/tokenTriggerStore";
 
 export default function ChatsScreen(): React.JSX.Element {
   const { headerHeight } = useChatsScreenStore();
   const { tabBarHeight, isSearch } = useTabBarStore();
-  const [userId, setUserId] = useState<number>(0);
+  const { userID } = useTokenTriggerStore();
   const insets = useInsets();
   const chats = useChatList();
 
@@ -37,13 +37,6 @@ export default function ChatsScreen(): React.JSX.Element {
     return <ChatItem item={item} userId={id} />;
   }, []);
 
-  useEffect(() => {
-    (async () => {
-      const storage = await createSecureStorage("user-storage");
-      setUserId(parseInt(storage.getString("user_id")));
-    })();
-  }, []);
-
   return (
     <>
       <Search />
@@ -52,7 +45,7 @@ export default function ChatsScreen(): React.JSX.Element {
         <LegendList
           data={chats}
           style={styles.list}
-          renderItem={({ item }) => renderItem({ item, id: userId })}
+          renderItem={({ item }) => renderItem({ item, id: userID })}
           keyExtractor={keyExtractor}
           showsVerticalScrollIndicator
           contentContainerStyle={{ paddingTop: headerHeight, paddingBottom: tabBarHeight }}

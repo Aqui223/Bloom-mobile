@@ -7,6 +7,9 @@ import useTokenTriggerStore from "@stores/tokenTriggerStore";
 import type { ChatView } from "@interfaces";
 import useChatsStore from "@stores/chats";
 import { Haptics } from "react-native-nitro-haptics";
+import { AnimatedStyle, useAnimatedStyle, withSpring } from "react-native-reanimated";
+import { ViewStyle } from "react-native";
+import { quickSpring } from "@constants/easings";
 
 type CreateChatResponse = {
   chat?: {
@@ -18,6 +21,8 @@ type useChatItem = {
   selected: boolean;
   edit: boolean;
   pinned: boolean;
+  animatedIconStyle: AnimatedStyle<ViewStyle>;
+  animatedTextStyle: AnimatedStyle<ViewStyle>;
   openChat: () => void;
   pin: () => void;
   select: () => void;
@@ -36,6 +41,15 @@ export default function useChatNavigation(chat: ChatView): useChatItem {
   const pinned = useMemo(() => true, []);
 
   const selected = useMemo(() => selectedChats.includes(chat.id), [selectedChats]);
+
+  const animatedIconStyle = useAnimatedStyle((): ViewStyle => ({
+    opacity: withSpring(edit ? 0 : 1, quickSpring),
+    transform: [{ translateX: withSpring(edit ? "-100%" : "0%", quickSpring)}]
+  }))
+
+  const animatedTextStyle = useAnimatedStyle((): ViewStyle => ({
+    transform: [{ translateX: withSpring(edit ? 20 : 0, quickSpring)}]
+  }))
 
   const openChat = useCallback(() => {
     const existingChat = chats?.find(
@@ -73,5 +87,5 @@ export default function useChatNavigation(chat: ChatView): useChatItem {
     toggleChat(chat.id);
   };
 
-  return { selected, edit, pinned, openChat, pin, select };
+  return { selected, edit, pinned, animatedIconStyle, animatedTextStyle, openChat, pin, select };
 }
