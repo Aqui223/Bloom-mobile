@@ -39,7 +39,7 @@ export default function useChatNavigation(chat: ChatView): useChatItem {
   const recipient = chat?.recipient;
   const targetId = recipient?.id || chat?.id;
 
-  const pinned = useMemo(() => true, []);
+  const pinned = useMemo(() => false, []);
 
   const selected = useMemo(() => selectedChats.includes(chat.id), [selectedChats]);
 

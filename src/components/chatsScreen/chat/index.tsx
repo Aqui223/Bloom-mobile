@@ -51,7 +51,7 @@ export default function Chat({ chat, isSearch = false }: ChatProps): React.JSX.E
                 style={styles.pinButton(pinned)}
                 onPress={pin}
                 size="sm"
-                icon={<Icon size={24} icon='star' color={theme.colors[pinned ? "red" : "yellow"]} />}
+                icon={pinned ? <Icon size={24} icon='star.slashed' color={theme.colors.red} /> : <Icon size={24} icon='star' color={theme.colors.yellow} />}
                 variant='icon'
               />
             </Animated.View>

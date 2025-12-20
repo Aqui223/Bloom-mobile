@@ -3,6 +3,7 @@ import { StyleSheet } from "react-native-unistyles";
 export const styles = StyleSheet.create((theme) => ({
   deleteCharStack: {
     flexDirection: "row",
+    marginRight: theme.spacing.xs,
     alignItems: "center",
   },
   deleteChar: {
@@ -16,10 +17,11 @@ export const styles = StyleSheet.create((theme) => ({
     flexDirection: 'row',
     backgroundColor: theme.colors.red,
     borderRadius: theme.radius.full,
+    minWidth: 48,
     height: 48,
-    paddingLeft: theme.spacing.lg,
-    paddingRight: theme.spacing.xl,
+    paddingHorizontal: theme.spacing.lg,
     borderCurve: 'continuous',
+    justifyContent: 'center',
     alignItems: 'center',
   }
 }));
