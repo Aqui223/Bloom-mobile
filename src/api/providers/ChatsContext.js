@@ -5,6 +5,9 @@ import setChatKeysToStorage from "@lib/setChatKeysToStorage";
 import generateKeys from "@lib/skid/generateKeys";
 import useStorageStore from "@stores/storage";
 import addKeysToDump from "@api/lib/keys/addKeysToDump";
+import decrypt from "@lib/skid/decrypt";
+import { decrypt as sskDecrypt } from "@lib/skid/serversideKeyEncryption";
+import getChatFromStorage from "@lib/getChatFromStorage";
 
 const ChatsContext = createContext(null);
 
@@ -21,17 +24,82 @@ export default function ChatsProvider({ children }) {
         return JSON.parse(JSON.stringify(obj));
     }
 
+    async function decryptMessage(_chat, message) {
+        // get chat from mmkv storage
+        const chat = await getChatFromStorage(message?.chat_id);
+
+        if (!chat) return
+
+        // get current user chat keys
+        const myKeys = chat?.keys?.my;
+        // get recipient chat keys
+        const recipientKeys = chat?.keys?.recipient;
+        // get general chat key
+        const key = chat?.key;
+
+        try {
+            // if kyber message sent by recipient then decrypt using both key pairs
+            // or if message dont have encapsulated_key decrypt using just ciphertext, nonce and chat key (skid soft mode)
+            return {
+                ...(message?.encapsulated_key ?
+                    decrypt(message, myKeys, recipientKeys, false) :
+                    sskDecrypt(message?.ciphertext, message?.nonce, key)),
+                chat_id: message?.chat_id,
+                id: message?.id,
+                seen: message?.seen,
+                nonce: message?.nonce
+            };
+        } catch (error) {
+            // if kyber message sent by user (current session user) decrypt using only his keys
+            if (error.message === "invalid polyval tag") {
+                try {
+                    return {
+                        ...decrypt(message, myKeys, myKeys, true),
+                        chat_id: message?.chat_id,
+                        id: message?.id,
+                        seen: message?.seen,
+                        nonce: message?.nonce
+                    };
+                } catch { }
+            }
+        }
+    }
+
     async function sort(chats) {
         const enrichedChats = await Promise.all(
             chats?.map(async chat => {
-                const lastMessage = realm
+                const realmResult = realm
                     .objects("Message")
                     .filtered("chat_id == $0", chat?.id)
                     .sorted("date", true)[0];
 
+                const localLastMessage = realmResult ? safeObject(realmResult) : null;
+
+                let decryptedLastMessage = null;
+                if (chat?.last_message) {
+                    try {
+                        decryptedLastMessage = await decryptMessage(chat, chat.last_message);
+                    } catch (e) {
+                        console.warn("Decryption failed", e);
+                    }
+                }
+
+                const localTime = localLastMessage?.date ? new Date(localLastMessage.date).getTime() : 0;
+                const remoteTime = decryptedLastMessage?.date ? new Date(decryptedLastMessage.date).getTime() : 0;
+
+                let finalLastMessage;
+
+                if (localTime === 0 && remoteTime === 0) {
+                    finalLastMessage = null;
+                } else if (localTime >= remoteTime) {
+                    finalLastMessage = localLastMessage;
+                } else {
+                    finalLastMessage = decryptedLastMessage;
+                }
+
                 return {
                     ...chat,
-                    last_message: safeObject(lastMessage)
+                    last_message: finalLastMessage
                 };
             })
         );
@@ -47,13 +115,13 @@ export default function ChatsProvider({ children }) {
         if (ws) {
             (async () => {
                 try {
-                     // get chats from api
-                const _chats = await getChats(ws);
-                if (_chats) setChats(await sort(_chats));
+                    // get chats from api
+                    const _chats = await getChats(ws);
+                    if (_chats) setChats(await sort(_chats));
                 } catch (error) {
                     console.log(error)
                 }
-               
+
             })();
 
             // websocket message listener
