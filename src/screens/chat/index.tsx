@@ -3,13 +3,15 @@ import Footer from "@components/chatScreen/footer";
 import Message from "@components/chatScreen/message";
 import React, { useCallback, useEffect, useState } from "react";
 import { styles } from "./Chat.styles";
-import { View } from "react-native";
+import { ScrollViewProps, View } from "react-native";
 import EmptyModal from "@components/chatScreen/emptyModal";
-import { KeyboardAvoidingView } from "react-native-keyboard-controller";
+import { KeyboardAvoidingView, useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
 import useMessages from "@api/hooks/encryption/useMessages";
 import type { Chat, Message as MessageType } from "@interfaces";
 import { useScreenScale } from "@hooks";
 import { FlashList } from "@shopify/flash-list";
+import { AnimatedLegendList } from "@legendapp/list/reanimated";
+import { useAnimatedProps } from "react-native-reanimated";
 
 interface ChatScreenProps {
 	route: {
@@ -26,6 +28,7 @@ export default function ChatScreen({ route }: ChatScreenProps): React.JSX.Elemen
 	const [headerHeight, setHeaderHeight] = useState<number>(0);
 	const [lastMessageId, setLastMessageId] = useState<number>(0);
 	const { animatedScreenStyle } = useScreenScale();
+	const { height } = useReanimatedKeyboardAnimation()
 
 	useEffect(() => {
 		let lastSeen = 0;
@@ -48,39 +51,40 @@ export default function ChatScreen({ route }: ChatScreenProps): React.JSX.Elemen
 					seen={seenId === item?.id}
 					isLast={lastMessageId === item?.id}
 					message={item}
-					messagesLenght={messages.length}
-					shift={footerHeight}
 				/>
 			);
 		},
-		[seenId, lastMessageId, messages.length, footerHeight]
+		[seenId, lastMessageId, footerHeight]
 	);
 
 	const keyExtractor = useCallback((item: MessageType) => {
 		return String(item.nonce);
 	}, []);
 
+	const a = useAnimatedProps((): ScrollViewProps => ({
+		contentInset: {bottom: -height.get() + footerHeight, top: headerHeight + 16 },
+		scrollIndicatorInsets: { top: headerHeight, bottom: -height.get() + footerHeight}
+	}))
+
 	return (
 		<View style={[styles.container, animatedScreenStyle]}>
 			<Header onLayout={setHeaderHeight} chat={chat} />
 			<EmptyModal chat={chat} visible={messages.length === 0} />
-			<KeyboardAvoidingView behavior='translate-with-padding' style={styles.list}>
-				<FlashList
+				<AnimatedLegendList
 					data={messages}
 					renderItem={renderItem}
-					removeClippedSubviews
+					alignItemsAtEnd
 					keyExtractor={keyExtractor}
-					maintainVisibleContentPosition={{
-						autoscrollToBottomThreshold: 0.2,
-						startRenderingFromBottom: true,
-						animateAutoScrollToBottom: false,
-					}}
-					contentContainerStyle={[styles.listContent, { paddingTop: headerHeight + (footerHeight - 16) }]}
+					contentContainerStyle={[styles.listContent]}
 					style={styles.list}
-					showsVerticalScrollIndicator={false}
+					animatedProps={a}
+					maintainScrollAtEnd
+					keyboardDismissMode="interactive"
+					maintainVisibleContentPosition
+					showsVerticalScrollIndicator={true}
+					automaticallyAdjustsScrollIndicatorInsets={false}
 				/>
-				<Footer onLayout={setFooterHeight} onSend={addMessage} />
-			</KeyboardAvoidingView>
+				<Footer setFooterHeight={setFooterHeight} footerHeight={footerHeight} onSend={addMessage} />
 		</View>
 	);
 }

@@ -17,38 +17,19 @@ type MessageProps = {
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
-export default function Message({ message, seen, isLast, shift, messagesLenght }: MessageProps): React.JSX.Element {
+export default function Message({ message, seen, isLast }: MessageProps): React.JSX.Element {
 	const scale = useSharedValue(1);
-
-	const translate = useSharedValue(shift - 16);
 
 	const onPress = (out: boolean = false) => {
 		scale.value = withTiming(out ? 1 : 0.95, { easing: Easing.inOut(Easing.ease), duration: 300 });
 	};
-
-	const animatedPressabelStyles = useAnimatedStyle(() => ({
-		transform: [
-			{
-				translateY: -translate.value,
-			},
-		],
-	}));
-
-	useEffect(() => {
-		translate.value = 0;
-		translate.value = withSpring(shift - 16, springy);
-	}, [messagesLenght]);
-
-	useEffect(() => {
-		translate.value = withSpring(shift - 16, springy);
-	}, [shift]);
 
 	return (
 		<AnimatedPressable
 			entering={FadeIn}
 			onPressIn={() => onPress()}
 			onPressOut={() => onPress(true)}
-			style={[styles.messageWrapper(message?.isMe), animatedPressabelStyles]}
+			style={styles.messageWrapper(message?.isMe)}
 		>
 			<MessageBubble message={message} />
 			<LayoutAnimationConfig skipEntering skipExiting>

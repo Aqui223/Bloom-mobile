@@ -2,34 +2,36 @@ import { styles } from "./Footer.styles";
 import { useInsets } from "@hooks";
 import Icon from "@components/ui/Icon";
 import { useUnistyles } from "react-native-unistyles";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Animated, {
-  interpolate,
   useAnimatedStyle,
+  withSpring,
 } from "react-native-reanimated";
 import {
   layoutAnimationSpringy,
   paperplaneAnimationIn,
   paperplaneAnimationOut,
+  quickSpring,
 } from "@constants/animations";
 import { Button, GradientBlur } from "@components/ui";
 import { zoomAnimationIn, zoomAnimationOut } from "@constants/animations";
 import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
 import MessageInput from "./MessageInput";
 import useChatScreenStore from "@stores/chatScreen";
-import { ViewStyle } from "react-native";
+import { LayoutChangeEvent, ViewStyle } from "react-native";
 
 type FooterProps = {
-  onSend?: (content: string, reply_to: number) => void;
-  onLayout?: (value: number) => void;
+  onSend: (content: string, reply_to: number) => void;
+  setFooterHeight: (value: number) => void;
+  footerHeight: number;
 };
 
 const AnimatedButton = Animated.createAnimatedComponent(Button);
 
-export default function Footer({ onSend, onLayout }: FooterProps) {
+export default function Footer({ onSend, setFooterHeight, footerHeight }: FooterProps) {
   const insets = useInsets();
   const { theme } = useUnistyles();
-  const { progress: keyboardProgress } = useReanimatedKeyboardAnimation();
+  const { progress: keyboardProgress, height: keyboardHeight } = useReanimatedKeyboardAnimation();
   const [value, setValue] = useState<string>("");
   const { replyMessage, setReplyMessage } = useChatScreenStore();
 
@@ -45,14 +47,19 @@ export default function Footer({ onSend, onLayout }: FooterProps) {
 
   const animatedViewStyles = useAnimatedStyle((): ViewStyle => {
     return {
-      paddingBottom: interpolate(keyboardProgress.value, [0, 1], [insets.bottom, theme.spacing.lg], "clamp"),
-      paddingHorizontal: interpolate(keyboardProgress.value, [0, 1], [theme.spacing.xxxl, theme.spacing.lg]),
+      paddingBottom: withSpring(keyboardProgress.get() > 0.05 ? theme.spacing.lg : insets.bottom, quickSpring),
+      paddingHorizontal: withSpring(keyboardProgress.get() > 0.05  ? theme.spacing.lg : theme.spacing.xxxl, quickSpring),
+      transform: [{ translateY: keyboardHeight.get()}]
     };
   });
 
+  const onFooterLayout = useCallback((event: LayoutChangeEvent) => {
+    if (footerHeight === 0) setFooterHeight(event.nativeEvent.layout.height)
+  }, [])
+
   return (
     <Animated.View
-      onLayout={(e) => onLayout(e.nativeEvent.layout.height)}
+      onLayout={onFooterLayout}
       style={[styles.footer, animatedViewStyles]}
       layout={layoutAnimationSpringy}
     >
