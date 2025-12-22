@@ -51,8 +51,8 @@ export default function SeenMessagesProvider({ children }) {
     }, [ws]);
 
     // clear seen messages
-    function clear() {
-        setSeenMessages([]);
+    function clear(chat_id) {
+        setSeenMessages(prev => prev.filter(msg => msg.chat_id !== chat_id));
     }
 
     return (

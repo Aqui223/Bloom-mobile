@@ -14,5 +14,5 @@ export default function (newSeenMessages, chat_id, setMessages, clearNewSeenMess
         }))
     }
 
-    clearNewSeenMessages()
+    clearNewSeenMessages(chat_id)
 }

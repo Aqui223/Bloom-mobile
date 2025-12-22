@@ -159,8 +159,8 @@ export default function MessagesProvider({ children }) {
     }, [ws]);
 
     // clear messages history
-    function clear() {
-        setMessages([]);
+    function clear(chat_id) {
+        setMessages(prev => prev.filter(msg => msg.chat_id !== chat_id));
     }
 
     return (

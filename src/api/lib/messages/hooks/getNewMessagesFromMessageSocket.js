@@ -24,7 +24,7 @@ export default function (mmkv, setMessages, newMessages, chat_id, messages, clea
         }
 
         // clear context messages history
-        clearNewMessages();
+        clearNewMessages(chat_id);
     } catch { }
 
 }
