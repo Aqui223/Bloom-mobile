@@ -5,11 +5,10 @@ import React, { useCallback, useEffect, useState } from "react";
 import { styles } from "./Chat.styles";
 import { ScrollViewProps, View } from "react-native";
 import EmptyModal from "@components/chatScreen/emptyModal";
-import { KeyboardAvoidingView, useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
+import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
 import useMessages from "@api/hooks/encryption/useMessages";
 import type { Chat, Message as MessageType } from "@interfaces";
 import { useScreenScale } from "@hooks";
-import { FlashList } from "@shopify/flash-list";
 import { AnimatedLegendList } from "@legendapp/list/reanimated";
 import { useAnimatedProps } from "react-native-reanimated";
 
@@ -19,7 +18,7 @@ interface ChatScreenProps {
 	};
 }
 
-const CHAT_TIME_WINDOW = 5 * 60 * 1000;
+
 
 export default function ChatScreen({ route }: ChatScreenProps): React.JSX.Element {
 	const { chat } = route.params as { chat: Chat };
@@ -30,7 +29,9 @@ export default function ChatScreen({ route }: ChatScreenProps): React.JSX.Elemen
 	const [headerHeight, setHeaderHeight] = useState<number>(0);
 	const [lastMessageId, setLastMessageId] = useState<number>(0);
 	const { animatedScreenStyle } = useScreenScale();
-	const { height } = useReanimatedKeyboardAnimation()
+	const { height } = useReanimatedKeyboardAnimation();
+	
+	const CHAT_TIME_WINDOW = 5 * 60 * 1000;
 
 	useEffect(() => {
 		let lastSeen = 0;
@@ -79,8 +80,8 @@ export default function ChatScreen({ route }: ChatScreenProps): React.JSX.Elemen
         [seenId, lastMessageId, footerHeight, messages] 
     );
 
-	const keyExtractor = useCallback((item: MessageType) => {
-		return String(item?.nonce);
+	const keyExtractor = useCallback((item: MessageType, index: number) => {
+		return String(index);
 	}, []);
 
 	const a = useAnimatedProps((): ScrollViewProps => ({
