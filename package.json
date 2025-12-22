@@ -12,7 +12,7 @@
     "@craftzdog/react-native-buffer": "^6.1.0",
     "@d11/react-native-fast-image": "^8.11.1",
     "@gorhom/portal": "^1.0.14",
-    "@legendapp/list": "^1.1.4",
+    "@legendapp/list": "^2.0.18",
     "@noble/ciphers": "^2.0.0",
     "@noble/ed25519": "^3.0.0",
     "@noble/hashes": "^2.0.0",

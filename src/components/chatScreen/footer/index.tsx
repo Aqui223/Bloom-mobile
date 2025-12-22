@@ -4,6 +4,7 @@ import Icon from "@components/ui/Icon";
 import { useUnistyles } from "react-native-unistyles";
 import { useCallback, useState } from "react";
 import Animated, {
+  interpolate,
   useAnimatedStyle,
   withSpring,
 } from "react-native-reanimated";
@@ -47,14 +48,16 @@ export default function Footer({ onSend, setFooterHeight, footerHeight }: Footer
 
   const animatedViewStyles = useAnimatedStyle((): ViewStyle => {
     return {
-      paddingBottom: withSpring(keyboardProgress.get() > 0.05 ? theme.spacing.lg : insets.bottom, quickSpring),
-      paddingHorizontal: withSpring(keyboardProgress.get() > 0.05  ? theme.spacing.lg : theme.spacing.xxxl, quickSpring),
+      // paddingBottom: withSpring(keyboardProgress.get() > 0.05 ? theme.spacing.lg : insets.bottom, quickSpring),
+      // paddingHorizontal: withSpring(keyboardProgress.get() > 0.05  ? theme.spacing.lg : theme.spacing.xxxl, quickSpring),
+       paddingBottom: interpolate(keyboardProgress.get(), [0, 1], [insets.bottom, theme.spacing.lg]),
+      paddingHorizontal: interpolate(keyboardProgress.get(), [0, 1], [theme.spacing.xxxl, theme.spacing.lg]),
       transform: [{ translateY: keyboardHeight.get()}]
     };
   });
 
   const onFooterLayout = useCallback((event: LayoutChangeEvent) => {
-    if (footerHeight === 0) setFooterHeight(event.nativeEvent.layout.height)
+    if (footerHeight === 0 || keyboardProgress.get() === 1) setFooterHeight(event.nativeEvent.layout.height)
   }, [])
 
   return (

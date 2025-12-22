@@ -1,24 +1,22 @@
 import Header from "@components/chatScreen/header";
 import Footer from "@components/chatScreen/footer";
 import Message from "@components/chatScreen/message";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { styles } from "./Chat.styles";
-import { ScrollViewProps, View } from "react-native";
+import { View } from "react-native";
 import EmptyModal from "@components/chatScreen/emptyModal";
 import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
 import useMessages from "@api/hooks/encryption/useMessages";
 import type { Chat, Message as MessageType } from "@interfaces";
 import { useScreenScale } from "@hooks";
-import { AnimatedLegendList } from "@legendapp/list/reanimated";
-import { useAnimatedProps } from "react-native-reanimated";
+import { KeyboardAvoidingLegendList} from "@legendapp/list/keyboard"
+import { LegendListRef } from "@legendapp/list";
 
 interface ChatScreenProps {
 	route: {
 		params: Object;
 	};
 }
-
-
 
 export default function ChatScreen({ route }: ChatScreenProps): React.JSX.Element {
 	const { chat } = route.params as { chat: Chat };
@@ -29,7 +27,8 @@ export default function ChatScreen({ route }: ChatScreenProps): React.JSX.Elemen
 	const [headerHeight, setHeaderHeight] = useState<number>(0);
 	const [lastMessageId, setLastMessageId] = useState<number>(0);
 	const { animatedScreenStyle } = useScreenScale();
-	const { height } = useReanimatedKeyboardAnimation();
+	const { height: keyboardHeight, progress: keyboardProgress } = useReanimatedKeyboardAnimation();
+	const listRef = useRef<LegendListRef>(null);
 	
 	const CHAT_TIME_WINDOW = 5 * 60 * 1000;
 
@@ -80,32 +79,42 @@ export default function ChatScreen({ route }: ChatScreenProps): React.JSX.Elemen
         [seenId, lastMessageId, footerHeight, messages] 
     );
 
+		const ss = () => {
+			listRef.current?.scrollToEnd({ animated: true});
+	}
+
+	useEffect(() => {
+		
+		ss()
+	}, [messages.length])
+
+
+	// useAnimatedReaction(() => keyboardProgress.value, (current, previous) => {
+	// 	if (current > 0) {
+	// 		if (isUserNearBottom.get()) runOnJS(ss)(1)
+	// 	}
+	// })
+
 	const keyExtractor = useCallback((item: MessageType, index: number) => {
-		return String(index);
+		return String(item?.nonce ?? item?.id ?? index);
+
 	}, []);
-
-	const a = useAnimatedProps((): ScrollViewProps => ({
-		contentInset: {bottom: -height.get() + footerHeight, top: headerHeight + 16 },
-		scrollIndicatorInsets: { top: headerHeight, bottom: -height.get() + footerHeight}
-	}))
-
 	return (
 		<View style={[styles.container, animatedScreenStyle]}>
 			<Header onLayout={setHeaderHeight} chat={chat} />
 			<EmptyModal chat={chat} visible={messages.length === 0} />
-				<AnimatedLegendList
+				<KeyboardAvoidingLegendList
 					data={messages}
 					renderItem={renderItem}
 					alignItemsAtEnd
+					ref={listRef}
 					keyExtractor={keyExtractor}
-					contentContainerStyle={[styles.listContent]}
+					// maintainScrollAtEnd
 					style={styles.list}
-					animatedProps={a}
-					maintainScrollAtEnd
+					contentInset={{ bottom: footerHeight -16, top: 0}}
+					contentContainerStyle={[styles.listContent]}
 					keyboardDismissMode="interactive"
-					maintainVisibleContentPosition
-					showsVerticalScrollIndicator={true}
-					automaticallyAdjustsScrollIndicatorInsets={false}
+					showsVerticalScrollIndicator={false}
 				/>
 				<Footer setFooterHeight={setFooterHeight} footerHeight={footerHeight} onSend={addMessage} />
 		</View>
