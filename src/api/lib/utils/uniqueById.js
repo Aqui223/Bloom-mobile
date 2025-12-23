@@ -1,8 +1,13 @@
 export default function (arr) {
-    const seen = new Set();
-    return arr.filter(item => {
-        if (seen.has(item.id)) return false;
-        seen.add(item.id);
-        return true;
+    const map = new Map();
+
+    arr.forEach(item => {
+        const key = item.nonce ? String(item.nonce) : String(item.id);
+
+        if (key) {
+            map.set(key, item);
+        }
     });
+
+    return Array.from(map.values());
 }
