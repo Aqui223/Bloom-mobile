@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native-unistyles";
 export const styles = StyleSheet.create((theme) => ({
   container: {
     alignItems: "center",
-    gap: theme.spacing.sm,
+    gap: theme.spacing.sm - 2,
   },
   name: {
     color: theme.colors.white,

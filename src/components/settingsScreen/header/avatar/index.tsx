@@ -35,13 +35,13 @@ export default function HeaderAvatar({ scrollY }) {
         source={{
           uri: "https://i.pinimg.com/1200x/39/8e/a1/398ea106afa43c01bd87a8ede3c180a9.jpg",
         }}
-        style={[{ width: 120, height: 120, borderRadius: 200 }]}
+        style={[{ width: 100, height: 100, borderRadius: 200 }]}
       />
       <AnimatedBlurView
         tint='dark'
         experimentalBlurMethod='dimezisBlurView'
         animatedProps={animatedBlurStyle}
-        style={{ width: 120, height: 120, position: "absolute" }}
+        style={{ width: 100, height: 100, position: "absolute" }}
         intensity={64}
       />
     </Animated.View>

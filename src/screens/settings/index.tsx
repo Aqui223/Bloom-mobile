@@ -1,16 +1,16 @@
 import Header from "@components/settingsScreen/header";
-import { View } from "react-native";
+import { FlatList, View } from "react-native";
 import { styles } from "./Settings.styles";
 import { useInsets, useSnapScroll } from "@hooks";
 import useSettingsScreenStore from "src/stores/settingsScreen";
 import { useEffect } from "react";
 import useGetMyself from "@api/hooks/useGetMyself";
-import { AnimatedLegendList } from "@legendapp/list/reanimated";
 import FloatingHeader from "@components/settingsScreen/header/FloatingHeader";
+import Animated from "react-native-reanimated";
 
 export default function SettingsScreen() {
   const { headerHeight, setSnapEndPosition, snapEndPosition } = useSettingsScreenStore();
-  const { scrollY, listRef, scrollHandler } = useSnapScroll(snapEndPosition);
+  const { scrollY, animatedRef, scrollHandler } = useSnapScroll<FlatList>(snapEndPosition);
   const { user, error, loading } = useGetMyself();
   const insets = useInsets()
 
@@ -21,8 +21,8 @@ export default function SettingsScreen() {
   return (
     <View style={styles.container}>
       <FloatingHeader scrollY={scrollY} user={user}/>
-      <AnimatedLegendList
-        ref={listRef}
+      <Animated.FlatList
+        ref={animatedRef}
         ListHeaderComponent={<Header scrollY={scrollY} user={user} />}
         onScroll={scrollHandler}
         showsVerticalScrollIndicator={false} 
