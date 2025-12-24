@@ -18,12 +18,12 @@ import {
   zoomAnimationIn,
   zoomAnimationOut,
 } from "@constants/animations";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { StyleSheet } from "react-native-unistyles";
 import { BlurView } from "expo-blur";
 
 export default function TabBarContainer({ state, navigation }): React.JSX.Element {
-  const { setTabBarHeight, isSearch, tabBarHeight, isSearchFocused } = useTabBarStore();
+  const { setTabBarHeight, isSearch, tabBarHeight, isSearchFocused, setActiveTab } = useTabBarStore();
   const tabBarWidth = useSharedValue(0);
 
   const animatedViewStyle = useAnimatedStyle(() => {
@@ -55,6 +55,10 @@ export default function TabBarContainer({ state, navigation }): React.JSX.Elemen
       navigation.navigate(route.name);
     }
   }, []);
+
+  useEffect(() => {
+    setActiveTab(state?.index);
+  }, [state]);
 
   return (
     <Animated.View exiting={vSlideAnimationOut} entering={vSlideAnimationIn} style={styles.tabBarWrapper}>

@@ -5,10 +5,12 @@ type TabBarStore = {
 	isSearch: boolean;
 	searchValue: string;
 	isSearchFocused: boolean;
+	activeTab: number;
 	setTabBarHeight: (tabBarHeight: number) => void;
 	setIsSearch: (isSearch: boolean) => void;
 	setSearchValue: (searchValue: string) => void;
 	setIsSearchFocused: (isSearchFocused: boolean) => void;
+	setActiveTab: (activeTab: number) => void;
 };
 
 const useTabBarStore = create<TabBarStore>(set => ({
@@ -16,10 +18,12 @@ const useTabBarStore = create<TabBarStore>(set => ({
 	isSearch: false,
 	searchValue: "",
 	isSearchFocused: false,
+	activeTab: 0,
 	setTabBarHeight: tabBarHeight => set({ tabBarHeight }),
 	setIsSearch: isSearch => set({ isSearch }),
 	setSearchValue: searchValue => set({ searchValue }),
 	setIsSearchFocused: isSearchFocused => set({ isSearchFocused }),
+	setActiveTab: activeTab => set({ activeTab })
 }));
 
 export default useTabBarStore;
