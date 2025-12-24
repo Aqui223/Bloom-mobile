@@ -15,4 +15,15 @@ export const styles = StyleSheet.create((theme) => ({
     fontSize: theme.fontSize.md,
     fontFamily: theme.fontFamily.medium,
   },
+  avatarWrapper: {
+    width: 100,
+    height: 100,
+    borderCurve: 'continuous',
+    borderRadius: 50,
+    overflow: 'hidden',
+    transformOrigin: 'bottom',
+  },
+  avatar: {
+    flex: 1
+  }
 }));

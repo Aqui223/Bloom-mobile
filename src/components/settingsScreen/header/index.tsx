@@ -1,8 +1,8 @@
 import { styles } from "./Header.styles";
-import HeaderAvatar from "./avatar";
+import HeaderAvatar from "./user/Avatar";
 import { useInsets } from "@hooks";
 import useSettingsScreenStore from "@stores/settingsScreen";
-import UserInformation from "./user";
+import User from "./user";
 import { View } from "react-native";
 import React from "react";
 import { SharedValue } from "react-native-reanimated";
@@ -23,7 +23,7 @@ export default function Header({ scrollY, user }: HeaderProps): React.JSX.Elemen
   return (
     <View onLayout={onHeaderLayout} style={styles.header(insets.top)}>
         <HeaderAvatar scrollY={scrollY} />
-        <UserInformation scrollY={scrollY} user={user}/>
+        <User scrollY={scrollY} user={user}/>
     </View>
   );
 }

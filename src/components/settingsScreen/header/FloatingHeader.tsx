@@ -1,5 +1,5 @@
 import { styles } from "./Header.styles";
-import HeaderAvatar from "./avatar";
+import HeaderAvatar from "./user/Avatar";
 import { useInsets } from "@hooks";
 import useSettingsScreenStore from "@stores/settingsScreen";
 import UserInformation from "./user";

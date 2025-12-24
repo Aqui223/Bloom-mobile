@@ -1,10 +1,15 @@
-import Animated, { useAnimatedStyle, interpolate } from "react-native-reanimated";
+import Animated, { useAnimatedStyle, interpolate, SharedValue } from "react-native-reanimated";
 import { styles } from "./User.styles";
 import { useUnistyles } from "react-native-unistyles";
 import useSettingsScreenStore from "@stores/settingsScreen";
 import { TextStyle, ViewStyle } from "react-native";
 
-export default function UserInformation({ scrollY, user }): React.JSX.Element {
+type UserProps = {
+  scrollY: SharedValue<number>;
+  user: any;
+}
+
+export default function User({ scrollY, user }: UserProps): React.JSX.Element {
   const { theme } = useUnistyles();
   const { snapEndPosition } = useSettingsScreenStore();
 
