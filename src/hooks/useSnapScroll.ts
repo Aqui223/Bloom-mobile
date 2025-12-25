@@ -1,11 +1,10 @@
 import { Component } from "react";
-import Animated, {
+import {
   useAnimatedRef,
   useAnimatedScrollHandler,
   useSharedValue,
   scrollTo,
-  SharedValue,
-  AnimatedRef,
+  SharedValue
 } from "react-native-reanimated";
 
 type Result<T> = {

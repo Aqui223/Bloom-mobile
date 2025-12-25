@@ -24,6 +24,7 @@ export const styles = StyleSheet.create((theme) => ({
     transformOrigin: 'bottom',
   },
   avatar: {
-    flex: 1
+    flex: 1,
+    borderRadius: 0,
   }
 }));

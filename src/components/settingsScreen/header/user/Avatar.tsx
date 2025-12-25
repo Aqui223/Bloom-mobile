@@ -1,39 +1,60 @@
-import FastImage from "@d11/react-native-fast-image";
 import Animated, {
   interpolate,
+  runOnJS,
   SharedValue,
   useAnimatedProps,
+  useAnimatedReaction,
   useAnimatedStyle,
+  useSharedValue,
 } from "react-native-reanimated";
 import useSettingsScreenStore from "@stores/settingsScreen";
 import { BlurView, BlurViewProps } from "expo-blur";
 import { ViewStyle } from "react-native";
-import { StyleSheet, useUnistyles } from "react-native-unistyles";
+import { StyleSheet } from "react-native-unistyles";
 import { styles } from "./User.styles";
 import React from "react";
+import { Avatar } from "@components/ui";
+import { Haptics } from "react-native-nitro-haptics";
 
 const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 
 export default function HeaderAvatar({ scrollY }: { scrollY: SharedValue<number> }): React.JSX.Element {
   const { snapEndPosition } = useSettingsScreenStore();
-  const { theme } = useUnistyles();
+  const isAvatarExpanded = useSharedValue<boolean>(false);
 
   const animatedStyle = useAnimatedStyle(
     (): ViewStyle => ({
       transform: [
         {
-          scale: interpolate(
-            scrollY.get(),
-            [-snapEndPosition / 2, 0, snapEndPosition],
-            [1.35, 1, 0.25],
-            "clamp"
-          ),
+          scale: interpolate(scrollY.get(), [-40, 0, snapEndPosition], [1.4, 1, 0.25], "clamp"),
         },
         { translateY: interpolate(scrollY.get(), [0, snapEndPosition], [0, -30], "clamp") },
       ],
       opacity: interpolate(scrollY.get(), [0, snapEndPosition], [1, 0], "clamp"),
-      borderRadius: interpolate(scrollY.get(), [-snapEndPosition / 3, 0], [theme.radius.lg, 50], "clamp"),
+      borderRadius: interpolate(scrollY.get(), [-35, 0], [50 / 1.4, 50], "clamp"),
     })
+  );
+
+  const avatarHapticsTrigger = () => {
+    Haptics.impact("light");
+  };
+
+  useAnimatedReaction(
+    () => isAvatarExpanded.get(),
+    () => {
+      if (isAvatarExpanded.get()) {
+        runOnJS(avatarHapticsTrigger)();
+      }
+    }
+  );
+
+  useAnimatedReaction(
+    () => scrollY.get(),
+    () => {
+      if (scrollY.get() <= -25) {
+        isAvatarExpanded.set(true);
+      }
+    }
   );
 
   const animatedBlurStyle = useAnimatedProps(
@@ -44,12 +65,7 @@ export default function HeaderAvatar({ scrollY }: { scrollY: SharedValue<number>
 
   return (
     <Animated.View style={[styles.avatarWrapper, animatedStyle]}>
-      <FastImage
-        source={{
-          uri: "https://i.pinimg.com/1200x/39/8e/a1/398ea106afa43c01bd87a8ede3c180a9.jpg",
-        }}
-        style={styles.avatar}
-      />
+      <Avatar size='2xl' username='dikiy' style={styles.avatar} />
       <AnimatedBlurView
         tint='dark'
         experimentalBlurMethod='dimezisBlurView'

@@ -26,7 +26,7 @@ export default function Avatar({ size = "md", square = false, style, image, imag
 		md: 44,
 		lg: 52,
 		xl: 68,
-		"2xl": 120,
+		"2xl": 100,
 		"3xl": 128,
 	};
 
