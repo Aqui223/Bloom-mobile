@@ -7,7 +7,7 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
 } from "react-native-reanimated";
-import useSettingsScreenStore from "@stores/settingsScreen";
+import useSettingsScreenStore from "@stores/settings";
 import { BlurView, BlurViewProps } from "expo-blur";
 import { ViewStyle } from "react-native";
 import { StyleSheet } from "react-native-unistyles";
@@ -20,7 +20,7 @@ const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 
 export default function HeaderAvatar({ scrollY }: { scrollY: SharedValue<number> }): React.JSX.Element {
   const { snapEndPosition } = useSettingsScreenStore();
-  const isAvatarExpanded = useSharedValue<boolean>(false);  
+  const isAvatarExpanded = useSharedValue<boolean>(false);
 
   const animatedStyle = useAnimatedStyle(
     (): ViewStyle => ({
@@ -32,6 +32,12 @@ export default function HeaderAvatar({ scrollY }: { scrollY: SharedValue<number>
       ],
       opacity: interpolate(scrollY.get(), [0, snapEndPosition], [1, 0], "clamp"),
       borderRadius: interpolate(scrollY.get(), [-35, 0], [50 / 1.4, 50], "clamp"),
+    })
+  );
+
+  const animatedBlurStyle = useAnimatedProps(
+    (): BlurViewProps => ({
+      intensity: interpolate(scrollY.get(), [0, snapEndPosition], [0, 64], "clamp"),
     })
   );
 
@@ -48,8 +54,6 @@ export default function HeaderAvatar({ scrollY }: { scrollY: SharedValue<number>
     }
   );
 
-  
-
   useAnimatedReaction(
     () => scrollY.get(),
     (prepared, previous) => {
@@ -57,12 +61,6 @@ export default function HeaderAvatar({ scrollY }: { scrollY: SharedValue<number>
         isAvatarExpanded.set(true);
       }
     }
-  );
-
-  const animatedBlurStyle = useAnimatedProps(
-    (): BlurViewProps => ({
-      intensity: interpolate(scrollY.get(), [0, snapEndPosition], [0, 64], "clamp"),
-    })
   );
 
   return (

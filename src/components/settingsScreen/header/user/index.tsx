@@ -1,7 +1,7 @@
 import Animated, { useAnimatedStyle, interpolate, SharedValue } from "react-native-reanimated";
 import { styles } from "./User.styles";
 import { useUnistyles } from "react-native-unistyles";
-import useSettingsScreenStore from "@stores/settingsScreen";
+import useSettingsScreenStore from "@stores/settings";
 import { TextStyle, ViewStyle } from "react-native";
 
 type UserProps = {

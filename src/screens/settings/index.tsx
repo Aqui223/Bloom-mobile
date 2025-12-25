@@ -1,22 +1,16 @@
 import Header from "@components/settingsScreen/header";
 import { View } from "react-native";
 import { styles } from "./Settings.styles";
-import { useInsets, useSnapScroll } from "@hooks";
-import useSettingsScreenStore from "src/stores/settingsScreen";
-import { useEffect } from "react";
+import { useSnapScroll } from "@hooks";
+import useSettingsScreenStore from "@stores/settings";
 import useGetMyself from "@api/hooks/useGetMyself";
 import FloatingHeader from "@components/settingsScreen/header/FloatingHeader";
 import { AnimatedLegendList } from "@legendapp/list/reanimated";
 
 export default function SettingsScreen() {
-  const { headerHeight, setSnapEndPosition, snapEndPosition } = useSettingsScreenStore();
+  const { snapEndPosition } = useSettingsScreenStore();
   const { scrollY, animatedRef, scrollHandler } = useSnapScroll<any>(snapEndPosition);
   const { user, error, loading } = useGetMyself();
-  const insets = useInsets()
-
-  useEffect(() => {
-    setSnapEndPosition(headerHeight - insets.top);
-  }, []);
 
   return (
     <View style={styles.container}>
