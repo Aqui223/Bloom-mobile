@@ -3,8 +3,6 @@ import { BlurView } from "expo-blur";
 import MaskedView from "@react-native-masked-view/masked-view";
 import { LinearGradient } from "expo-linear-gradient";
 import { easeGradient } from "react-native-easing-gradient";
-import Animated from "react-native-reanimated";
-import { layoutAnimationSpringy } from "@constants/animations";
 import { StyleSheet, useUnistyles } from "react-native-unistyles";
 import { Platform, StyleProp, ViewStyle } from "react-native";
 
@@ -15,8 +13,6 @@ type GradientBlurProps = {
   ref?: React.Ref<MaskedView>;
   style?: StyleProp<ViewStyle>;
 };
-
-const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
 
 export default function GradientBlur({
   direction = "bottom-to-top",
@@ -69,11 +65,10 @@ export default function GradientBlur({
         </MaskedView>
       )}
 
-      <AnimatedLinearGradient
+      <LinearGradient
         start={start}
         end={end}
         colors={["transparent", theme.colors.gradientBlur]}
-        layout={layoutAnimationSpringy}
         style={[StyleSheet.absoluteFill, style]}
       />
     </>

@@ -7,7 +7,7 @@ export const styles = StyleSheet.create(theme => ({
         alignItems: "center",
         paddingTop,
         gap: theme.spacing.lg,
-        paddingBottom: theme.spacing.lg,
+        paddingBottom: theme.spacing.md,
         paddingHorizontal: theme.spacing.lg,
     }),
     floatingHeader: (paddingTop: number) => ({

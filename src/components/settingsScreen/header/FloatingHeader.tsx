@@ -16,10 +16,11 @@ export default function FloatingHeader({ scrollY, user }: FloatingHeaderProps): 
   const { snapEndPosition } = useSettingsScreenStore();
 
   const animatedViewStyle = useAnimatedStyle((): ViewStyle => ({
-    opacity: interpolate(scrollY.get(), [snapEndPosition / 2, snapEndPosition], [0, 1])
+    opacity: interpolate(scrollY.get(), [snapEndPosition / 2, (snapEndPosition /2 ) + 8], [0, 1])
   }))
 
   const animatedTextStyle = useAnimatedStyle((): TextStyle => ({
+    opacity: interpolate(scrollY.get(), [snapEndPosition / 2, snapEndPosition], [0, 1]),
     transform: [
         { translateY: interpolate(scrollY.get(), [snapEndPosition / 2, snapEndPosition], [24, 0], "clamp")}
     ]
