@@ -1,22 +1,48 @@
 import React from "react";
-import { Text, View, TouchableOpacity } from "react-native";
+import { Text, View, Pressable, ViewStyle } from "react-native";
 import { useUnistyles } from "react-native-unistyles";
 import type { SettingsItem as SettingsItemType } from "@interfaces";
 import SettingsIcon from "../settingsIcon";
 import Icon from "../../Icon";
 import { styles } from "./SettingsItem.styles";
+import Animated, {
+  interpolateColor,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from "react-native-reanimated";
+import { quickSpring } from "@constants/easings";
+import { lightenColor } from "@lib/lightenColor";
 
 interface SettingsItemProps {
   item: SettingsItemType;
 }
 
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+
 export default function SettingsItem({ item }: SettingsItemProps): React.JSX.Element {
   const { theme } = useUnistyles();
+  const color = useSharedValue<number>(0);
 
-  const iconColor = theme.colors[item.color] ?? theme.colors.primary;
+  const iconColor: string = theme.colors[item.color] ?? theme.colors.primary;
+  const brighterForeground: string = lightenColor(theme.colors.foreground, 10);
+
+  const pressableColor = (out: boolean = false) => {
+    color.set(withSpring(out ? 0 : 1, quickSpring));
+  };
+
+  const animatedPressableStyle = useAnimatedStyle(
+    (): ViewStyle => ({
+      backgroundColor: interpolateColor(color.get(), [0, 1], [theme.colors.foreground, brighterForeground]),
+    })
+  );
 
   return (
-    <TouchableOpacity activeOpacity={0.7} style={styles.container}>
+    <AnimatedPressable
+      onPressIn={() => pressableColor(false)}
+      onPressOut={() => pressableColor(true)}
+      style={[styles.container, animatedPressableStyle]}
+    >
       {item.type !== "button" && <SettingsIcon icon={item.icon} type={item.iconType} color={iconColor} />}
 
       <Text style={styles.label(item.type === "button", item.color)}>{item.label}</Text>
@@ -31,6 +57,6 @@ export default function SettingsItem({ item }: SettingsItemProps): React.JSX.Ele
           />
         </View>
       )}
-    </TouchableOpacity>
+    </AnimatedPressable>
   );
 }
