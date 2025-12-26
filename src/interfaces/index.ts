@@ -51,17 +51,18 @@ export type IconType = "transparent" | "gradient";
 export type ColorKey = keyof typeof staticColor | null;
 
 export interface SettingsItem {
-  icon: keyof typeof ICONS;
-  iconType: IconType;
+  icon?: keyof typeof ICONS;
+  iconType?: IconType;
   label: string;
   color: ColorKey;
   badgeLabel?: string | number;
   badgeIcon?: keyof typeof ICONS;
-  type?: "link" | "toggle";
+  type?: "link" | "toggle" | "button";
 }
 
 export interface SettingsSection {
   id: string;
+  description?: string;
   items: SettingsItem[];
 }
 

@@ -110,4 +110,16 @@ export const SETTINGS_SECTIONS = ({username, description, friends, theme, langua
       },
     ],
   },
+   {
+    id: "dangerZone",
+    description: "При выходе из аккаунта все ваши ключи будут сброшены. Чтобы восстановить их, потребуется снова ввести пароль",
+    items: [
+      {
+        iconType: "gradient",
+        label: "Выйти из аккаунта",
+        color: "red",
+        type: 'button'
+      },
+    ],
+  },
 ]);

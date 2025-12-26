@@ -19,7 +19,7 @@ export default function SettingsScreen(): React.JSX.Element {
   const { user, error, loading } = useGetMyself();
 
   const keyExtractor = useCallback((item: SettingsSection) => {
-    return String(item.id);
+    return String(item.id); 
   }, []);
 
   const data = useMemo(() => SETTINGS_SECTIONS({ username: "dikiy", description: "dikiy 56655", friends: 30, theme: "Светлое", language: "Русский"}), [user, SETTINGS_SECTIONS])
@@ -28,7 +28,7 @@ export default function SettingsScreen(): React.JSX.Element {
     <View style={styles.container}>
       <FloatingHeader scrollY={scrollY} user={user} />
       <AnimatedLegendList
-        ref={animatedRef}
+        ref={animatedRef} 
         keyExtractor={keyExtractor}
         ListHeaderComponent={<Header scrollY={scrollY} user={user} />}
         onScroll={scrollHandler}
