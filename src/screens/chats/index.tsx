@@ -25,7 +25,6 @@ export default function ChatsScreen(): React.JSX.Element {
   const animatedViewStyle = useAnimatedStyle(
     (): ViewStyle => ({
       opacity: withSpring(isSearch ? 0 : 1, fastSpring),
-      transform: [{ scale: withSpring(isSearch ? 0.95 : 1, fastSpring) }],
     })
   );
 

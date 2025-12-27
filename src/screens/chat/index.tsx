@@ -5,10 +5,8 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { styles } from "./Chat.styles";
 import { View } from "react-native";
 import EmptyModal from "@components/chatScreen/emptyModal";
-import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
 import useMessages from "@api/hooks/encryption/useMessages";
 import type { Chat, Message as MessageType } from "@interfaces";
-import { useScreenScale } from "@hooks";
 import { KeyboardAvoidingLegendList } from "@legendapp/list/keyboard";
 import { LegendListRef } from "@legendapp/list";
 
@@ -26,11 +24,34 @@ export default function ChatScreen({ route }: ChatScreenProps): React.JSX.Elemen
   const [footerHeight, setFooterHeight] = useState<number>(0);
   const [headerHeight, setHeaderHeight] = useState<number>(0);
   const [lastMessageId, setLastMessageId] = useState<number>(0);
-  const { animatedScreenStyle } = useScreenScale();
-  const { height: keyboardHeight } = useReanimatedKeyboardAnimation();
   const listRef = useRef<LegendListRef>(null);
 
-  const CHAT_TIME_WINDOW = 5 * 60 * 1000;
+  const renderItem = useCallback(
+    ({ item, index }: { item: MessageType; index: number }) => {
+      if (item?.type === "date_header") {
+        return;
+      }
+
+      const prevItem = messages[index - 1];
+      const nextItem = messages[index + 1];
+
+      return (
+        <Message
+          key={item?.nonce}
+          seen={seenId === item?.id}
+          isLast={lastMessageId === item?.id}
+          message={item}
+          prevItem={prevItem}
+          nextItem={nextItem}
+        />
+      );
+    },
+    [seenId, lastMessageId, footerHeight, messages, footerHeight]
+  );
+
+  const keyExtractor = useCallback((item: MessageType, index: number) => {
+    return String(item?.nonce ?? item?.id ?? index);
+  }, []);
 
   useEffect(() => {
     let lastSeen = 0;
@@ -45,56 +66,8 @@ export default function ChatScreen({ route }: ChatScreenProps): React.JSX.Elemen
     setLastMessageId(messages.length ? messages[messages.length - 1]?.id : 0);
   }, [messages.length, messages]);
 
-  const renderItem = useCallback(
-    ({ item, index }: { item: MessageType; index: number }) => {
-      if (item?.type === "date_header") {
-        // бейдж даты
-        // жсон выглядbт так
-        // {"text": "13 декабря", "type": "date_header"}
-        return;
-      }
-
-      const prevItem = messages[index - 1];
-      const nextItem = messages[index + 1];
-
-      const isGroupStart =
-        !prevItem ||
-        prevItem.author_id !== item.author_id ||
-        new Date(item.date).getTime() - new Date(prevItem.date).getTime() > CHAT_TIME_WINDOW;
-
-      const isGroupEnd =
-        !nextItem ||
-        nextItem.author_id !== item.author_id ||
-        new Date(nextItem.date).getTime() - new Date(item.date).getTime() > CHAT_TIME_WINDOW;
-
-      return (
-        <Message
-          key={item?.nonce}
-          seen={seenId === item?.id}
-          isLast={lastMessageId === item?.id}
-          message={item}
-          isGroupStart={isGroupStart}
-          isGroupEnd={isGroupEnd}
-        />
-      );
-    },
-    [seenId, lastMessageId, footerHeight, messages, footerHeight]
-  );
-
-  const ss = () => {
-    listRef.current?.scrollToEnd({ animated: true, viewOffset: keyboardHeight.get() });
-  };
-
-  useEffect(() => {
-    ss();
-  }, [messages.length]);
-
-  const keyExtractor = useCallback((item: MessageType, index: number) => {
-    return String(item?.nonce ?? item?.id ?? index);
-  }, []);
-
   return (
-    <View style={[styles.container, animatedScreenStyle]}>
+    <View style={styles.container}>
       <Header onLayout={setHeaderHeight} chat={chat} />
       <EmptyModal chat={chat} visible={messages.length === 0} />
       <KeyboardAvoidingLegendList
