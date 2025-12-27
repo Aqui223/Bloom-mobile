@@ -2,7 +2,6 @@ import TabBarItem from "./Item";
 import { LayoutChangeEvent, TextInput } from "react-native";
 import { styles } from "./TabBarContainer.styles";
 import TabBarIndicator from "./Indicator";
-import { Haptics } from "react-native-nitro-haptics";
 import useTabBarStore from "@stores/tabBar";
 import Animated, { useSharedValue, LayoutAnimationConfig } from "react-native-reanimated";
 import TabBarSearchButton from "./search";
@@ -30,19 +29,6 @@ export default function TabBarContainer({ state, navigation }): React.JSX.Elemen
     if (tabBarWidth.value <= 1) tabBarWidth.value = event.nativeEvent.layout.width;
   }, []);
 
-  const onPress = useCallback((route, focused: boolean) => {
-    const event = navigation.emit({
-      type: "tabPress",
-      target: route.key,
-      canPreventDefault: true,
-    });
-
-    if (!focused && !event.defaultPrevented) {
-      Haptics.impact("light");
-      navigation.navigate(route.name);
-    }
-  }, []);
-
   useEffect(() => {
     setActiveTab(state.routes[state.index].name);
   }, [state]);
@@ -50,7 +36,7 @@ export default function TabBarContainer({ state, navigation }): React.JSX.Elemen
   return (
     <Animated.View exiting={vSlideAnimationOut} entering={vSlideAnimationIn} style={styles.container}>
       <LayoutAnimationConfig skipEntering skipExiting>
-        {isSearch && !isSearchFocused ? <TabBarSearchBackButton /> : null}
+        {isSearch && !isSearchFocused && <TabBarSearchBackButton />}
         <Animated.View layout={layoutAnimation} style={styles.tabBarWrapper}>
           <BlurView style={StyleSheet.absoluteFill} intensity={40} tint='systemChromeMaterialDark' />
           {isSearch ? (
@@ -71,14 +57,12 @@ export default function TabBarContainer({ state, navigation }): React.JSX.Elemen
                 tabBarWidth={tabBarWidth}
               />
               {state.routes.map((route, index) => {
-                const focused = state.index === index;
-
                 return (
                   <TabBarItem
-                    key={index}
+                    key={route.key}
                     route={route}
-                    focused={focused}
-                    onPress={() => onPress(route, focused)}
+                    focused={state.index === index}
+                    navigation={navigation}
                   />
                 );
               })}

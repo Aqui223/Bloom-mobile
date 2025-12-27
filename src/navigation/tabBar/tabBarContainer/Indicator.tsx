@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { ViewStyle } from "react-native";
 import Animated, { useSharedValue, useAnimatedStyle, withSpring, interpolateColor, SharedValue } from "react-native-reanimated";
 import { styles } from "./TabBarContainer.styles";
-import { springyTabBar } from "@constants/animations";
+import { quickSpring } from "@constants/animations";
 import { TabValue } from "@interfaces";
 import { TAB_COLORS } from "@constants/tabBar";
 
@@ -28,17 +28,17 @@ export default function TabBarIndicator({ index = 0, routes, tabBarWidth, x, col
 		const target = (tabBarWidth.get() / 4 - 4.5) * index;
 		prevIndex.current = index;
 
-		x.value = withSpring(target, springyTabBar);
+		x.set(withSpring(target, quickSpring));
 
-		scaleX.value = withSpring(1.2, springyTabBar, () => {
-			scaleX.value = withSpring(1, springyTabBar);
-		});
-
-		scaleY.set(withSpring(0.8, springyTabBar, () => {
-			scaleY.value = withSpring(1, springyTabBar);
+		scaleX.set(withSpring(1.15, quickSpring, () => {
+			scaleX.set(withSpring(1, quickSpring));
 		}));
 
-		colorProgress.value = withSpring(Object.keys(TAB_COLORS_RES).indexOf(routes[index]), springyTabBar)
+		scaleY.set(withSpring(0.85, quickSpring, () => {
+			scaleY.set(withSpring(1, quickSpring));
+		}));
+
+		colorProgress.set(withSpring(Object.keys(TAB_COLORS_RES).indexOf(routes[index]), quickSpring))
 	}, [index, tabsCount]);
 
 	const animatedStyle = useAnimatedStyle(
@@ -46,7 +46,7 @@ export default function TabBarIndicator({ index = 0, routes, tabBarWidth, x, col
 			transform: [
 				{ translateX: x.get() },
 				{ scaleX: scaleX.get() },
-				{ scaleY: scaleX.get() },
+				{ scaleY: scaleY.get() },
 			],
 			width: tabBarWidth.get() / 4 + 5,
 			backgroundColor: interpolateColor(colorProgress.get(), routes.map((e) => Object.keys(TAB_COLORS_RES).indexOf(e)), Object.values(TAB_COLORS_RES) )

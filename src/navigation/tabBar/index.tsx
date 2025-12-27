@@ -10,11 +10,7 @@ const Tab = createBottomTabNavigator();
 const springOptions: BottomTabNavigationOptions = {
   transitionSpec: {
     animation: "spring",
-    config: {
-      mass: quickSpring.mass,
-      damping: quickSpring.damping,
-      stiffness: quickSpring.stiffness,
-    },
+    config: quickSpring,
   },
 };
 

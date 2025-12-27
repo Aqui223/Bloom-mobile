@@ -12,7 +12,7 @@ type TabBarSearchInputProps = {
     ref: Ref<TextInput>;
 }
 
-export default function TabBarSearchInput({ref, ...props}: TabBarSearchInputProps): React.JSX.Element {
+export default function TabBarSearchInput({ref}: TabBarSearchInputProps): React.JSX.Element {
   const { searchValue, setSearchValue, setIsSearchFocused } = useTabBarStore();
   const { theme } = useUnistyles();
 
@@ -32,7 +32,6 @@ export default function TabBarSearchInput({ref, ...props}: TabBarSearchInputProp
       returnKeyType="search"
       entering={getFadeIn()}
       exiting={getFadeOut()}
-      {...props}
     />
   );
 };
