@@ -8,7 +8,7 @@ export const styles = StyleSheet.create((theme) => ({
     position: "absolute",
     flexDirection: "row",
     justifyContent: 'flex-end',
-    alignItems: 'center',
+    alignItems: 'flex-end',
     left: 0,
     right: 0,
   },

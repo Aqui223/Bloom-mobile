@@ -4,7 +4,6 @@ export { default as useTokenCheck } from "./useTokenAndUserIDCheck";
 export { default as useScreenScale } from "./useScreenScale";
 export { default as useContextMenu } from "./useContextMenu";
 export { default as useAuthFooter } from "./useAuthFooter";
-export { default as useTabBarSearchAnimation } from "./useTabBarSearchAnimation";
 export { default as useTokenAndUserIDCheck } from "./useTokenAndUserIDCheck";
 export { default as useUsersSearch } from "./api/useUsersSearch"
 export { default as useChatItem } from "./useChatItem"

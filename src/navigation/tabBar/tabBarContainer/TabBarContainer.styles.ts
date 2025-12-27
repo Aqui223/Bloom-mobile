@@ -1,23 +1,30 @@
 import { StyleSheet } from "react-native-unistyles";
 
 export const styles = StyleSheet.create((theme) => ({
-  tabBarWrapper: {
+  container: {
     flexDirection: "row",
     gap: theme.spacing.md,
+    justifyContent: 'center',
+    alignItems: 'center',
     width: "100%",
-    alignItems: "center",
-    justifyContent: "center",
   },
   tabBar: {
-    height: '100%',
+    flex: 1,
+    gap: theme.spacing.md - 2,
+    flexDirection: "row",
+    paddingHorizontal: theme.spacing.md - 2 + theme.spacing.xs,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  tabBarWrapper: {
+    flex: 1,
     backgroundColor: theme.colors.foregroundBlur,
     borderRadius: theme.radius.full,
+    zIndex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
     overflow: "hidden",
-    flexDirection: "row",
     borderCurve: "continuous",
-    padding: theme.spacing.xs,
-    alignItems: "center",
-    justifyContent: "center",
   },
   indicator: {
     position: "absolute",
@@ -30,7 +37,6 @@ export const styles = StyleSheet.create((theme) => ({
   tabBarItem: {
     alignItems: "center",
     justifyContent: "center",
-    width: 70,
-    height: "100%",
+    flex: 1,
   },
 }));

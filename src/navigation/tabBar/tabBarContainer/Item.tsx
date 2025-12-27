@@ -5,8 +5,6 @@ import { useUnistyles } from "react-native-unistyles";
 import { quickSpring } from "@constants/easings";
 import Icon from "@components/ui/Icon";
 import { styles } from "./TabBarContainer.styles";
-import useTabBarStore from "@stores/tabBar";
-import { springyTabBar } from "@constants/animations";
 import type { TabValue } from "@interfaces";
 import { TAB_COLORS, TAB_ICONS } from "@constants/tabBar";
 
@@ -20,42 +18,38 @@ const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 export default function TabBarItem({ route, focused, onPress }: TabBarItemProps): React.JSX.Element {
 	const { theme } = useUnistyles();
-	const color = useSharedValue(0.35);
+	const color = useSharedValue(0);
 	const scale = useSharedValue(1);
-	const { isSearch, setIsSearch } = useTabBarStore();
 
 	const TAB_COLORS_RES = TAB_COLORS()
 
 	const iconScale = (out: boolean = false) => {
-		scale.value = withSpring(out ? 1 : 1.1, quickSpring);
+		scale.value = withSpring(out ? 1 : 1.2, quickSpring);
 	};
 
 	const animatedStyle = useAnimatedStyle(
 		(): ViewStyle => ({
 			transform: [
 				{
-					scale: withSpring(focused ? scale.value : isSearch ? 0.5 : scale.value, quickSpring),
-				},
-				{
-					translateX: route.name === "tab_search" ? "0%" : withSpring(isSearch ? (route.name === "tab_chats" ? "100%" : "-100%") : "0%", springyTabBar),
+					scale: scale.value,
 				},
 			],
-			opacity: withSpring(focused ? 1 : isSearch ? 0 : 1, quickSpring),
+			opacity: withSpring(focused ? 1 : theme.opacity.contentText, quickSpring)
 		})
 	);
 
 	const animatedProps = useAnimatedProps(() => ({
-		fill: interpolateColor(color.value, [1, 2], [theme.colors.text, TAB_COLORS_RES[route.name]]),
+		fill: interpolateColor(color.value, [0, 1], [theme.colors.text, TAB_COLORS_RES[route.name]]),
 	}));
 
 	useEffect(() => {
-		color.value = withSpring(isSearch ? 1 : focused ? 2 : 1, quickSpring);
-	}, [focused, isSearch]);
+		color.value = withSpring(focused ? 1 : 0, quickSpring);
+	}, [focused]);
 
 	return (
 		<AnimatedPressable
 			style={[styles.tabBarItem, animatedStyle]}
-			onPress={isSearch ? () => setIsSearch(false) : onPress}
+			onPress={onPress}
 			onPressIn={() => iconScale()}
 			onPressOut={() => iconScale(true)}
 		>
