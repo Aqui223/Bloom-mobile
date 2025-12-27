@@ -7,18 +7,14 @@ import Icon from "@components/ui/Icon";
 import { styles } from "./TabBarContainer.styles";
 import useTabBarStore from "@stores/tabBar";
 import { springyTabBar } from "@constants/animations";
+import type { TabValue } from "@interfaces";
+import { TAB_COLORS, TAB_ICONS } from "@constants/tabBar";
 
 type TabBarItemProps = {
-	route: { name: "tab_chats" | "tab_search" | "tab_settings" };
+	route: { name: TabValue };
 	focused: boolean;
 	onPress: () => void;
 };
-
-const TAB_ICONS = {
-	tab_chats: "message",
-	tab_search: "compass",
-	tab_settings: "gear",
-} as const;
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
@@ -28,11 +24,7 @@ export default function TabBarItem({ route, focused, onPress }: TabBarItemProps)
 	const scale = useSharedValue(1);
 	const { isSearch, setIsSearch } = useTabBarStore();
 
-	const tabColor = {
-		tab_chats: theme.colors.primary,
-		tab_search: theme.colors.yellow,
-		tab_settings: theme.colors.pink,
-	}[route.name];
+	const TAB_COLORS_RES = TAB_COLORS()
 
 	const iconScale = (out: boolean = false) => {
 		scale.value = withSpring(out ? 1 : 1.1, quickSpring);
@@ -53,7 +45,7 @@ export default function TabBarItem({ route, focused, onPress }: TabBarItemProps)
 	);
 
 	const animatedProps = useAnimatedProps(() => ({
-		fill: interpolateColor(color.value, [1, 2], [theme.colors.text, tabColor]),
+		fill: interpolateColor(color.value, [1, 2], [theme.colors.text, TAB_COLORS_RES[route.name]]),
 	}));
 
 	useEffect(() => {

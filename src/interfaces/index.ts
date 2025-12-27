@@ -1,4 +1,5 @@
 import { ICONS } from "@constants/icons";
+import { ROUTES } from "@constants/routes";
 import React from "react";
 import { staticColor } from "unistyles";
 
@@ -10,6 +11,8 @@ interface ChatLastMessage {
 interface ChatLastMessageView extends ChatLastMessage {
   time?: string;
 }
+
+type TabsObject = typeof ROUTES.tabs;
 
 export interface Message {
   id: number;
@@ -46,6 +49,9 @@ export interface Option {
   color?: string;
   separator?: boolean
 }
+
+
+export type TabValue = TabsObject[keyof TabsObject];
 
 export type IconType = "transparent" | "gradient";
 export type ColorKey = keyof typeof staticColor | null;

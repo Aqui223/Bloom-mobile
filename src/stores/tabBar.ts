@@ -1,3 +1,5 @@
+import { ROUTES } from "@constants/routes";
+import { TabValue } from "@interfaces";
 import { create } from "zustand";
 
 type TabBarStore = {
@@ -5,12 +7,12 @@ type TabBarStore = {
 	isSearch: boolean;
 	searchValue: string;
 	isSearchFocused: boolean;
-	activeTab: number;
+	activeTab: TabValue;
 	setTabBarHeight: (tabBarHeight: number) => void;
 	setIsSearch: (isSearch: boolean) => void;
 	setSearchValue: (searchValue: string) => void;
 	setIsSearchFocused: (isSearchFocused: boolean) => void;
-	setActiveTab: (activeTab: number) => void;
+	setActiveTab: (activeTab: TabValue) => void;
 };
 
 const useTabBarStore = create<TabBarStore>(set => ({
@@ -18,7 +20,7 @@ const useTabBarStore = create<TabBarStore>(set => ({
 	isSearch: false,
 	searchValue: "",
 	isSearchFocused: false,
-	activeTab: 0,
+	activeTab: ROUTES.tabs.chats,
 	setTabBarHeight: tabBarHeight => set({ tabBarHeight }),
 	setIsSearch: isSearch => set({ isSearch }),
 	setSearchValue: searchValue => set({ searchValue }),

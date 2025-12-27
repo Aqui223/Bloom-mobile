@@ -2,19 +2,19 @@ import React, { useEffect, useRef } from "react";
 import { ViewStyle } from "react-native";
 import Animated, { useSharedValue, useAnimatedStyle, withSpring, interpolateColor } from "react-native-reanimated";
 import { useInsets } from "@hooks";
-import { useUnistyles } from "react-native-unistyles";
 import { styles } from "./TabBarContainer.styles";
 import { springyTabBar } from "@constants/animations";
 import useTabBarStore from "@stores/tabBar";
+import { TabValue } from "@interfaces";
+import { TAB_COLORS } from "@constants/tabBar";
 
 type TabBarIndicatorProps = {
 	index?: number;
-	count?: number;
+	routes?: TabValue[];
 };
 
-export default function TabBarIndicator({ index = 0, count = 3 }: TabBarIndicatorProps): React.JSX.Element {
+export default function TabBarIndicator({ index = 0, routes }: TabBarIndicatorProps): React.JSX.Element {
 	const insets = useInsets();
-	const { theme } = useUnistyles();
 	const prevIndex = useRef(index);
 	const { isSearch } = useTabBarStore();
 
@@ -24,19 +24,18 @@ export default function TabBarIndicator({ index = 0, count = 3 }: TabBarIndicato
 	const colorProgress = useSharedValue(0);
 
 	const tabWidth = 70;
-	const colors = [theme.colors.primaryBackdrop, theme.colors.yellowBackdrop, theme.colors.pinkBackdrop
-		
-	]
+	const tabsCount = routes?.length
+	const TAB_COLORS_RES = TAB_COLORS(true)
 
 	useEffect(() => {
-		if (count <= 0) return;
+		if (tabsCount <= 0) return;
 
 		const target = tabWidth * index;
 		prevIndex.current = index;
 
 		x.value = withSpring(target, springyTabBar);
 
-		scaleX.value = withSpring(1 + 0.2, springyTabBar, () => {
+		scaleX.value = withSpring(1.2, springyTabBar, () => {
 			scaleX.value = withSpring(1, springyTabBar);
 		});
 
@@ -44,8 +43,8 @@ export default function TabBarIndicator({ index = 0, count = 3 }: TabBarIndicato
 			scaleY.value = withSpring(1, springyTabBar);
 		});
 
-		colorProgress.value = withSpring(index, springyTabBar)
-	}, [index, count]);
+		colorProgress.value = withSpring(Object.keys(TAB_COLORS_RES).indexOf(routes[index]), springyTabBar)
+	}, [index, tabsCount]);
 
 	const animatedStyle = useAnimatedStyle(
 		(): ViewStyle => ({
@@ -56,7 +55,7 @@ export default function TabBarIndicator({ index = 0, count = 3 }: TabBarIndicato
 				{ scale: withSpring(isSearch ? 0.5 : 1, springyTabBar) },
 			],
 			opacity: withSpring(isSearch ? 0 : 1, springyTabBar),
-			backgroundColor: interpolateColor(colorProgress.value, colors.map((_, i) => i), colors)
+			backgroundColor: interpolateColor(colorProgress.value, routes.map((e) => Object.keys(TAB_COLORS_RES).indexOf(e)), Object.values(TAB_COLORS_RES) )
 		})
 	);
 

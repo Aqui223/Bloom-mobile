@@ -12,6 +12,7 @@ import Animated, {
 } from "react-native-reanimated";
 import TabBarSearchButton from "./searchButton";
 import {
+  layoutAnimationSpringy,
   springyTabBar,
   vSlideAnimationIn,
   vSlideAnimationOut,
@@ -57,7 +58,7 @@ export default function TabBarContainer({ state, navigation }): React.JSX.Elemen
   }, []);
 
   useEffect(() => {
-    setActiveTab(state?.index);
+    setActiveTab(state.routes[state.index].name);
   }, [state]);
 
   return (
@@ -71,7 +72,7 @@ export default function TabBarContainer({ state, navigation }): React.JSX.Elemen
             style={[styles.tabBar, animatedViewStyle]}
           >
             <BlurView style={StyleSheet.absoluteFill} intensity={40} tint='systemChromeMaterialDark' />
-            <TabBarIndicator index={state.index} count={state.routes.length} />
+            <TabBarIndicator index={state.index} routes={state.routes.map((s) =>s.name)} />
             {state.routes.map((route, index) => {
               const focused = state.index === index;
 

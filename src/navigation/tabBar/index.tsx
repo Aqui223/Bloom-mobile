@@ -30,13 +30,18 @@ export default function MainTabNavigator(): React.JSX.Element {
       }}
     >
       <Tab.Screen
-        name={ROUTES.tabs.chats}
+        name={ROUTES.tabs.friends}
         component={ChatsScreen}
         options={springOptions}
-      />
+      /> 
       <Tab.Screen
         name={ROUTES.tabs.search}
         component={SettingsScreen}
+        options={springOptions}
+      /> 
+      <Tab.Screen
+        name={ROUTES.tabs.chats}
+        component={ChatsScreen}
         options={springOptions}
       />
       <Tab.Screen

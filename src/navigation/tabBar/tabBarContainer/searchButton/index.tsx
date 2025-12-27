@@ -12,12 +12,11 @@ import {
   getFadeIn,
   getFadeOut,
   layoutAnimation,
-  zoomAnimationIn,
-  zoomAnimationOut,
 } from "@constants/animations";
 import { springyTabBar } from "@constants/animations";
 import { useTabBarSearchAnimation } from "@hooks";
 import TabBarSearchInput from "./SearchInput";
+import { ROUTES } from "@constants/routes";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
@@ -35,7 +34,7 @@ export default function TabBarSearchButton(): React.JSX.Element {
     isLayoutAnimation,
   } = useTabBarSearchAnimation();
 
-  const settingsTab = activeTab === 2
+  const settingsTab = activeTab === ROUTES.tabs.settings
 
   return (
     <>

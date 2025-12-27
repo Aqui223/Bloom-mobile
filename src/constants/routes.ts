@@ -1,6 +1,7 @@
 export const ROUTES = {
 	tabs: {
-    search: "tab_search",
+    	friends: "tab_friends",
+		search: "tab_search",
 		chats: "tab_chats",
 		settings: "tab_settings",
 		navigator: "tab_navigator",

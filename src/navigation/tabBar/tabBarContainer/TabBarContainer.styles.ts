@@ -9,7 +9,7 @@ export const styles = StyleSheet.create((theme) => ({
     justifyContent: "center",
   },
   tabBar: {
-    height: 54,
+    height: '100%',
     backgroundColor: theme.colors.foregroundBlur,
     borderRadius: theme.radius.full,
     overflow: "hidden",
