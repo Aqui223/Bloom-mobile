@@ -12,6 +12,7 @@ import Chat from "../chat";
 import { useInsets, useUsersSearch } from "@hooks";
 import SearchHeader from "./header";
 import { EmptyModal } from "@components/ui";
+import FloatingHeader from "./header/FloatingHeader";
 
 export default function Search(): React.JSX.Element {
   const { isSearch, searchValue, tabBarHeight } = useTabBarStore();
@@ -21,8 +22,6 @@ export default function Search(): React.JSX.Element {
   const { users, status, loadMore } = useUsersSearch(searchValue);
 
   const ss = ""
-
-  // console.log(status)
 
   const isStoryEmpty: boolean = !!ss && isSearch;
   const isEmpty: boolean = status === "empty" || status === "error";
@@ -44,16 +43,18 @@ export default function Search(): React.JSX.Element {
 
   return isSearch ? (
     <Animated.View entering={getFadeIn()} exiting={getFadeOut()} style={styles.container}>
-      <SearchHeader scrollY={scrollY} setHeaderHeight={setHeaderHeight} />
+      <FloatingHeader scrollY={scrollY} headerHeight={headerHeight}/>
       <AnimatedLegendList
         key='search'
         onScroll={scrollHandler}
         onEndReached={() => loadMore()}
+        ListHeaderComponent={<SearchHeader headerHeight={headerHeight} scrollY={scrollY} setHeaderHeight={setHeaderHeight} />}
         keyExtractor={keyExtractor}
         style={styles.list}
         keyboardDismissMode='on-drag'
         keyboardShouldPersistTaps='handled'
-        contentContainerStyle={{ paddingBottom: tabBarHeight, paddingTop: headerHeight }}
+        showsVerticalScrollIndicator
+        contentContainerStyle={{ paddingBottom: tabBarHeight }}
         scrollIndicatorInsets={{
           top: headerHeight - insets.realTop,
           bottom: tabBarHeight - insets.realBottom,
