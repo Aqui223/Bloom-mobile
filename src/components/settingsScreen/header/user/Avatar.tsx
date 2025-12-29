@@ -15,10 +15,16 @@ import { styles } from "./User.styles";
 import React from "react";
 import { Avatar } from "@components/ui";
 import { Haptics } from "react-native-nitro-haptics";
+import type { User } from "@interfaces";
 
 const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 
-export default function HeaderAvatar({ scrollY }: { scrollY: SharedValue<number> }): React.JSX.Element {
+type HeaderAvatarProps = {
+  scrollY: SharedValue<number>;
+  user: User;
+}
+
+export default function HeaderAvatar({ scrollY, user }: HeaderAvatarProps): React.JSX.Element {
   const { snapEndPosition } = useSettingsScreenStore();
   const isAvatarExpanded = useSharedValue<boolean>(false);
 
@@ -65,7 +71,7 @@ export default function HeaderAvatar({ scrollY }: { scrollY: SharedValue<number>
 
   return (
     <Animated.View style={[styles.avatarWrapper, animatedStyle]}>
-      <Avatar size='2xl' username='dikiy' style={styles.avatar} />
+      <Avatar size='2xl' image={user?.avatar} username={user?.username} style={styles.avatar} />
       <AnimatedBlurView
         tint='dark'
         experimentalBlurMethod='dimezisBlurView'

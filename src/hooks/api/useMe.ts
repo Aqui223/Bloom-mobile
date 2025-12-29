@@ -2,14 +2,23 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { API_URL } from "@constants/api";
 import { createSecureStorage } from "@lib/storage";
+import { User } from "@interfaces";
 
-export default function () {
+type useMe = {
+    loading: boolean;
+    error: string;
+    user: User;
+}
+
+export default function useMe (): useMe {
     // variables
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string>("");
+    const [user, setUser] = useState<User>(null);
 
     useEffect(() => {
+        let canceled = false;
+
         const fetchUser = async () => {
             try {
                 // mmkv storage
@@ -21,9 +30,11 @@ export default function () {
                 const response = await axios.get(`${API_URL}/user/me`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
-
-                setUser(response?.data);
+                if (!canceled) {
+                     setUser(response?.data);
                 Storage.set("user", JSON.stringify(response?.data));
+                }
+               
             } catch (err) {
                 setError(err);
             } finally {
@@ -32,6 +43,10 @@ export default function () {
         };
 
         fetchUser();
+
+        return () => {
+            canceled = true
+        }
     }, []);
 
     return { loading, error, user };

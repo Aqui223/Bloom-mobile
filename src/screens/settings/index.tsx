@@ -1,9 +1,8 @@
 import Header from "@components/settingsScreen/header";
 import { View } from "react-native";
 import { styles } from "./Settings.styles";
-import { useSnapScroll } from "@hooks";
+import { useMe, useSnapScroll } from "@hooks";
 import useSettingsScreenStore from "@stores/settings";
-import useGetMyself from "@api/hooks/useGetMyself";
 import FloatingHeader from "@components/settingsScreen/header/FloatingHeader";
 import { AnimatedLegendList } from "@legendapp/list/reanimated";
 import React, { useCallback, useMemo } from "react";
@@ -16,13 +15,13 @@ export default function SettingsScreen(): React.JSX.Element {
   const { snapEndPosition } = useSettingsScreenStore();
   const { tabBarHeight } = useTabBarStore();
   const { scrollY, animatedRef, scrollHandler } = useSnapScroll<any>(snapEndPosition);
-  const { user, error, loading } = useGetMyself();
+  const { user, error, loading } = useMe();
 
   const data = useMemo(
     () =>
       SETTINGS_SECTIONS({
-        username: "dikiy",
-        description: "dikiy 56655",
+        username: user?.username,
+        description: user?.description,
         friends: 30,
         theme: "Светлое",
         language: "Русский",

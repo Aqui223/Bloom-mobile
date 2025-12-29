@@ -3,10 +3,11 @@ import { styles } from "./User.styles";
 import { useUnistyles } from "react-native-unistyles";
 import useSettingsScreenStore from "@stores/settings";
 import { TextStyle, ViewStyle } from "react-native";
+import type { User } from "@interfaces";
 
 type UserProps = {
   scrollY: SharedValue<number>;
-  user: any;
+  user: User;
 }
 
 export default function User({ scrollY, user }: UserProps): React.JSX.Element {
@@ -51,10 +52,9 @@ export default function User({ scrollY, user }: UserProps): React.JSX.Element {
   return (
     <Animated.View style={[styles.container, animatedContainerStyle]}>
       <Animated.Text style={[styles.name, animatedStyle]}>
-        {/* {user?.display_name || user?.username} */} Dikiy Boss
+        {user?.display_name}
       </Animated.Text>
-      {/* <Animated.Text style={[styles.mail, animatedSubTextStyle]}>@{user?.username}</Animated.Text> */}
-      <Animated.Text style={[styles.mail, animatedSubTextStyle]}>dikiyboss@hotmail.com</Animated.Text>
+      <Animated.Text style={[styles.mail, animatedSubTextStyle]}>{user?.email}</Animated.Text>
     </Animated.View>
   );
 }

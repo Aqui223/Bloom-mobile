@@ -5,10 +5,11 @@ import React from "react";
 import Animated, { interpolate, SharedValue, useAnimatedStyle } from "react-native-reanimated";
 import { GradientBlur } from "@components/ui";
 import { TextStyle, ViewStyle } from "react-native";
+import type { User } from "@interfaces";
 
 type FloatingHeaderProps = {
     scrollY: SharedValue<number>;
-    user: any;
+    user: User;
 }
 
 export default function FloatingHeader({ scrollY, user }: FloatingHeaderProps): React.JSX.Element {
@@ -29,7 +30,7 @@ export default function FloatingHeader({ scrollY, user }: FloatingHeaderProps): 
   return (
     <Animated.View pointerEvents="none" style={[styles.floatingHeader(insets.top), animatedViewStyle]}>
         <GradientBlur direction="top-to-bottom"/>
-       <Animated.Text style={[styles.floatingHeaderTitle, animatedTextStyle]}>Dikiy boss</Animated.Text>
+       <Animated.Text style={[styles.floatingHeaderTitle, animatedTextStyle]}>{user?.display_name}</Animated.Text>
     </Animated.View>
   );
 }

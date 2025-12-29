@@ -6,10 +6,11 @@ import User from "./user";
 import { LayoutChangeEvent, View } from "react-native";
 import React from "react";
 import { SharedValue } from "react-native-reanimated";
+import type { User as UserType } from "@interfaces";
 
 type HeaderProps = {
     scrollY: SharedValue<number>;
-    user: any;
+    user: UserType;
 }
 
 export default function Header({ scrollY, user }: HeaderProps): React.JSX.Element {
@@ -22,7 +23,7 @@ export default function Header({ scrollY, user }: HeaderProps): React.JSX.Elemen
 
   return (
     <View onLayout={onHeaderLayout} style={styles.header(insets.top)}>
-        <HeaderAvatar scrollY={scrollY} />
+        <HeaderAvatar user={user} scrollY={scrollY} />
         <User scrollY={scrollY} user={user}/>
     </View>
   );
