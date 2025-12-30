@@ -4,6 +4,7 @@ export const styles = StyleSheet.create(theme => ({
  messageActions: {
     flexDirection: 'row',
     gap: theme.spacing.lg,
+    right: 0,
     position: 'absolute',
  },
  delete: {

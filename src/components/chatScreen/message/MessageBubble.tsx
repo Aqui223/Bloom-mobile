@@ -1,15 +1,15 @@
 import React from "react";
 import { useUnistyles } from "react-native-unistyles";
 import type { Message } from "@interfaces";
-import { ViewStyle, StyleProp, Text, View } from "react-native";
-import Animated from "react-native-reanimated";
+import { ViewStyle, Text, View } from "react-native";
+import Animated, { AnimatedStyle } from "react-native-reanimated";
 import { styles } from "./Message.styles";
 import ReplyBlock from "../replyBlock";
 import formatSentTime from "@lib/formatSentTime";
 
 type MessageBubbleProps = {
   message: Message | null;
-  style?: StyleProp<ViewStyle>;
+  style?: AnimatedStyle<ViewStyle>;
 };
 
 export default function MessageBubble({ message, style }: MessageBubbleProps): React.JSX.Element {
