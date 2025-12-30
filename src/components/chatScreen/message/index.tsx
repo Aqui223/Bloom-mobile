@@ -6,24 +6,18 @@ import type { Message } from "@interfaces";
 import MessageBubble from "./MessageBubble";
 import MessageStatus from "./MessageStatus";
 import { getFadeIn } from "@constants/animations";
+import MessageActions from "./actions";
 
 type MessageProps = {
   message: Message | null;
   seen?: boolean;
-  isLast?: boolean;
   prevItem?: Message;
   nextItem?: Message;
 };
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
-export default function Message({
-  message,
-  seen,
-  isLast,
-  prevItem,
-  nextItem,
-}: MessageProps): React.JSX.Element {
+export default function Message({ message, seen, prevItem, nextItem }: MessageProps): React.JSX.Element {
   const CHAT_TIME_WINDOW = 5 * 60 * 1000;
 
   const isGroupStart =
@@ -37,10 +31,17 @@ export default function Message({
     new Date(nextItem.date).getTime() - new Date(message.date).getTime() > CHAT_TIME_WINDOW;
 
   return (
-    <AnimatedPressable entering={getFadeIn()} style={[styles.messageWrapper(message?.isMe)]}>
-      <MessageBubble message={message} />
+    <AnimatedPressable
+      entering={getFadeIn()}
+      style={[styles.messageWrapper(message?.isMe, !isGroupStart && !isGroupEnd)]}
+    >
+      <Animated.View style={styles.messageBubbleWrapper}>
+        <MessageBubble message={message} />
+        <MessageActions/>
+      </Animated.View>
+
       <LayoutAnimationConfig skipEntering skipExiting>
-        <MessageStatus message={message} isLast={isLast} seen={seen} />
+        {isGroupEnd && <MessageStatus message={message} seen={seen} />}
       </LayoutAnimationConfig>
     </AnimatedPressable>
   );

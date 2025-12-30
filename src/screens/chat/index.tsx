@@ -39,7 +39,6 @@ export default function ChatScreen({ route }: ChatScreenProps): React.JSX.Elemen
         <Message
           key={item?.nonce}
           seen={seenId === item?.id}
-          isLast={lastMessageId === item?.id}
           message={item}
           prevItem={prevItem}
           nextItem={nextItem}
@@ -74,6 +73,7 @@ export default function ChatScreen({ route }: ChatScreenProps): React.JSX.Elemen
         data={messages}
         renderItem={renderItem}
         alignItemsAtEnd
+        maintainScrollAtEnd
         ref={listRef}
         keyExtractor={keyExtractor}
         style={styles.list}
