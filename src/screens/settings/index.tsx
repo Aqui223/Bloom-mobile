@@ -22,15 +22,15 @@ export default function SettingsScreen(): React.JSX.Element {
       SETTINGS_SECTIONS({
         username: user?.username,
         description: user?.description,
-        friends: 30,
+        friends: user?.friends_count,
         theme: "Светлое",
         language: "Русский",
       }),
-    [user, SETTINGS_SECTIONS]
+    [user]
   );
 
   const keyExtractor = useCallback((item: SettingsSection) => {
-    return String(item.id);
+    return item?.id;
   }, []);
 
   const renderItem = useCallback(({ item }: { item: SettingsSection }) => {

@@ -30,9 +30,11 @@ export default function Avatar({ size = "md", square = false, style, image, imag
 		"3xl": 128,
 	};
 
+	const emojiResult = EMOJI_AVATARS[username?.toLowerCase().slice(0, 1)]
+
 	const avatarStyle = useMemo(
-		() => styles.avatar({ height: SIZE_MAP[size], square, image: !!image, padding: SIZE_MAP[size] / 4.5, backgroundColor: EMOJI_AVATARS[username?.slice(0, 1)]?.color }),
-		[size, square, theme, username, image]
+		() => styles.avatar({ height: SIZE_MAP[size], square, image: !!image, padding: SIZE_MAP[size] / 4.5, backgroundColor: emojiResult?.color }),
+		[size, square, theme, emojiResult, image]
 	);
 
 	return image ? (
@@ -41,7 +43,7 @@ export default function Avatar({ size = "md", square = false, style, image, imag
 		</View>
 	) : (
 		<View ref={ref} style={[avatarStyle, style]}>
-			<Image source={EMOJI_AVATARS[username?.slice(0, 1)]?.emoji} style={styles.emoji} />
+			<Image source={emojiResult?.emoji} style={styles.emoji} />
 		</View>
 	);
 }

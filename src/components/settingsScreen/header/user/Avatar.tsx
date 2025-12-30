@@ -71,7 +71,7 @@ export default function HeaderAvatar({ scrollY, user }: HeaderAvatarProps): Reac
 
   return (
     <Animated.View style={[styles.avatarWrapper, animatedStyle]}>
-      <Avatar size='2xl' image={user?.avatar} username={user?.username} style={styles.avatar} />
+      <Avatar size='2xl' image={user?.avatar} username={user?.username || user?.display_name} style={styles.avatar} />
       <AnimatedBlurView
         tint='dark'
         experimentalBlurMethod='dimezisBlurView'

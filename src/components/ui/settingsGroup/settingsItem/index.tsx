@@ -49,7 +49,7 @@ export default function SettingsItem({ item }: SettingsItemProps): React.JSX.Ele
 
       {item.type !== "button" && (
         <View style={styles.rightSide}>
-          {item.badgeLabel && <Text style={styles.badgeLabel}>{item.badgeLabel}</Text>}
+          {typeof item.badgeLabel !== "undefined" && <Text style={styles.badgeLabel}>{item.badgeLabel}</Text>}
           <Icon
             icon={item.badgeIcon ?? "chevron.right"}
             size={item.badgeIcon ? 24 : 20}
