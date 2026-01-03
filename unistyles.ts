@@ -117,6 +117,7 @@ const appThemes = {
 StyleSheet.configure({
   settings: {
     initialTheme: "dark",
+    adaptiveThemes: false,
   },
   themes: appThemes,
 });
@@ -127,4 +128,3 @@ declare module "react-native-unistyles" {
   export interface UnistylesThemes extends AppThemes {}
 }
 
-export default lightTheme;

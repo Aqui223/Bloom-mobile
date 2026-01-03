@@ -1,10 +1,10 @@
-import { createNativeStackNavigator } from "react-native-screen-transitions";
+import { createBlankStackNavigator } from "react-native-screen-transitions/blank-stack";
 import MainTabNavigator from "./tabBar";
 import { ChatScreen } from "@screens";
 import { ROUTES } from "@constants/routes";
 import { screenTransition } from "./transition";
 
-const Stack = createNativeStackNavigator();
+const Stack = createBlankStackNavigator();
 
 export default function MainNavigator(): React.JSX.Element {
 

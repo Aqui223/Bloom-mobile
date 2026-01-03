@@ -41,7 +41,6 @@ export default function App() {
       setMMKV(storage);
       setRealm(realm);
     })()
-    console.log(fontError)
   }, [])
 
   return (

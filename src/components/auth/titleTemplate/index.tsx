@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, ImageSourcePropType, Text, View } from "react-native";
+import { Image, ImageSourcePropType, Text, View, ViewStyle } from "react-native";
 import { styles } from "./TitleTemplate.styles";
 import Animated, { useAnimatedStyle, interpolate } from "react-native-reanimated";
 import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
@@ -16,9 +16,9 @@ export default function AuthTitleTemplate({ icon, title }: TitleTemplateProps): 
 	const { progress } = useReanimatedKeyboardAnimation();
 	const { theme } = useUnistyles();
 
-	const animatedViewStyle = useAnimatedStyle(() => ({
+	const animatedViewStyle = useAnimatedStyle((): ViewStyle => ({
 		transform: [{scale: interpolate(progress.value, [0, 1], [1, 0.5], "clamp")}],
-		transformOrigin: 'center-bottom'
+		transformOrigin: 'center bottom 0px'
 	}))
   return (
     <View style={styles.titleContainer}>
