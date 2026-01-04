@@ -1,31 +1,31 @@
-import { StyleSheet } from "react-native-unistyles";
+import { StyleSheet } from 'react-native-unistyles'
 
 export const staticColor = {
-  white: "#ffffff",
-  black: "#000000",
-  primary: "#1A8CFF",
-  orange: "#FF531B",
-  green: "#1AFF7A",
-  pink: "#FF1A45",
-  yellow: "#FF901A",
-  cyan: "#28A8E9",
-  purple: "#A41AFF",
-  red: "#F43025",
-  gray: "#8C8C8C",
+  white: '#ffffff',
+  black: '#000000',
+  primary: '#1A8CFF',
+  orange: '#FF531B',
+  green: '#1AFF7A',
+  pink: '#FF1A45',
+  yellow: '#FF901A',
+  cyan: '#28A8E9',
+  purple: '#A41AFF',
+  red: '#F43025',
+  gray: '#8C8C8C',
 
   // Backdrops
-  whiteBackdrop: "#ffffff80",
-  blackBackdrop: "#00000080",
-  primaryBackdrop: "#1A8CFF80",
-  orangeBackdrop: "#FF531B80",
-  greenBackdrop: "#1AFF7A80",
-  pinkBackdrop: "#FF1A4580",
-  yellowBackdrop: "#FF901A80",
-  cyanBackdrop: "#28a8e980",
-  purpleBackdrop: "#A41AFF80",
-  redBackdrop: "#F4302580",
-  grayBackdrop: "#8C8C8C80"
-};
+  whiteBackdrop: '#ffffff80',
+  blackBackdrop: '#00000080',
+  primaryBackdrop: '#1A8CFF80',
+  orangeBackdrop: '#FF531B80',
+  greenBackdrop: '#1AFF7A80',
+  pinkBackdrop: '#FF1A4580',
+  yellowBackdrop: '#FF901A80',
+  cyanBackdrop: '#28a8e980',
+  purpleBackdrop: '#A41AFF80',
+  redBackdrop: '#F4302580',
+  grayBackdrop: '#8C8C8C80',
+}
 
 const base = {
   spacing: {
@@ -68,63 +68,62 @@ const base = {
     /** 9999px */ full: 9999,
   },
   fontFamily: {
-    /** Regular  */ regular: "OpenRunde-Regular",
-    /** Medium   */ medium: "OpenRunde-Medium",
-    /** Semibold */ semibold: "OpenRunde-Semibold",
-    /** Bold     */ bold: "OpenRunde-Bold",
+    /** Regular  */ regular: 'OpenRunde-Regular',
+    /** Medium   */ medium: 'OpenRunde-Medium',
+    /** Semibold */ semibold: 'OpenRunde-Semibold',
+    /** Bold     */ bold: 'OpenRunde-Bold',
   },
   opacity: {
     /** 35% */ secondaryText: 0.35,
     /** 50% */ contentText: 0.5,
   },
-};
+}
 
 export const lightTheme = {
   colors: {
-    background: "#ffffff",
-    text: "#000000",
-    secondaryText: "#00000059",
-    foreground: "#e0e0e0",
-    foregroundTransparent: "#0000001f",
-    foregroundBlur: "#80808033",
-    gradientBlur: "#ffffffb3",
-    border: "#0000000c",
+    background: '#ffffff',
+    text: '#000000',
+    secondaryText: '#00000059',
+    foreground: '#e0e0e0',
+    foregroundTransparent: '#0000001f',
+    foregroundBlur: '#80808033',
+    gradientBlur: '#ffffffb3',
+    border: '#0000000c',
     ...staticColor,
   },
   ...base,
-};
+}
 
 export const darkTheme = {
   colors: {
-    background: "#000000",
-    text: "#ffffff",
-    secondaryText: "#ffffff59",
-    foreground: "#1f1f1f",
-    foregroundTransparent: "#ffffff1f",
-    foregroundBlur: "#80808033",
-    gradientBlur: "#000000b3",
-    border: "#ffffff0c",
+    background: '#000000',
+    text: '#ffffff',
+    secondaryText: '#ffffff59',
+    foreground: '#1f1f1f',
+    foregroundTransparent: '#ffffff1f',
+    foregroundBlur: '#80808033',
+    gradientBlur: '#000000b3',
+    border: '#ffffff0c',
     ...staticColor,
   },
   ...base,
-};
+}
 
 const appThemes = {
   light: lightTheme,
   dark: darkTheme,
-};
+}
 
 StyleSheet.configure({
   settings: {
-    initialTheme: "dark",
+    initialTheme: 'dark',
     adaptiveThemes: false,
   },
   themes: appThemes,
-});
+})
 
-type AppThemes = typeof appThemes;
+type AppThemes = typeof appThemes
 
-declare module "react-native-unistyles" {
+declare module 'react-native-unistyles' {
   export interface UnistylesThemes extends AppThemes {}
 }
-

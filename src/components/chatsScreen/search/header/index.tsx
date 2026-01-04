@@ -1,32 +1,28 @@
-import { LayoutChangeEvent, Text, ViewStyle } from "react-native";
-import Animated, { interpolate, SharedValue, useAnimatedStyle } from "react-native-reanimated";
-import { styles } from "./Header.styles";
-import { useInsets } from "@hooks";
-import { useCallback } from "react";
+import { LayoutChangeEvent, Text, ViewStyle } from 'react-native'
+import Animated, { interpolate, SharedValue, useAnimatedStyle } from 'react-native-reanimated'
+import { styles } from './Header.styles'
+import { useInsets } from '@hooks'
+import { useCallback } from 'react'
 
 type SearchHeaderProps = {
-  scrollY: SharedValue<number>;
-  headerHeight: number;
-  setHeaderHeight: (height: number) => void;
-};
+  scrollY: SharedValue<number>
+  headerHeight: number
+  setHeaderHeight: (height: number) => void
+}
 
-export default function SearchHeader({
-  scrollY,
-  headerHeight,
-  setHeaderHeight,
-}: SearchHeaderProps): React.JSX.Element {
-  const insets = useInsets();
+export default function SearchHeader({ scrollY, headerHeight, setHeaderHeight }: SearchHeaderProps): React.JSX.Element {
+  const insets = useInsets()
 
   const onLayout = useCallback((event: LayoutChangeEvent) => {
-    const { height } = event.nativeEvent.layout;
-    setHeaderHeight(height);
-  }, []);
+    const { height } = event.nativeEvent.layout
+    setHeaderHeight(height)
+  }, [])
 
   const animatedViewStyle = useAnimatedStyle((): ViewStyle => {
     return {
-      opacity: interpolate(scrollY.get(), [0, headerHeight - insets.top], [1, 0], "clamp"),
-    };
-  }, [headerHeight]);
+      opacity: interpolate(scrollY.get(), [0, headerHeight - insets.top], [1, 0], 'clamp'),
+    }
+  }, [headerHeight])
 
   return (
     <>
@@ -34,5 +30,5 @@ export default function SearchHeader({
         <Text style={styles.title(true)}>Поиск</Text>
       </Animated.View>
     </>
-  );
+  )
 }

@@ -1,6 +1,6 @@
-import { StyleSheet } from "react-native-unistyles";
+import { StyleSheet } from 'react-native-unistyles'
 
-export const styles = StyleSheet.create(theme => ({
+export const styles = StyleSheet.create((theme) => ({
   container: (size: number) => ({
     width: size,
     height: size,
@@ -14,4 +14,4 @@ export const styles = StyleSheet.create(theme => ({
     borderRadius: 99,
     backgroundColor: color ? color : theme.colors.primary,
   }),
-}));
+}))

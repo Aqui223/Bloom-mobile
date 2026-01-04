@@ -1,12 +1,12 @@
-import React from "react";
-import { Text, View } from "react-native";
-import SettingsItem from "./settingsItem";
-import type { SettingsSection } from "@interfaces";
-import { styles } from "./SettingsGroup.styles";
+import React from 'react'
+import { Text, View } from 'react-native'
+import SettingsItem from './settingsItem'
+import type { SettingsSection } from '@interfaces'
+import { styles } from './SettingsGroup.styles'
 
 type SettingsGroupProps = {
-  section: SettingsSection;
-};
+  section: SettingsSection
+}
 
 export default function SettingsGroup({ section }: SettingsGroupProps): React.JSX.Element {
   return (
@@ -18,5 +18,5 @@ export default function SettingsGroup({ section }: SettingsGroupProps): React.JS
       </View>
       {section.description && <Text style={styles.description}>{section.description}</Text>}
     </View>
-  );
+  )
 }

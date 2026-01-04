@@ -1,6 +1,6 @@
-import { StyleSheet } from "react-native-unistyles";
+import { StyleSheet } from 'react-native-unistyles'
 
-export const styles = StyleSheet.create(theme => ({
+export const styles = StyleSheet.create((theme) => ({
   container: {
     marginBottom: theme.spacing.xxl,
     gap: theme.spacing.md,
@@ -9,12 +9,12 @@ export const styles = StyleSheet.create(theme => ({
     borderRadius: theme.radius.xl,
     gap: theme.spacing.sm,
     borderCurve: 'continuous',
-    overflow: "hidden",
+    overflow: 'hidden',
   },
   description: {
-    marginHorizontal: theme.radius.xxl /2,
+    marginHorizontal: theme.radius.xxl / 2,
     fontSize: theme.fontSize.sm,
     color: theme.colors.secondaryText,
-    fontFamily: theme.fontFamily.medium
-  }
-}));
+    fontFamily: theme.fontFamily.medium,
+  },
+}))

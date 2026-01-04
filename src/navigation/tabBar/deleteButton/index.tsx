@@ -1,9 +1,5 @@
-import Animated, {
-  LayoutAnimationConfig,
-  useAnimatedStyle,
-  withSpring,
-} from "react-native-reanimated";
-import { styles } from "./DeleteButton.styles";
+import Animated, { LayoutAnimationConfig, useAnimatedStyle, withSpring } from 'react-native-reanimated'
+import { styles } from './DeleteButton.styles'
 import {
   charAnimationIn,
   charAnimationOut,
@@ -11,30 +7,30 @@ import {
   quickSpring,
   vSlideAnimationIn,
   vSlideAnimationOut,
-} from "@constants/animations";
-import useChatsStore from "@stores/chats";
-import { useMemo } from "react";
-import { Icon } from "@components/ui";
-import { useUnistyles } from "react-native-unistyles";
-import { ViewStyle } from "react-native";
+} from '@constants/animations'
+import useChatsStore from '@stores/chats'
+import { useMemo } from 'react'
+import { Icon } from '@components/ui'
+import { useUnistyles } from 'react-native-unistyles'
+import { ViewStyle } from 'react-native'
 
 export default function TabBarActionButtonDelete(): React.JSX.Element {
-  const { selectedChats } = useChatsStore();
-  const { theme } = useUnistyles();
+  const { selectedChats } = useChatsStore()
+  const { theme } = useUnistyles()
 
-  const countChars = useMemo(() => selectedChats.length.toString().split(""), [selectedChats]);
+  const countChars = useMemo(() => selectedChats.length.toString().split(''), [selectedChats])
 
   const animatedWrapperStyle = useAnimatedStyle(
     (): ViewStyle => ({
       opacity: withSpring(selectedChats.length > 0 ? 1 : 0.5, quickSpring),
-    })
-  );
+    }),
+  )
 
   return (
     <Animated.View layout={layoutAnimationSpringy} entering={vSlideAnimationIn} exiting={vSlideAnimationOut}>
       <Animated.View layout={layoutAnimationSpringy} style={[styles.deleteWrapper, animatedWrapperStyle]}>
         <LayoutAnimationConfig skipEntering skipExiting>
-          <Icon size={26} icon='trash' color={theme.colors.white} />
+          <Icon size={26} icon="trash" color={theme.colors.white} />
 
           {selectedChats.length > 0 && (
             <Animated.View layout={layoutAnimationSpringy} style={styles.deleteCharStack}>
@@ -54,5 +50,5 @@ export default function TabBarActionButtonDelete(): React.JSX.Element {
         </LayoutAnimationConfig>
       </Animated.View>
     </Animated.View>
-  );
+  )
 }

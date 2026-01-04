@@ -5,14 +5,14 @@
  */
 
 export const lightenColor = (hex: string, percent: number): string => {
-  const num = parseInt(hex?.replace("#", ""), 16);
-  const amt = Math.round(2.55 * percent);
-  const R = (num >> 16) + amt;
-  const B = ((num >> 8) & 0x00ff) + amt;
-  const G = (num & 0x0000ff) + amt;
+  const num = parseInt(hex?.replace('#', ''), 16)
+  const amt = Math.round(2.55 * percent)
+  const R = (num >> 16) + amt
+  const B = ((num >> 8) & 0x00ff) + amt
+  const G = (num & 0x0000ff) + amt
 
   return (
-    "#" +
+    '#' +
     (
       0x1000000 +
       (R < 255 ? (R < 1 ? 0 : R) : 255) * 0x10000 +
@@ -21,5 +21,5 @@ export const lightenColor = (hex: string, percent: number): string => {
     )
       .toString(16)
       .slice(1)
-  );
-};
+  )
+}

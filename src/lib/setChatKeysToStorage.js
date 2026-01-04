@@ -1,26 +1,29 @@
-import { createSecureStorage } from "@lib/storage";
+import { createSecureStorage } from '@lib/storage'
 
 export default async function (chat_id, keys) {
-    const Storage = await createSecureStorage("user-storage");
-    
-    let chats;
-    try {
-        chats = JSON.parse(Storage.getString("chats"));
-    } catch {
-        return null;
-    }
+  const Storage = await createSecureStorage('user-storage')
 
-    const chat = chats?.find(chat => chat?.id === chat_id);
-    
-    chats = [...chats?.filter(_chat => _chat?.id !== chat_id), {
-        ...chat,
-        keys: {
-            my: {...chat?.keys?.my},
-            recipient: {...keys}
-        }
-    }]
+  let chats
+  try {
+    chats = JSON.parse(Storage.getString('chats'))
+  } catch {
+    return null
+  }
 
-    Storage.set("chats", JSON.stringify(chats))
+  const chat = chats?.find((chat) => chat?.id === chat_id)
 
-    return chats;
+  chats = [
+    ...chats?.filter((_chat) => _chat?.id !== chat_id),
+    {
+      ...chat,
+      keys: {
+        my: { ...chat?.keys?.my },
+        recipient: { ...keys },
+      },
+    },
+  ]
+
+  Storage.set('chats', JSON.stringify(chats))
+
+  return chats
 }

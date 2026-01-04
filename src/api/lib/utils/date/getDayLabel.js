@@ -1,18 +1,18 @@
-import isValidDate from "./isValidDate";
-import isSameDay from "./isSameDay";
+import isValidDate from './isValidDate'
+import isSameDay from './isSameDay'
 
 export default function (date) {
-    if (!isValidDate(date)) return "";
-    const d = new Date(date);
-    const now = new Date();
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
+  if (!isValidDate(date)) return ''
+  const d = new Date(date)
+  const now = new Date()
+  const yesterday = new Date()
+  yesterday.setDate(yesterday.getDate() - 1)
 
-    if (isSameDay(d, now)) return "Сегодня";
-    if (isSameDay(d, yesterday)) return "Вчера";
+  if (isSameDay(d, now)) return 'Сегодня'
+  if (isSameDay(d, yesterday)) return 'Вчера'
 
-    return new Intl.DateTimeFormat('ru-RU', {
-        day: 'numeric',
-        month: 'long'
-    }).format(d);
-};
+  return new Intl.DateTimeFormat('ru-RU', {
+    day: 'numeric',
+    month: 'long',
+  }).format(d)
+}

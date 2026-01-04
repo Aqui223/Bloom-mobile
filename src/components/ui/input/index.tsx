@@ -1,53 +1,43 @@
-import React, { useMemo } from "react";
-import { View, TextInput, StyleProp, ViewStyle } from "react-native";
-import { useUnistyles } from "react-native-unistyles";
-import { styles } from "./Input.styles";
+import React, { useMemo } from 'react'
+import { View, TextInput, StyleProp, ViewStyle } from 'react-native'
+import { useUnistyles } from 'react-native-unistyles'
+import { styles } from './Input.styles'
 
-type Size = "sm" | "md" | "lg";
+type Size = 'sm' | 'md' | 'lg'
 
 type InputProps = {
-  size?: Size;
-  ref?: React.Ref<TextInput>;
-  viewStyle?: StyleProp<ViewStyle>;
-  style?: StyleProp<ViewStyle>;
-  icon?: React.ReactNode;
-  button?: React.ReactNode;
-  disabled?: boolean;
-  basic?: boolean;
-} & React.ComponentProps<typeof TextInput>;
+  size?: Size
+  ref?: React.Ref<TextInput>
+  viewStyle?: StyleProp<ViewStyle>
+  style?: StyleProp<ViewStyle>
+  icon?: React.ReactNode
+  button?: React.ReactNode
+  disabled?: boolean
+  basic?: boolean
+} & React.ComponentProps<typeof TextInput>
 
 const SIZE_MAP: Record<Size, number> = {
   sm: 40,
   md: 44,
   lg: 48,
-};
+}
 
-export default function Input({
-  size,
-  ref,
-  viewStyle,
-  style,
-  icon,
-  button,
-  disabled,
-  basic,
-  ...props
-}: InputProps): React.JSX.Element {
-  const { theme } = useUnistyles();
+export default function Input({ size, ref, viewStyle, style, icon, button, disabled, basic, ...props }: InputProps): React.JSX.Element {
+  const { theme } = useUnistyles()
 
-  const viewStyleMemo = useMemo(() => styles.inputWrapper({ height: SIZE_MAP[size], disabled }), [size]);
+  const viewStyleMemo = useMemo(() => styles.inputWrapper({ height: SIZE_MAP[size], disabled }), [size])
 
   const inputComponent = (
     <TextInput
       ref={ref}
       cursorColor={theme.colors.secondaryText}
       selectionColor={theme.colors.secondaryText}
-      keyboardAppearance='dark'
+      keyboardAppearance="dark"
       placeholderTextColor={theme.colors.secondaryText}
       style={[styles.input(!!icon, SIZE_MAP[size]), style]}
       {...props}
     />
-  );
+  )
 
   return !basic ? (
     <View style={[viewStyleMemo, viewStyle]}>
@@ -57,5 +47,5 @@ export default function Input({
     </View>
   ) : (
     inputComponent
-  );
+  )
 }

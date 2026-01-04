@@ -1,9 +1,9 @@
-import { StyleSheet } from "react-native-unistyles";
+import { StyleSheet } from 'react-native-unistyles'
 
-export const styles = StyleSheet.create(theme => ({
+export const styles = StyleSheet.create((theme) => ({
   container: {
-    flexDirection: "row",
-    alignItems: "center", 
+    flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'center',
     padding: theme.spacing.md,
     gap: theme.spacing.md,
@@ -19,8 +19,8 @@ export const styles = StyleSheet.create(theme => ({
     fontFamily: theme.fontFamily.medium,
   }),
   rightSide: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'center',
     height: 32,
     minWidth: 32,
@@ -31,4 +31,4 @@ export const styles = StyleSheet.create(theme => ({
     color: theme.colors.secondaryText,
     fontFamily: theme.fontFamily.medium,
   },
-}));
+}))

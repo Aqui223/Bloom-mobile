@@ -1,8 +1,8 @@
-import { StyleSheet } from "react-native-unistyles";
+import { StyleSheet } from 'react-native-unistyles'
 
 export const styles = StyleSheet.create((theme) => ({
   container: {
-    alignItems: "center",
+    alignItems: 'center',
     gap: theme.spacing.sm - 2,
   },
   name: {
@@ -26,5 +26,5 @@ export const styles = StyleSheet.create((theme) => ({
   avatar: {
     flex: 1,
     borderRadius: 0,
-  }
-}));
+  },
+}))

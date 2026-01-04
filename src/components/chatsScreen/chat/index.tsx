@@ -1,62 +1,53 @@
-import React, { useMemo } from "react";
-import { View, Text, Pressable } from "react-native";
-import Animated, { LayoutAnimationConfig } from "react-native-reanimated";
-import { useUnistyles } from "react-native-unistyles";
-import Icon from "@components/ui/Icon";
-import { Avatar, Button, Checkbox } from "@components/ui";
-import {
-  getCharEnter,
-  getCharExit,
-  getFadeIn,
-  getFadeOut,
-  layoutAnimationSpringy,
-  springyChar,
-} from "@constants/animations";
-import { styles } from "./Chat.styles";
-import type { ChatView } from "@interfaces";
-import { useChatItem } from "@hooks";
+import React, { useMemo } from 'react'
+import { View, Text, Pressable } from 'react-native'
+import Animated, { LayoutAnimationConfig } from 'react-native-reanimated'
+import { useUnistyles } from 'react-native-unistyles'
+import Icon from '@components/ui/Icon'
+import { Avatar, Button, Checkbox } from '@components/ui'
+import { getCharEnter, getCharExit, getFadeIn, getFadeOut, layoutAnimationSpringy, springyChar } from '@constants/animations'
+import { styles } from './Chat.styles'
+import type { ChatView } from '@interfaces'
+import { useChatItem } from '@hooks'
 
 type ChatProps = {
-  chat: ChatView;
-  isSearch?: boolean;
-};
+  chat: ChatView
+  isSearch?: boolean
+}
 
-const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
-const AnimatedCheckbox = Animated.createAnimatedComponent(Checkbox);
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable)
+const AnimatedCheckbox = Animated.createAnimatedComponent(Checkbox)
 
 export default function Chat({ chat, isSearch = false }: ChatProps): React.JSX.Element {
-  const { theme } = useUnistyles();
-  const { selected, edit, pinned, animatedMetaRowStyle, animatedShiftStyle, openChat, pin, select } = useChatItem(chat);
+  const { theme } = useUnistyles()
+  const { selected, edit, pinned, animatedMetaRowStyle, animatedShiftStyle, openChat, pin, select } = useChatItem(chat)
 
-  const recipient = chat?.recipient;
+  const recipient = chat?.recipient
   const lastMessage = chat?.lastMessage
 
-  const timeChars = useMemo(
-    () => (!isSearch ? lastMessage?.time?.split("") || [] : null),
-    [lastMessage?.time, isSearch]
-  );
+  const timeChars = useMemo(() => (!isSearch ? lastMessage?.time?.split('') || [] : null), [lastMessage?.time, isSearch])
 
   return (
     <AnimatedPressable entering={getFadeIn()} onPress={edit ? select : openChat} style={styles.chat}>
       <LayoutAnimationConfig skipEntering skipExiting>
         {edit && (
           <>
-            <Animated.View
-              style={styles.pinButtonWrapper}
-              key='pinButton'
-              exiting={getFadeOut()}
-              entering={getFadeIn()}
-            >
+            <Animated.View style={styles.pinButtonWrapper} key="pinButton" exiting={getFadeOut()} entering={getFadeIn()}>
               <Button
                 style={styles.pinButton(pinned)}
                 onPress={pin}
                 size="sm"
-                icon={pinned ? <Icon size={24} icon='star.slashed' color={theme.colors.red} /> : <Icon size={24} icon='star' color={theme.colors.yellow} />}
-                variant='icon'
+                icon={
+                  pinned ? (
+                    <Icon size={24} icon="star.slashed" color={theme.colors.red} />
+                  ) : (
+                    <Icon size={24} icon="star" color={theme.colors.yellow} />
+                  )
+                }
+                variant="icon"
               />
             </Animated.View>
             <AnimatedCheckbox
-              style={{ position: "absolute", left: 16 }}
+              style={{ position: 'absolute', left: 16 }}
               entering={getFadeIn()}
               exiting={getFadeOut()}
               onTouch={select}
@@ -65,7 +56,7 @@ export default function Chat({ chat, isSearch = false }: ChatProps): React.JSX.E
           </>
         )}
         <Animated.View style={[styles.avatarWrapper, animatedShiftStyle]}>
-          <Avatar size={!isSearch ? "lg" : "md"} image={chat?.avatar} username={recipient?.username} />
+          <Avatar size={!isSearch ? 'lg' : 'md'} image={chat?.avatar} username={recipient?.username} />
         </Animated.View>
         <Animated.View style={[styles.content, animatedShiftStyle]}>
           <View style={styles.headerRow}>
@@ -87,7 +78,7 @@ export default function Chat({ chat, isSearch = false }: ChatProps): React.JSX.E
                   ))}
                 </Animated.View>
               )}
-              <Icon icon='chevron.right' size={16} color={theme.colors.secondaryText} />
+              <Icon icon="chevron.right" size={16} color={theme.colors.secondaryText} />
             </Animated.View>
           </View>
 
@@ -102,11 +93,13 @@ export default function Chat({ chat, isSearch = false }: ChatProps): React.JSX.E
               {lastMessage.content}
             </Animated.Text>
           ) : (
-            <Text numberOfLines={1} style={styles.secondary(edit)}>@{recipient?.username}</Text>
+            <Text numberOfLines={1} style={styles.secondary(edit)}>
+              @{recipient?.username}
+            </Text>
           )}
         </Animated.View>
       </LayoutAnimationConfig>
       <View style={styles.separator} />
     </AnimatedPressable>
-  );
+  )
 }

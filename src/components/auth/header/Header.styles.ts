@@ -1,7 +1,7 @@
-import { StyleSheet } from "react-native-unistyles";
+import { StyleSheet } from 'react-native-unistyles'
 
 export const styles = StyleSheet.create((theme) => ({
-  header: (paddingTop: number) =>  ({
+  header: (paddingTop: number) => ({
     width: '100%',
     padding: theme.spacing.xl,
     position: 'absolute',
@@ -11,4 +11,4 @@ export const styles = StyleSheet.create((theme) => ({
     left: 0,
     right: 0,
   }),
-}));
+}))

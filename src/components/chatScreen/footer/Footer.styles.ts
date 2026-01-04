@@ -1,11 +1,11 @@
-import { StyleSheet } from "react-native-unistyles";
+import { StyleSheet } from 'react-native-unistyles'
 
-export const styles = StyleSheet.create(theme => ({
+export const styles = StyleSheet.create((theme) => ({
   footer: {
-    width: "100%",
+    width: '100%',
     paddingHorizontal: theme.spacing.lg,
     paddingTop: theme.spacing.md,
-    flexDirection: "row",
+    flexDirection: 'row',
     position: 'absolute',
     alignItems: 'flex-end',
     bottom: 0,
@@ -16,16 +16,16 @@ export const styles = StyleSheet.create(theme => ({
     borderRadius: 22,
     overflow: 'hidden',
     flex: 1,
-    borderCurve: "continuous",
+    borderCurve: 'continuous',
     zIndex: 1,
   },
   buttonBackground: {
     backgroundColor: theme.colors.primary,
     borderRadius: theme.radius.full,
-    position: "absolute",
+    position: 'absolute',
     left: 0,
     right: 0,
     bottom: 0,
     top: 0,
-  }
-}));
+  },
+}))

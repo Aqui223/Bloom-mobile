@@ -1,32 +1,32 @@
-import { useState, useEffect } from "react";
-import { createSecureStorage } from "@lib/storage";
-import useTokenTriggerStore from "@stores/tokenTriggerStore";
+import { useState, useEffect } from 'react'
+import { createSecureStorage } from '@lib/storage'
+import useTokenTriggerStore from '@stores/tokenTriggerStore'
 
 export default function useTokenCheck() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const { counter, setUserID } = useTokenTriggerStore();
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const { counter, setUserID } = useTokenTriggerStore()
 
   const init = async () => {
     try {
-      createSecureStorage("user-storage").then(async (storage) => {
-        const id = storage.getString("user_id");
-        const token = storage.getString("token");
-        setIsAuthenticated(!!token);
-        if (id) setUserID(parseInt(id));
-      });
+      createSecureStorage('user-storage').then(async (storage) => {
+        const id = storage.getString('user_id')
+        const token = storage.getString('token')
+        setIsAuthenticated(!!token)
+        if (id) setUserID(parseInt(id))
+      })
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   useEffect(() => {
-    init();
-  }, []);
+    init()
+  }, [])
 
   useEffect(() => {
-    init();
-  }, [counter]);
+    init()
+  }, [counter])
 
-  return { isAuthenticated, isLoading };
+  return { isAuthenticated, isLoading }
 }

@@ -1,10 +1,20 @@
 {
 	"extends": "expo/tsconfig.base",
+
 	"compilerOptions": {
+		/* React / RN */
 		"jsx": "react-native",
+
+		/* Type safety */
 		"strict": false,
+		"noImplicitAny": false,
+		"useUnknownInCatchVariables": false,
+
+		/* JS compatibility */
 		"allowJs": true,
 		"checkJs": false,
+
+		/* Module resolution */
 		"baseUrl": ".",
 		"paths": {
 			"@components/*": ["src/components/*"],
@@ -17,8 +27,19 @@
 			"@providers/*": ["src/api/providers/*"],
 			"@interfaces": ["src/interfaces/index"],
 			"@api/*": ["src/api/*"]
-		}
+		},
+
+		/* Build behavior */
+		"isolatedModules": true,
+		"noEmit": true,
+
+		/* Interop / ergonomics */
+		"resolveJsonModule": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true
 	},
+
 	"include": ["src", "App.ts", "App.tsx", "App.js", "App.jsx"],
-	"exclude": ["node_modules", "babel.config.js"]
+
+	"exclude": ["node_modules", "babel.config.js", "metro.config.js"]
 }

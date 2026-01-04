@@ -1,26 +1,26 @@
-import React from "react";
-import { styles } from "./Otp.styles";
-import AuthTitleTemplate from "@components/auth/titleTemplate";
-import { ActionText, OTPInput } from "@components/ui";
-import useAuthStore from "@stores/auth";
-import Animated, {useAnimatedStyle} from "react-native-reanimated";
-import { useInsets } from "@hooks";
-import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
+import React from 'react'
+import { styles } from './Otp.styles'
+import AuthTitleTemplate from '@components/auth/titleTemplate'
+import { ActionText, OTPInput } from '@components/ui'
+import useAuthStore from '@stores/auth'
+import Animated, { useAnimatedStyle } from 'react-native-reanimated'
+import { useInsets } from '@hooks'
+import { useReanimatedKeyboardAnimation } from 'react-native-keyboard-controller'
 
 export default function SignupOTP(): React.JSX.Element {
-    const { email, otp, setOtp } = useAuthStore();
-    const keyboard = useReanimatedKeyboardAnimation();
-	const insets = useInsets();
+  const { email, otp, setOtp } = useAuthStore()
+  const keyboard = useReanimatedKeyboardAnimation()
+  const insets = useInsets()
 
-	const animatedStyles = useAnimatedStyle(() => {
-	  return { transform: [{ translateY: ( keyboard.height.value + insets.top) / 2 }] };
-	});
+  const animatedStyles = useAnimatedStyle(() => {
+    return { transform: [{ translateY: (keyboard.height.value + insets.top) / 2 }] }
+  })
 
-	return (
-		<Animated.View style={[styles.container(52 + insets.bottom), animatedStyles]}>
-			<AuthTitleTemplate icon="id" title='Проверка почты' />
-            <OTPInput value={otp} onChange={setOtp}/>
-            <ActionText children="Введите 6-значный код, который был отправлен на" actionText={email}/>
-		</Animated.View>
-	);
+  return (
+    <Animated.View style={[styles.container(52 + insets.bottom), animatedStyles]}>
+      <AuthTitleTemplate icon="id" title="Проверка почты" />
+      <OTPInput value={otp} onChange={setOtp} />
+      <ActionText children="Введите 6-значный код, который был отправлен на" actionText={email} />
+    </Animated.View>
+  )
 }

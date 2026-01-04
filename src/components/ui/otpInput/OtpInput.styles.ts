@@ -1,24 +1,24 @@
-import { StyleSheet } from "react-native-unistyles";
+import { StyleSheet } from 'react-native-unistyles'
 
-export const styles = StyleSheet.create(theme => ({
+export const styles = StyleSheet.create((theme) => ({
   container: {
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   row: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: theme.spacing.sm,
     alignItems: 'center',
-    position: "relative",
+    position: 'relative',
   },
   cell: {
     flex: 1,
-    aspectRatio: 3/4,
+    aspectRatio: 3 / 4,
     borderRadius: theme.radius.sm,
     backgroundColor: theme.colors.foreground,
     borderCurve: 'continuous',
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   char: (disabled?: boolean) => ({
     fontSize: theme.fontSize.xxl,
@@ -27,13 +27,13 @@ export const styles = StyleSheet.create(theme => ({
     color: disabled ? theme.colors.secondaryText : theme.colors.text,
   }),
   hiddenInput: {
-    position: "absolute",
+    position: 'absolute',
     opacity: 0,
     zIndex: 2,
   },
   indicator: {
-    position: "absolute",
-    aspectRatio: 3/4,
+    position: 'absolute',
+    aspectRatio: 3 / 4,
     zIndex: 2,
     borderRadius: theme.radius.sm + 2,
     borderWidth: 2,
@@ -45,5 +45,5 @@ export const styles = StyleSheet.create(theme => ({
     backgroundColor: theme.colors.secondaryText,
     borderRadius: theme.radius.full,
     borderCurve: 'continuous',
-  }
-}));
+  },
+}))

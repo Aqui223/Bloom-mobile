@@ -1,125 +1,125 @@
-import type { SettingsSection } from "@interfaces";
+import type { SettingsSection } from '@interfaces'
 
 type SettingsSectionProps = {
-    username: string;
-    description: string;
-    friends: number;
-    theme: string;
-    language: string;
+  username: string
+  description: string
+  friends: number
+  theme: string
+  language: string
 }
 
-export const SETTINGS_SECTIONS = ({username, description, friends, theme, language}: SettingsSectionProps): SettingsSection[] => ([
+export const SETTINGS_SECTIONS = ({ username, description, friends, theme, language }: SettingsSectionProps): SettingsSection[] => [
   {
-    id: "userInfo",
+    id: 'userInfo',
     items: [
       {
-        icon: "at",
-        iconType: "transparent",
+        icon: 'at',
+        iconType: 'transparent',
         label: username,
         color: null,
-        badgeIcon: "file",
+        badgeIcon: 'file',
       },
       {
-        icon: "person",
-        iconType: "transparent",
+        icon: 'person',
+        iconType: 'transparent',
         label: description,
         color: null,
       },
     ],
   },
   {
-    id: "profileMain",
+    id: 'profileMain',
     items: [
       {
-        icon: "person.circle",
-        iconType: "gradient",
-        label: "Мой профиль",
-        color: "orange",
+        icon: 'person.circle',
+        iconType: 'gradient',
+        label: 'Мой профиль',
+        color: 'orange',
       },
     ],
   },
   {
-    id: "security",
+    id: 'security',
     items: [
       {
-        icon: "person.circle",
-        iconType: "gradient",
-        label: "Аккаунт",
-        color: "primary",
+        icon: 'person.circle',
+        iconType: 'gradient',
+        label: 'Аккаунт',
+        color: 'primary',
       },
       {
-        icon: "key",
-        iconType: "gradient",
-        label: "Ключи шифрования",
-        color: "purple",
+        icon: 'key',
+        iconType: 'gradient',
+        label: 'Ключи шифрования',
+        color: 'purple',
       },
       {
-        icon: "lock",
-        iconType: "gradient",
-        label: "Приватность",
-        color: "green",
+        icon: 'lock',
+        iconType: 'gradient',
+        label: 'Приватность',
+        color: 'green',
       },
     ],
   },
-   {
-    id: "activities",
+  {
+    id: 'activities',
     items: [
       {
-        icon: "person",
-        iconType: "gradient",
-        label: "Друзья",
+        icon: 'person',
+        iconType: 'gradient',
+        label: 'Друзья',
         badgeLabel: friends,
-        color: "primary",
+        color: 'primary',
       },
     ],
   },
   {
-    id: "appSettings",
+    id: 'appSettings',
     items: [
       {
-        icon: "sun",
-        iconType: "gradient",
-        label: "Оформление",
+        icon: 'sun',
+        iconType: 'gradient',
+        label: 'Оформление',
         badgeLabel: theme,
-        color: "yellow",
+        color: 'yellow',
       },
       {
-        icon: "globe",
-        iconType: "gradient",
-        label: "Язык",
+        icon: 'globe',
+        iconType: 'gradient',
+        label: 'Язык',
         badgeLabel: language,
-        color: "primary",
+        color: 'primary',
       },
       {
-        icon: "message",
-        iconType: "gradient",
-        label: "Чаты",
-        color: "green",
+        icon: 'message',
+        iconType: 'gradient',
+        label: 'Чаты',
+        color: 'green',
       },
-       {
-        icon: "bell",
-        iconType: "gradient",
-        label: "Уведомления и звуки",
-        color: "orange",
+      {
+        icon: 'bell',
+        iconType: 'gradient',
+        label: 'Уведомления и звуки',
+        color: 'orange',
       },
-       {
-        icon: "phone",
-        iconType: "gradient",
-        label: "Устройства",
-        color: "gray",
+      {
+        icon: 'phone',
+        iconType: 'gradient',
+        label: 'Устройства',
+        color: 'gray',
       },
     ],
   },
-   {
-    id: "dangerZone",
-    description: "При выходе из аккаунта все ваши ключи будут сброшены. Чтобы восстановить их, потребуется снова ввести пароль",
+  {
+    id: 'dangerZone',
+    description: 'При выходе из аккаунта все ваши ключи будут сброшены. Чтобы восстановить их, потребуется снова ввести пароль',
     items: [
       {
-        iconType: "gradient",
-        label: "Выйти из аккаунта",
-        color: "red",
-        type: 'button'
+        iconType: 'gradient',
+        label: 'Выйти из аккаунта',
+        color: 'red',
+        type: 'button',
       },
     ],
   },
-]);
+]

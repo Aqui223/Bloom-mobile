@@ -1,60 +1,60 @@
-import { useState, useEffect, useRef, useCallback } from "react";
-import axios from "axios";
-import { API_URL } from "@constants/api";
-import { createSecureStorage } from "@lib/storage";
-import { ROUTES } from "@constants/routes";
-import { useNavigation } from "@react-navigation/native";
+import { useState, useEffect, useRef, useCallback } from 'react'
+import axios from 'axios'
+import { API_URL } from '@constants/api'
+import { createSecureStorage } from '@lib/storage'
+import { ROUTES } from '@constants/routes'
+import { useNavigation } from '@react-navigation/native'
 
-export default function useAuth() { 
+export default function useAuth() {
   // variables
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const storageRef = useRef(null);
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
+  const storageRef = useRef(null)
 
   // screen navigation hook
-  const navigation = useNavigation();
+  const navigation = useNavigation()
 
   const auth = useCallback(
-    async (username, password, mode = "login") => {
-      setLoading(true);
-      setError(null);
+    async (username, password, mode = 'login') => {
+      setLoading(true)
+      setError(null)
       try {
         // form url and send request
-        const url = `${API_URL}/auth/${mode}`;
-        const res = await axios.post(url, { username: username?.toLowerCase(), password });
+        const url = `${API_URL}/auth/${mode}`
+        const res = await axios.post(url, { username: username?.toLowerCase(), password })
 
         // set token and user_id variables in mmkv storage
-        await storageRef.current?.set("token", res.data?.token);
-        await storageRef.current?.set("user_id", JSON.stringify(res.data?.user?.id));
-        await storageRef.current?.set("user", JSON.stringify(res?.data));
+        await storageRef.current?.set('token', res.data?.token)
+        await storageRef.current?.set('user_id', JSON.stringify(res.data?.user?.id))
+        await storageRef.current?.set('user', JSON.stringify(res?.data))
 
         // set main screen (chats screen) if auth success
-        navigation.replace(ROUTES.MAIN);
+        navigation.replace(ROUTES.MAIN)
 
         // return response data
-        return res?.data;
+        return res?.data
       } catch (err) {
-        setError(err.message || "Auth error");
-        throw err;
+        setError(err.message || 'Auth error')
+        throw err
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
     },
-    [navigation]
-  );
+    [navigation],
+  )
 
   useEffect(() => {
     // init mmkv storage
     const init = async () => {
-      storageRef.current = await createSecureStorage("user-storage");
-    };
-    init();
-  }, []);
+      storageRef.current = await createSecureStorage('user-storage')
+    }
+    init()
+  }, [])
 
   return {
     loading,
     error,
-    login: (u, p) => auth(u, p, "login"),
-    signUp: (u, p) => auth(u, p, "register"),
-  };
+    login: (u, p) => auth(u, p, 'login'),
+    signUp: (u, p) => auth(u, p, 'register'),
+  }
 }

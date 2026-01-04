@@ -1,22 +1,22 @@
-import { View, Text } from "react-native";
-import { styles } from "./EmptyModal.styles";
-import Animated, { useAnimatedStyle } from "react-native-reanimated";
-import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
-import { zoomAnimationIn, zoomAnimationOut } from "@constants/animations";
-import { Avatar } from "@components/ui";
-import type { Chat } from "@interfaces";
+import { View, Text } from 'react-native'
+import { styles } from './EmptyModal.styles'
+import Animated, { useAnimatedStyle } from 'react-native-reanimated'
+import { useReanimatedKeyboardAnimation } from 'react-native-keyboard-controller'
+import { zoomAnimationIn, zoomAnimationOut } from '@constants/animations'
+import { Avatar } from '@components/ui'
+import type { Chat } from '@interfaces'
 
 type EmptyModalProps = {
-  chat: Chat | null;
-  visible: boolean;
-};
+  chat: Chat | null
+  visible: boolean
+}
 
 export default function EmptyModal({ chat, visible }: EmptyModalProps): React.ReactNode {
-  const keyboard = useReanimatedKeyboardAnimation();
+  const keyboard = useReanimatedKeyboardAnimation()
 
   const animatedStyles = useAnimatedStyle(() => {
-    return { transform: [{ translateY: keyboard.height.value / 2 }] };
-  });
+    return { transform: [{ translateY: keyboard.height.value / 2 }] }
+  })
 
   return visible ? (
     <Animated.View style={[styles.wrapper, animatedStyles]}>
@@ -27,5 +27,5 @@ export default function EmptyModal({ chat, visible }: EmptyModalProps): React.Re
         </Text>
       </Animated.View>
     </Animated.View>
-  ) : null;
+  ) : null
 }

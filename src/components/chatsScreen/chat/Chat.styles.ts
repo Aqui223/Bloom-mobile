@@ -1,10 +1,10 @@
-import { StyleSheet } from "react-native-unistyles";
+import { StyleSheet } from 'react-native-unistyles'
 
 export const styles = StyleSheet.create((theme) => ({
   chat: {
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingRight: theme.spacing.lg,
-    alignItems: "center",
+    alignItems: 'center',
     paddingLeft: theme.spacing.lg,
     gap: theme.spacing.lg,
   },
@@ -14,8 +14,8 @@ export const styles = StyleSheet.create((theme) => ({
     paddingRight: theme.spacing.xs,
   },
   charStack: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   content: {
     flex: 1,
@@ -23,9 +23,9 @@ export const styles = StyleSheet.create((theme) => ({
     paddingVertical: theme.spacing.lg,
   },
   headerRow: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: theme.spacing.sm,
-    alignItems: "center",
+    alignItems: 'center',
   },
   name: {
     fontSize: theme.fontSize.md,
@@ -34,8 +34,8 @@ export const styles = StyleSheet.create((theme) => ({
     fontFamily: theme.fontFamily.semibold,
   },
   metaRow: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: theme.spacing.xs,
   },
   secondary: (edit: boolean) => ({
@@ -51,15 +51,15 @@ export const styles = StyleSheet.create((theme) => ({
     height: 1,
     bottom: 0,
     marginRight: theme.spacing.lg,
-    position: "absolute",
+    position: 'absolute',
     backgroundColor: theme.colors.foreground,
   },
   pinButton: (pinned: boolean) => ({
     backgroundColor: pinned ? theme.colors.redBackdrop : theme.colors.yellowBackdrop,
   }),
   pinButtonWrapper: {
-    position: "absolute",
+    position: 'absolute',
     right: 16,
     zIndex: 1,
   },
-}));
+}))

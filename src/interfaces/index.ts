@@ -1,94 +1,102 @@
-import { ICONS } from "@constants/icons";
-import { ROUTES } from "@constants/routes";
-import React from "react";
-import { staticColor } from "unistyles";
+import { ICONS } from '@constants/icons'
+import { ROUTES } from '@constants/routes'
+import React from 'react'
+import { staticColor } from 'unistyles'
 
 interface ChatLastMessage {
-  content?: string;
-  date?: Date;
+  content?: string
+  date?: Date
 }
 
 interface ChatLastMessageView extends ChatLastMessage {
-  time?: string;
+  time?: string
 }
 
-type TabsObject = typeof ROUTES.tabs;
+type TabsObject = typeof ROUTES.tabs
 
 export interface User {
-  date: Date;
-  display_name: string;
-  id: number;
-  username: string;
-  description: string;
-  avatar: string;
-  friends_count: number;
-  email: string;
+  date: Date
+  display_name: string
+  id: number
+  username: string
+  description: string
+  avatar: string
+  friends_count: number
+  email: string
 }
 
 export interface Message {
-  id: number;
-  date: Date;
-  isMe?: boolean;
-  content: string;
-  author_id: number;
-  chat_id: number;
-  seen?: Date;
-  nonce?: string;
-  reply_to?: Message;
-  type?: string;
+  id: number
+  date: Date
+  isMe?: boolean
+  content: string
+  author_id: number
+  chat_id: number
+  seen?: Date
+  nonce?: string
+  reply_to?: Message
+  type?: string
 }
 
 export interface Chat {
-  unreadCount?: number;
-  last_message?: ChatLastMessage;
-  members?: Member[];
-  avatar?: string;
-  id?: number;
-  recipient?: Member;
+  unreadCount?: number
+  last_message?: ChatLastMessage
+  members?: Member[]
+  avatar?: string
+  id?: number
+  recipient?: Member
 }
 
 export interface ChatView extends Chat {
-  lastMessage?: ChatLastMessageView;
+  lastMessage?: ChatLastMessageView
 }
 
-export interface Position { top: number; left: number; width: number };
+export interface Position {
+  top: number
+  left: number
+  width: number
+}
 
 export interface Option {
-  icon?: keyof typeof ICONS;
-  label?: string;
-  action?: (payload?: string) => void;
-  color?: string;
+  icon?: keyof typeof ICONS
+  label?: string
+  action?: (payload?: string) => void
+  color?: string
   separator?: boolean
 }
 
+export type TabValue = TabsObject[keyof TabsObject]
 
-export type TabValue = TabsObject[keyof TabsObject];
-
-export type IconType = "transparent" | "gradient";
-export type ColorKey = keyof typeof staticColor | null;
+export type IconType = 'transparent' | 'gradient'
+export type ColorKey = keyof typeof staticColor | null
 
 export interface SettingsItem {
-  icon?: keyof typeof ICONS;
-  iconType?: IconType;
-  label: string;
-  color: ColorKey;
-  badgeLabel?: string | number;
-  badgeIcon?: keyof typeof ICONS;
-  type?: "link" | "toggle" | "button";
+  icon?: keyof typeof ICONS
+  iconType?: IconType
+  label: string
+  color: ColorKey
+  badgeLabel?: string | number
+  badgeIcon?: keyof typeof ICONS
+  type?: 'link' | 'toggle' | 'button'
 }
 
 export interface SettingsSection {
-  id: string;
-  description?: string;
-  items: SettingsItem[];
+  id: string
+  description?: string
+  items: SettingsItem[]
 }
-
 
 export interface Member {
-  display_name?: string | null;
-  id: number;
-  username: string;
-  avatar: string;
+  display_name?: string | null
+  id: number
+  username: string
+  avatar: string
 }
 
-export interface SearchUser { date: Date; display_name: string | null; id: number; username: string | null; avatar: string; }
+export interface SearchUser {
+  date: Date
+  display_name: string | null
+  id: number
+  username: string | null
+  avatar: string
+}

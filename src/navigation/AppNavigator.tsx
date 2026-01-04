@@ -1,35 +1,35 @@
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import * as SplashScreen from "expo-splash-screen";
-import { useEffect, useState } from "react";
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import * as SplashScreen from 'expo-splash-screen'
+import { useEffect, useState } from 'react'
 
-import { ROUTES } from "@constants/routes";
-import AuthNavigator from "./AuthNavigator";
-import MainNavigator from "./MainNavigator";
-import { useTokenCheck } from "@hooks";
+import { ROUTES } from '@constants/routes'
+import AuthNavigator from './AuthNavigator'
+import MainNavigator from './MainNavigator'
+import { useTokenCheck } from '@hooks'
 
-const RootStack = createNativeStackNavigator();
+const RootStack = createNativeStackNavigator()
 
 export default function AppNavigator() {
-  const { isAuthenticated, isLoading } = useTokenCheck();
-  const [isNavReady, setIsNavReady] = useState(false);
+  const { isAuthenticated, isLoading } = useTokenCheck()
+  const [isNavReady, setIsNavReady] = useState(false)
 
   useEffect(() => {
     if (!isLoading && isNavReady) {
-      SplashScreen.hideAsync().catch(() => {});
+      SplashScreen.hideAsync().catch(() => {})
     }
-  }, [isLoading, isNavReady]);
+  }, [isLoading, isNavReady])
 
-  if (isLoading) return null;
+  if (isLoading) return null
 
   return (
     <NavigationContainer onReady={() => setIsNavReady(true)}>
       <RootStack.Navigator
-        {...({ id: "appNavigator" } as any)}
+        {...({ id: 'appNavigator' } as any)}
         screenOptions={{
           headerShown: false,
-          presentation: "card",
-          contentStyle: { backgroundColor: "#00000000" },
+          presentation: 'card',
+          contentStyle: { backgroundColor: '#00000000' },
         }}
       >
         {isAuthenticated ? (
@@ -39,5 +39,5 @@ export default function AppNavigator() {
         )}
       </RootStack.Navigator>
     </NavigationContainer>
-  );
+  )
 }

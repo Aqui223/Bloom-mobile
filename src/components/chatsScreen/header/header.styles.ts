@@ -1,25 +1,25 @@
-import { StyleSheet } from "react-native-unistyles";
+import { StyleSheet } from 'react-native-unistyles'
 
 export const styles = StyleSheet.create((theme) => ({
   header: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     zIndex: 2,
-    width: "100%",
+    width: '100%',
     paddingHorizontal: theme.spacing.lg,
     paddingBottom: theme.spacing.md,
-    alignItems: "center",
+    alignItems: 'center',
     gap: theme.spacing.lg,
   },
   topHeader: {
-    width: "100%",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   container: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: theme.spacing.sm,
   },
   text: {
@@ -30,10 +30,10 @@ export const styles = StyleSheet.create((theme) => ({
   buttonBackground: {
     backgroundColor: theme.colors.primary,
     borderRadius: theme.radius.full,
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
   },
-}));
+}))

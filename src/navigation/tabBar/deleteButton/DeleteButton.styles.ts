@@ -1,10 +1,10 @@
-import { StyleSheet } from "react-native-unistyles";
+import { StyleSheet } from 'react-native-unistyles'
 
 export const styles = StyleSheet.create((theme) => ({
   deleteCharStack: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginRight: theme.spacing.xs,
-    alignItems: "center",
+    alignItems: 'center',
   },
   deleteChar: {
     fontSize: theme.fontSize.xl,
@@ -23,5 +23,5 @@ export const styles = StyleSheet.create((theme) => ({
     borderCurve: 'continuous',
     justifyContent: 'center',
     alignItems: 'center',
-  }
-}));
+  },
+}))

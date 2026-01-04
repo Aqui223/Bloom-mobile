@@ -1,21 +1,21 @@
-import { StyleSheet } from "react-native-unistyles";
+import { StyleSheet } from 'react-native-unistyles'
 
 type InputStyleProps = {
-  height: number;
-  disabled: boolean;
-};
+  height: number
+  disabled: boolean
+}
 
 export const styles = StyleSheet.create((theme) => ({
   inputWrapper: ({ height, disabled }: InputStyleProps) => ({
-    width: "100%",
+    width: '100%',
     height,
     backgroundColor: theme.colors.foregroundTransparent,
     borderRadius: theme.radius.full,
-    borderCurve: "continuous",
-    flexDirection: "row",
+    borderCurve: 'continuous',
+    flexDirection: 'row',
     opacity: disabled ? theme.opacity.secondaryText : 1,
-    pointerEvents: disabled ? "none" : "auto",
-    alignItems: "center",
+    pointerEvents: disabled ? 'none' : 'auto',
+    alignItems: 'center',
   }),
   input: (icon: boolean, size: number) => ({
     flex: 1,
@@ -23,16 +23,16 @@ export const styles = StyleSheet.create((theme) => ({
     paddingVertical: (size - 20) / 2,
     paddingRight: theme.spacing.lg,
     textAlignVertical: 'center',
-    height: "auto",
+    height: 'auto',
     color: theme.colors.text,
     fontSize: theme.fontSize.md,
     fontFamily: theme.fontFamily.medium,
     borderWidth: 0,
   }),
   iconWrapper: {
-    height: "100%",
+    height: '100%',
     aspectRatio: 1 / 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-}));
+}))

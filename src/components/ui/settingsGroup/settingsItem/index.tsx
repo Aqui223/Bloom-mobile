@@ -1,41 +1,36 @@
-import React from "react";
-import { Text, View, Pressable, ViewStyle } from "react-native";
-import { useUnistyles } from "react-native-unistyles";
-import type { SettingsItem as SettingsItemType } from "@interfaces";
-import SettingsIcon from "../settingsIcon";
-import Icon from "../../Icon";
-import { styles } from "./SettingsItem.styles";
-import Animated, {
-  interpolateColor,
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring,
-} from "react-native-reanimated";
-import { quickSpring } from "@constants/easings";
-import { lightenColor } from "@lib/lightenColor";
+import React from 'react'
+import { Text, View, Pressable, ViewStyle } from 'react-native'
+import { useUnistyles } from 'react-native-unistyles'
+import type { SettingsItem as SettingsItemType } from '@interfaces'
+import SettingsIcon from '../settingsIcon'
+import Icon from '../../Icon'
+import { styles } from './SettingsItem.styles'
+import Animated, { interpolateColor, useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated'
+import { quickSpring } from '@constants/easings'
+import { lightenColor } from '@lib/lightenColor'
 
 interface SettingsItemProps {
-  item: SettingsItemType;
+  item: SettingsItemType
 }
 
-const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable)
 
 export default function SettingsItem({ item }: SettingsItemProps): React.JSX.Element {
-  const { theme } = useUnistyles();
-  const color = useSharedValue<number>(0);
+  const { theme } = useUnistyles()
+  const color = useSharedValue<number>(0)
 
-  const iconColor: string = theme.colors[item.color] ?? theme.colors.primary;
-  const brighterForeground: string = lightenColor(theme.colors.foreground, 10);
+  const iconColor: string = theme.colors[item.color] ?? theme.colors.primary
+  const brighterForeground: string = lightenColor(theme.colors.foreground, 10)
 
   const pressableColor = (out: boolean = false) => {
-    color.set(withSpring(out ? 0 : 1, quickSpring));
-  };
+    color.set(withSpring(out ? 0 : 1, quickSpring))
+  }
 
   const animatedPressableStyle = useAnimatedStyle(
     (): ViewStyle => ({
       backgroundColor: interpolateColor(color.get(), [0, 1], [theme.colors.foreground, brighterForeground]),
-    })
-  );
+    }),
+  )
 
   return (
     <AnimatedPressable
@@ -43,20 +38,16 @@ export default function SettingsItem({ item }: SettingsItemProps): React.JSX.Ele
       onPressOut={() => pressableColor(true)}
       style={[styles.container, animatedPressableStyle]}
     >
-      {item.type !== "button" && <SettingsIcon icon={item.icon} type={item.iconType} color={iconColor} />}
+      {item.type !== 'button' && <SettingsIcon icon={item.icon} type={item.iconType} color={iconColor} />}
 
-      <Text style={styles.label(item.type === "button", item.color)}>{item.label}</Text>
+      <Text style={styles.label(item.type === 'button', item.color)}>{item.label}</Text>
 
-      {item.type !== "button" && (
+      {item.type !== 'button' && (
         <View style={styles.rightSide}>
-          {typeof item.badgeLabel !== "undefined" && <Text style={styles.badgeLabel}>{item.badgeLabel}</Text>}
-          <Icon
-            icon={item.badgeIcon ?? "chevron.right"}
-            size={item.badgeIcon ? 24 : 20}
-            color={theme.colors.secondaryText}
-          />
+          {typeof item.badgeLabel !== 'undefined' && <Text style={styles.badgeLabel}>{item.badgeLabel}</Text>}
+          <Icon icon={item.badgeIcon ?? 'chevron.right'} size={item.badgeIcon ? 24 : 20} color={theme.colors.secondaryText} />
         </View>
       )}
     </AnimatedPressable>
-  );
+  )
 }

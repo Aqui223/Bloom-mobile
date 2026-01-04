@@ -1,36 +1,38 @@
-import { styles } from "./Header.styles";
-import { useInsets } from "@hooks";
-import useSettingsScreenStore from "@stores/settings";
-import React from "react";
-import Animated, { interpolate, SharedValue, useAnimatedStyle } from "react-native-reanimated";
-import { GradientBlur } from "@components/ui";
-import { TextStyle, ViewStyle } from "react-native";
-import type { User } from "@interfaces";
+import { styles } from './Header.styles'
+import { useInsets } from '@hooks'
+import useSettingsScreenStore from '@stores/settings'
+import React from 'react'
+import Animated, { interpolate, SharedValue, useAnimatedStyle } from 'react-native-reanimated'
+import { GradientBlur } from '@components/ui'
+import { TextStyle, ViewStyle } from 'react-native'
+import type { User } from '@interfaces'
 
 type FloatingHeaderProps = {
-    scrollY: SharedValue<number>;
-    user: User;
+  scrollY: SharedValue<number>
+  user: User
 }
 
 export default function FloatingHeader({ scrollY, user }: FloatingHeaderProps): React.JSX.Element {
-  const insets = useInsets();
-  const { snapEndPosition } = useSettingsScreenStore();
+  const insets = useInsets()
+  const { snapEndPosition } = useSettingsScreenStore()
 
-  const animatedViewStyle = useAnimatedStyle((): ViewStyle => ({
-    opacity: interpolate(scrollY.get(), [snapEndPosition / 2, (snapEndPosition /2 ) + 8], [0, 1])
-  }))
+  const animatedViewStyle = useAnimatedStyle(
+    (): ViewStyle => ({
+      opacity: interpolate(scrollY.get(), [snapEndPosition / 2, snapEndPosition / 2 + 8], [0, 1]),
+    }),
+  )
 
-  const animatedTextStyle = useAnimatedStyle((): TextStyle => ({
-    opacity: interpolate(scrollY.get(), [snapEndPosition / 2, snapEndPosition], [0, 1]),
-    transform: [
-        { translateY: interpolate(scrollY.get(), [snapEndPosition / 2, snapEndPosition], [24, 0], "clamp")}
-    ]
-  }))
+  const animatedTextStyle = useAnimatedStyle(
+    (): TextStyle => ({
+      opacity: interpolate(scrollY.get(), [snapEndPosition / 2, snapEndPosition], [0, 1]),
+      transform: [{ translateY: interpolate(scrollY.get(), [snapEndPosition / 2, snapEndPosition], [24, 0], 'clamp') }],
+    }),
+  )
 
   return (
     <Animated.View pointerEvents="none" style={[styles.floatingHeader(insets.top), animatedViewStyle]}>
-        <GradientBlur direction="top-to-bottom"/>
-       <Animated.Text style={[styles.floatingHeaderTitle, animatedTextStyle]}>{user?.display_name}</Animated.Text>
+      <GradientBlur direction="top-to-bottom" />
+      <Animated.Text style={[styles.floatingHeaderTitle, animatedTextStyle]}>{user?.display_name}</Animated.Text>
     </Animated.View>
-  );
+  )
 }

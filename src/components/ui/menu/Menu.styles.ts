@@ -1,15 +1,15 @@
-import { StyleSheet } from "react-native-unistyles";
+import { StyleSheet } from 'react-native-unistyles'
 
-export const styles = StyleSheet.create(theme => ({
+export const styles = StyleSheet.create((theme) => ({
   backdrop: {
-    position: "absolute",
+    position: 'absolute',
     right: 0,
     top: 0,
     left: 0,
     bottom: 0,
   },
   menuWrapper: (top: number) => ({
-    position: "absolute",
+    position: 'absolute',
     right: 0,
     left: 0,
     paddingHorizontal: 16,
@@ -34,10 +34,10 @@ export const styles = StyleSheet.create(theme => ({
     gap: theme.spacing.md,
     flexDirection: 'row',
   },
-  optionText:(color?: string) => ({
+  optionText: (color?: string) => ({
     fontSize: theme.fontSize.md,
     color,
-    fontFamily: theme.fontFamily.medium
+    fontFamily: theme.fontFamily.medium,
   }),
   separator: {
     flex: 1,
@@ -45,5 +45,5 @@ export const styles = StyleSheet.create(theme => ({
     maxHeight: 2,
     marginVertical: theme.spacing.sm,
     backgroundColor: theme.colors.border,
-  }
-}));
+  },
+}))

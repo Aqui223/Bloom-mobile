@@ -1,45 +1,45 @@
-import "unistyles.ts";
-import { StatusBar } from "expo-status-bar";
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { useFonts } from "expo-font";
-import * as SplashScreen from "expo-splash-screen";
-import { enableScreens } from "react-native-screens";
-import AppNavigator from "src/navigation/AppNavigator";
-import { KeyboardProvider } from "react-native-keyboard-controller";
-import { WebSocketProvider } from "@api/providers/WebSocketContext";
-import ChatsProvider from "@api/providers/ChatsContext";
-import MessagesProvider from "@api/providers/MessagesContext";
-import { PortalProvider } from "@gorhom/portal";
-import SeenMessagesProvider from "@api/providers/SeenMessagesContext";
-import useStorageStore from "@stores/storage";
-import { useEffect } from "react";
-import { createSecureStorage } from "@lib/storage";
-import initRealm from "@lib/initRealm";
+import 'unistyles.ts'
+import { StatusBar } from 'expo-status-bar'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import { useFonts } from 'expo-font'
+import * as SplashScreen from 'expo-splash-screen'
+import { enableScreens } from 'react-native-screens'
+import AppNavigator from 'src/navigation/AppNavigator'
+import { KeyboardProvider } from 'react-native-keyboard-controller'
+import { WebSocketProvider } from '@api/providers/WebSocketContext'
+import ChatsProvider from '@api/providers/ChatsContext'
+import MessagesProvider from '@api/providers/MessagesContext'
+import { PortalProvider } from '@gorhom/portal'
+import SeenMessagesProvider from '@api/providers/SeenMessagesContext'
+import useStorageStore from '@stores/storage'
+import { useEffect } from 'react'
+import { createSecureStorage } from '@lib/storage'
+import initRealm from '@lib/initRealm'
 
-enableScreens();
+enableScreens()
 
 const fontsToLoad = {
-  "OpenRunde-Regular": require("@assets/fonts/OpenRunde-Regular.ttf"),
-  "OpenRunde-Medium": require("@assets/fonts/OpenRunde-Medium.ttf"),
-  "OpenRunde-Semibold": require("@assets/fonts/OpenRunde-Semibold.ttf"),
-  "OpenRunde-Bold": require("@assets/fonts/OpenRunde-Bold.ttf"),
-};
+  'OpenRunde-Regular': require('@assets/fonts/OpenRunde-Regular.ttf'),
+  'OpenRunde-Medium': require('@assets/fonts/OpenRunde-Medium.ttf'),
+  'OpenRunde-Semibold': require('@assets/fonts/OpenRunde-Semibold.ttf'),
+  'OpenRunde-Bold': require('@assets/fonts/OpenRunde-Bold.ttf'),
+}
 
-SplashScreen.preventAutoHideAsync();
+SplashScreen.preventAutoHideAsync()
 
 export default function App() {
-  const [fontsLoaded, fontError] = useFonts(fontsToLoad);
+  const [fontsLoaded, fontError] = useFonts(fontsToLoad)
 
-  const { setMMKV, setRealm } = useStorageStore();
+  const { setMMKV, setRealm } = useStorageStore()
 
   useEffect(() => {
-    (async function () {
-      const storage = await createSecureStorage("user-storage");
+    ;(async function () {
+      const storage = await createSecureStorage('user-storage')
       const realm = await initRealm()
 
-      setMMKV(storage);
-      setRealm(realm);
+      setMMKV(storage)
+      setRealm(realm)
     })()
   }, [])
 
@@ -62,5 +62,5 @@ export default function App() {
         </GestureHandlerRootView>
       </KeyboardProvider>
     </SafeAreaProvider>
-  );
+  )
 }

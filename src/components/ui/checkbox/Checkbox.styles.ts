@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native-unistyles";
+import { StyleSheet } from 'react-native-unistyles'
 
 export const styles = StyleSheet.create((theme) => ({
   checkbox: {
@@ -6,8 +6,8 @@ export const styles = StyleSheet.create((theme) => ({
     height: 28,
     borderWidth: 1,
     borderColor: theme.colors.foregroundTransparent,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     overflow: 'hidden',
     borderRadius: theme.radius.full,
   },
@@ -20,4 +20,4 @@ export const styles = StyleSheet.create((theme) => ({
     right: 0,
     bottom: 0,
   },
-}));
+}))

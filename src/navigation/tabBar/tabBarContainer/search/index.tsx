@@ -1,52 +1,46 @@
-import React from "react";
-import Animated, { LayoutAnimationConfig } from "react-native-reanimated";
-import { styles } from "./search.styles";
-import { Button, Icon } from "@components/ui";
-import { TextInput } from "react-native";
-import useTabBarStore from "@stores/tabBar";
-import { useUnistyles } from "react-native-unistyles";
-import {
-  charAnimationIn,
-  charAnimationOut,
-  layoutAnimation,
-  zoomAnimationIn,
-  zoomAnimationOut,
-} from "@constants/animations";
-import { ROUTES } from "@constants/routes";
+import React from 'react'
+import Animated, { LayoutAnimationConfig } from 'react-native-reanimated'
+import { styles } from './search.styles'
+import { Button, Icon } from '@components/ui'
+import { TextInput } from 'react-native'
+import useTabBarStore from '@stores/tabBar'
+import { useUnistyles } from 'react-native-unistyles'
+import { charAnimationIn, charAnimationOut, layoutAnimation, zoomAnimationIn, zoomAnimationOut } from '@constants/animations'
+import { ROUTES } from '@constants/routes'
 
-const AnimatedButton = Animated.createAnimatedComponent(Button);
+const AnimatedButton = Animated.createAnimatedComponent(Button)
 
 export default function TabBarSearchButton({ inputRef }): React.JSX.Element {
-  const { theme } = useUnistyles();
-  const { isSearch, activeTab, setIsSearch, isSearchFocused, setSearchValue, searchValue } = useTabBarStore();
+  const { theme } = useUnistyles()
+  const { isSearch, activeTab, setIsSearch, isSearchFocused, setSearchValue, searchValue } = useTabBarStore()
 
-  const settingsTab = activeTab === ROUTES.tabs.settings;
-  const renderX = isSearch ? isSearchFocused || searchValue.trim().length : false;
+  const settingsTab = activeTab === ROUTES.tabs.settings
+  const renderX = isSearch ? isSearchFocused || searchValue.trim().length : false
 
   const blurInput = () => {
-    setSearchValue("");
-    inputRef?.current.blur();
-  };
+    setSearchValue('')
+    inputRef?.current.blur()
+  }
 
   return renderX ? (
     <AnimatedButton
-      size='lg'
+      size="lg"
       blur
-      key='tabBarSearchButtonX'
-      variant='icon'
+      key="tabBarSearchButtonX"
+      variant="icon"
       exiting={zoomAnimationOut}
       entering={zoomAnimationIn}
       onPress={() => blurInput()}
       layout={layoutAnimation}
     >
-      <Icon icon='x' color={theme.colors.text} size={28} />
+      <Icon icon="x" color={theme.colors.text} size={28} />
     </AnimatedButton>
   ) : !isSearch ? (
     <AnimatedButton
       style={styles.searchButton}
       blur
-      variant='icon'
-      key='tabBarSearchButtonMain'
+      variant="icon"
+      key="tabBarSearchButtonMain"
       exiting={zoomAnimationOut}
       layout={layoutAnimation}
       entering={zoomAnimationIn}
@@ -54,15 +48,15 @@ export default function TabBarSearchButton({ inputRef }): React.JSX.Element {
     >
       <LayoutAnimationConfig skipEntering skipExiting>
         {settingsTab ? (
-          <Animated.View key='editButton' entering={charAnimationIn} exiting={charAnimationOut}>
-            <Icon icon='pencil' color={theme.colors.text} size={30} />
+          <Animated.View key="editButton" entering={charAnimationIn} exiting={charAnimationOut}>
+            <Icon icon="pencil" color={theme.colors.text} size={30} />
           </Animated.View>
         ) : (
-          <Animated.View key='searchButton' entering={charAnimationIn} exiting={charAnimationOut}>
-            <Icon icon='magnifyingglass' size={30} />
+          <Animated.View key="searchButton" entering={charAnimationIn} exiting={charAnimationOut}>
+            <Icon icon="magnifyingglass" size={30} />
           </Animated.View>
         )}
       </LayoutAnimationConfig>
     </AnimatedButton>
-  ) : null;
+  ) : null
 }
