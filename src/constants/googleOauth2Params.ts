@@ -1,4 +1,4 @@
-export const MOBILE_SCHEME = 'pw.blooom.app1'
+export const MOBILE_SCHEME = 'bloom'
 export const REDIRECT_URL_WITH_SCHEME = `${MOBILE_SCHEME}://oauth2redirect/google`
 
 export const GOOGLE_CLIENT_ID = '917155719162-pekpfajbrg87sjfj03iq68agtmnukb1r.apps.googleusercontent.com'

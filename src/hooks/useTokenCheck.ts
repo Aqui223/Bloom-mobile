@@ -2,7 +2,12 @@ import { createSecureStorage } from '@lib/storage'
 import useTokenTriggerStore from '@stores/tokenTriggerStore'
 import { useEffect, useState } from 'react'
 
-export default function useTokenCheck() {
+interface useTokenCheck {
+  isAuthenticated: boolean
+  isLoading: boolean
+}
+
+export default function useTokenCheck(): useTokenCheck {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const { counter, setUserID } = useTokenTriggerStore()
@@ -13,7 +18,7 @@ export default function useTokenCheck() {
         const id = storage.getString('user_id')
         const token = storage.getString('token')
         setIsAuthenticated(!!token)
-        if (id) setUserID(parseInt(id))
+        if (id) setUserID(parseInt(id, 10))
       })
     } finally {
       setIsLoading(false)

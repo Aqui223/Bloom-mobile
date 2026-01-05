@@ -7,7 +7,7 @@ import useStorageStore from '@stores/storage'
 import axios from 'axios'
 import { useCallback, useMemo } from 'react'
 
-export default function useAuthFooter(navigation: any) {
+export default function useAuthFooter(navigation) {
   const { index, email, emailValid, otp, password, setError, error } = useAuthStore()
   const { mmkv } = useStorageStore()
 
@@ -70,8 +70,6 @@ export default function useAuthFooter(navigation: any) {
               setError('Неверный код подтверждения. Попробуйте ещë раз')
             }
           } catch (error) {
-            console.log('swag error')
-            console.log(error, JSON.stringify(error))
             console.error(error)
           }
 

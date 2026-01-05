@@ -1,8 +1,15 @@
 import type { Component } from 'react'
-import { type SharedValue, scrollTo, useAnimatedRef, useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated'
+import {
+  type AnimatedRef,
+  type SharedValue,
+  scrollTo,
+  useAnimatedRef,
+  useAnimatedScrollHandler,
+  useSharedValue,
+} from 'react-native-reanimated'
 
 type Result<T> = {
-  animatedRef: React.Ref<T>
+  animatedRef: AnimatedRef<T>
   scrollHandler: ReturnType<typeof useAnimatedScrollHandler>
   scrollY: SharedValue<number>
 }

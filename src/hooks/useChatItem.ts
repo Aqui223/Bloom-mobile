@@ -17,7 +17,7 @@ type CreateChatResponse = {
   }
 }
 
-type useChatItem = {
+interface useChatItem {
   selected: boolean
   edit: boolean
   pinned: boolean

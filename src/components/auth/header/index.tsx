@@ -30,7 +30,8 @@ export default function AuthHeader({ navigation }): React.JSX.Element {
 
   useEffect(() => {
     if (realIndex > index) setIndex(realIndex)
-  }, [realIndex])
+    console.log(index, realIndex, navigation.getState().index)
+  }, [realIndex, navigation])
 
   return (
     <Animated.View style={[styles.header(insets.top), animatedViewStyle]}>

@@ -15,6 +15,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { KeyboardProvider } from 'react-native-keyboard-controller'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { enableScreens } from 'react-native-screens'
+import { UnistylesRuntime, useUnistyles } from 'react-native-unistyles'
 import AppNavigator from 'src/navigation/AppNavigator'
 
 enableScreens()
@@ -29,30 +30,34 @@ const fontsToLoad = {
 SplashScreen.preventAutoHideAsync()
 
 export default function App() {
-  const [fontsLoaded, fontError] = useFonts(fontsToLoad)
+  const [_fontsLoaded, _fontError] = useFonts(fontsToLoad)
+  const { theme } = useUnistyles()
 
   const { setMMKV, setRealm } = useStorageStore()
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       try {
         const storage = await createSecureStorage('user-storage')
-      const realm = await initRealm()
-      setMMKV(storage)
-      setRealm(realm)
+        const realm = await initRealm()
+        setMMKV(storage)
+        setRealm(realm)
       } catch (error) {
         console.error(error)
       }
-      
     })()
   }, [])
+
+  useEffect(() => {
+    UnistylesRuntime.setRootViewBackgroundColor(theme.colors.background)
+  }, [theme])
 
   return (
     <SafeAreaProvider>
       <KeyboardProvider>
         <GestureHandlerRootView style={{ flex: 1 }}>
           <PortalProvider>
-            <StatusBar style="light" />
+            <StatusBar style="auto" />
             <WebSocketProvider>
               <ChatsProvider>
                 <MessagesProvider>

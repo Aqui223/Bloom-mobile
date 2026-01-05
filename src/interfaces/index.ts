@@ -1,6 +1,5 @@
 import type { ICONS } from '@constants/icons'
 import type { ROUTES } from '@constants/routes'
-import React from 'react'
 import type { staticColor } from 'unistyles'
 
 interface ChatLastMessage {

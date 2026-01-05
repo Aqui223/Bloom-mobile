@@ -1,9 +1,9 @@
 import { createSecureStorage } from '@lib/storage'
 
-export default async function (chat_id, keys) {
+export default async function (chat_id: number, keys: any) {
   const Storage = await createSecureStorage('user-storage')
 
-  let chats
+  let chats: Array<any>
   try {
     chats = JSON.parse(Storage.getString('chats'))
   } catch {
@@ -13,7 +13,7 @@ export default async function (chat_id, keys) {
   const chat = chats?.find((chat) => chat?.id === chat_id)
 
   chats = [
-    ...chats?.filter((_chat) => _chat?.id !== chat_id),
+    ...(chats?.filter((_chat) => _chat?.id !== chat_id) ?? []),
     {
       ...chat,
       keys: {

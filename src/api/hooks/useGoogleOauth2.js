@@ -1,9 +1,10 @@
-// import { InAppBrowser } from 'react-native-inappbrowser-reborn'
 import { API_URL } from '@constants/api'
 import { getAuthUrl, REDIRECT_URL_WITH_SCHEME } from '@constants/googleOauth2Params'
 import useStorageStore from '@stores/storage'
 import useTokenTriggerStore from '@stores/tokenTriggerStore'
 import axios from 'axios'
+import * as Linking from 'expo-linking'
+import * as WebBrowser from 'expo-web-browser'
 import { useState } from 'react'
 
 export default function () {
@@ -14,45 +15,59 @@ export default function () {
   const { mmkv } = useStorageStore()
   const { counter, setCounter } = useTokenTriggerStore()
 
+  console.log(result, error)
+
   async function startGoogleAuth() {
-    // setError('')
-    // setLoading(true)
-    // const authUrl = getAuthUrl();
-    // try {
-    //     if (await InAppBrowser.isAvailable()) {
-    //         const result = await InAppBrowser.openAuth(authUrl, REDIRECT_URL_WITH_SCHEME, {});
-    //         if (result.type === 'success') {
-    //             const url = new URL(result.url);
-    //             const code = url.searchParams.get('code');
-    //             if (code) {
-    //                 try {
-    //                     const exchangeCode = await axios.get(`${API_URL}/oauth2/google/exchange-code?state=random-state&code=${code}`).then(res => res?.data).catch(() => null);
-    //                     if (exchangeCode?.token) {
-    //                         try {
-    //                             mmkv.set("token", exchangeCode?.token);
-    //                             mmkv.set("user_id", String(exchangeCode?.user?.id));
-    //                             mmkv.set("user", JSON.stringify(exchangeCode?.user));
-    //                             setResult(exchangeCode);
-    //                         } catch {
-    //                             setError("Failed to save session data")
-    //                         }
-    //                     }
-    //                 } catch {
-    //                     setError("Failed to exchange code")
-    //                 }
-    //             } else {
-    //                 setError("Failed to get authorization code")
-    //             }
-    //         } else {
-    //             setError("Failed to open in app browser")
-    //         }
-    //     } else {
-    //         setError("In app browser is not available")
-    //     }
-    // } catch {
-    //     setError("Google authorization failed")
-    // }
-    // setLoading(false);
+    setError('')
+    setLoading(true)
+
+    const authUrl = getAuthUrl()
+
+    try {
+      const result = await WebBrowser.openAuthSessionAsync(authUrl, REDIRECT_URL_WITH_SCHEME)
+
+      if (result.type !== 'success' || !result.url) {
+        setError('Authorization cancelled')
+        return
+      }
+
+      const parsed = Linking.parse(result.url)
+      const code = parsed.queryParams?.code
+
+      if (!code || typeof code !== 'string') {
+        setError('Failed to get authorization code')
+        return
+      }
+
+      const exchangeCode = await axios
+        .get(`${API_URL}/oauth2/google/exchange-code`, {
+          params: {
+            state: 'random-state',
+            code,
+          },
+        })
+        .then((res) => res.data)
+        .catch(() => null)
+
+      if (!exchangeCode?.token) {
+        setError('Failed to exchange code')
+        return
+      }
+
+      try {
+        mmkv.set('token', exchangeCode.token)
+        mmkv.set('user_id', String(exchangeCode.user?.id))
+        mmkv.set('user', JSON.stringify(exchangeCode.user))
+        setResult(exchangeCode)
+        setCounter(counter + 1)
+      } catch {
+        setError('Failed to save session data')
+      }
+    } catch {
+      setError('Google authorization failed')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return { result, loading, error, startGoogleAuth }

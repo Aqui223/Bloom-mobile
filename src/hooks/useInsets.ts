@@ -3,7 +3,7 @@ import { Platform } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useUnistyles } from 'react-native-unistyles'
 
-type Insets = {
+interface Insets {
   top: number
   bottom: number
   realBottom: number
