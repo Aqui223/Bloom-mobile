@@ -3,17 +3,17 @@ import { type GestureResponderEvent, Text, type TextProps } from 'react-native'
 import { styles } from './ActionText.styles'
 
 type ActionTextProps = Omit<TextProps, 'children'> & {
-  children: string
+  text: string
   actionText?: string
   onPress?: (event: GestureResponderEvent) => void
 }
 
-export default function ActionText({ children, actionText, onPress, style, ...props }: ActionTextProps) {
+export default function ActionText({ text, actionText, onPress, style, ...props }: ActionTextProps) {
   if (!actionText) {
-    return <Text style={styles.text}>{children}</Text>
+    return <Text style={styles.text}>{text}</Text>
   }
 
-  const parts = children.split(actionText)
+  const parts = text.split(actionText)
 
   return (
     <Text style={[styles.text, style]} {...props}>

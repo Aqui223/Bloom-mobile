@@ -3,23 +3,22 @@ import EmptyModal from '@components/chatScreen/emptyModal'
 import Footer from '@components/chatScreen/footer'
 import Header from '@components/chatScreen/header'
 import Message from '@components/chatScreen/message'
-import type { Chat, Message as MessageType } from '@interfaces'
+import type { Chat as ChatType, Message as MessageType } from '@interfaces'
 import type { LegendListRef } from '@legendapp/list'
 import { KeyboardAvoidingLegendList } from '@legendapp/list/keyboard'
-import type React from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { View } from 'react-native'
-import { styles } from './Chat.styles'
+import { StyleSheet } from 'react-native-unistyles'
 
 interface ChatScreenProps {
   route: {
     params: {
-      chat: Chat
+      chat: ChatType
     }
   }
 }
 
-export default function ChatScreen({ route }: ChatScreenProps): React.JSX.Element {
+export default function Chat({ route }: ChatScreenProps) {
   const { chat } = route.params
 
   const { messages, addMessage } = useMessages(chat?.id)
@@ -81,3 +80,16 @@ export default function ChatScreen({ route }: ChatScreenProps): React.JSX.Elemen
     </View>
   )
 }
+
+const styles = StyleSheet.create((theme) => ({
+  container: {
+    flex: 1,
+    backgroundColor: theme.colors.background,
+  },
+  list: {
+    flex: 1,
+  },
+  listContent: {
+    paddingHorizontal: theme.spacing.lg,
+  },
+}))

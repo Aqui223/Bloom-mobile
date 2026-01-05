@@ -8,7 +8,7 @@ module.exports = (api) => {
       [
         'module-resolver',
         {
-          root: ['./src'],
+          root: ['./src', './app'],
           extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
           alias: {
             '@components': './src/components',
@@ -21,6 +21,8 @@ module.exports = (api) => {
             '@providers': './src/api/providers',
             '@interfaces': './src/interfaces',
             '@assets': './assets',
+            '@app': './app',
+            '@layouts': './layouts',
           },
         },
       ],
