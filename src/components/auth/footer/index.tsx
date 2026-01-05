@@ -66,7 +66,7 @@ export default function AuthFooter({ navigation }): React.JSX.Element {
         <Animated.View layout={layoutAnimationSpringy} style={styles.partsContainer}>
           {label.split(' ').map((part, i) => (
             <Animated.Text
-              key={`${part}-${i}`}
+              key={part}
               entering={getFadeIn()}
               exiting={getFadeOut()}
               layout={layoutAnimationSpringy}

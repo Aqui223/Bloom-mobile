@@ -1,4 +1,3 @@
-import React from 'react'
 import { type GestureResponderEvent, Text, type TextProps } from 'react-native'
 import { styles } from './ActionText.styles'
 

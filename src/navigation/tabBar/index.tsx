@@ -1,34 +1,45 @@
-import { quickSpring } from '@constants/easings'
-import { ROUTES } from '@constants/routes'
-import { type BottomTabNavigationOptions, createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { ChatsScreen, SettingsScreen } from '@screens'
+import { GradientBlur } from '@components/ui'
+import { layoutAnimation } from '@constants/animations'
+import { useInsets } from '@hooks'
+import useChatsStore from '@stores/chats'
+import useTabBarStore from '@stores/tabBar'
 import type React from 'react'
-import TabBar from './TabBar'
+import { useCallback } from 'react'
+import type { LayoutChangeEvent } from 'react-native'
+import { useReanimatedKeyboardAnimation } from 'react-native-keyboard-controller'
+import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated'
+import { useUnistyles } from 'react-native-unistyles'
+import TabBarActionButtonDelete from './deleteButton'
+import { styles } from './TabBar.styles'
+import TabBarContainer from './tabBarContainer'
 
-const Tab = createBottomTabNavigator()
+export default function TabBar({ state, navigation }): React.JSX.Element {
+  const insets = useInsets()
+  const { theme } = useUnistyles()
+  const { setTabBarHeight, tabBarHeight } = useTabBarStore()
+  const { edit } = useChatsStore()
+  const { progress: keyboardProgress, height: keyboardHeight } = useReanimatedKeyboardAnimation()
 
-const springOptions: BottomTabNavigationOptions = {
-  transitionSpec: {
-    animation: 'spring',
-    config: quickSpring,
-  },
-}
+  const animatedContainerStyle = useAnimatedStyle(() => ({
+    transform: [
+      { translateY: interpolate(keyboardProgress.get(), [0, 1], [0, keyboardHeight.value + (insets.bottom - theme.spacing.lg)], 'clamp') },
+    ],
+    paddingBottom: insets.bottom,
+    paddingHorizontal: keyboardProgress.get() >= 0.1 ? theme.spacing.lg : theme.spacing.xxxl,
+  }))
 
-export default function MainTabNavigator(): React.JSX.Element {
+  const onLayoutTabBar = useCallback((event: LayoutChangeEvent) => {
+    if (tabBarHeight <= 1) setTabBarHeight(event.nativeEvent.layout.height)
+  }, [])
+
   return (
-    <Tab.Navigator
-      {...({ id: 'mainTabs' } as any)}
-      tabBar={(props) => <TabBar {...props} />}
-      screenOptions={{
-        headerShown: false,
-        animation: 'fade',
-        sceneStyle: { backgroundColor: 'black' },
-      }}
+    <Animated.View
+      onLayout={(event) => onLayoutTabBar(event)}
+      layout={layoutAnimation}
+      style={[styles.tabBarContainer, animatedContainerStyle]}
     >
-      <Tab.Screen name={ROUTES.tabs.friends} component={ChatsScreen} options={springOptions} />
-      <Tab.Screen name={ROUTES.tabs.search} component={SettingsScreen} options={springOptions} />
-      <Tab.Screen name={ROUTES.tabs.chats} component={ChatsScreen} options={springOptions} />
-      <Tab.Screen name={ROUTES.tabs.settings} component={SettingsScreen} options={springOptions} />
-    </Tab.Navigator>
+      <GradientBlur />
+      {!edit ? <TabBarContainer state={state} navigation={navigation} /> : <TabBarActionButtonDelete />}
+    </Animated.View>
   )
 }

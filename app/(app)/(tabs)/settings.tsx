@@ -15,7 +15,7 @@ export default function TabSettings() {
   const { snapEndPosition } = useSettingsScreenStore()
   const { tabBarHeight } = useTabBarStore()
   const { scrollY, animatedRef, scrollHandler } = useSnapScroll<any>(snapEndPosition)
-  const { user, error, loading } = useMe()
+  const { user } = useMe()
 
   const data = useMemo(
     () =>
