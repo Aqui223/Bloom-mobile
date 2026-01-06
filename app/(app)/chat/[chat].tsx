@@ -6,22 +6,17 @@ import Message from '@components/chatScreen/message'
 import type { Chat as ChatType, Message as MessageType } from '@interfaces'
 import type { LegendListRef } from '@legendapp/list'
 import { KeyboardAvoidingLegendList } from '@legendapp/list/keyboard'
+import { useLocalSearchParams } from 'expo-router'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { View } from 'react-native'
 import { StyleSheet } from 'react-native-unistyles'
 
-interface ChatScreenProps {
-  route: {
-    params: {
-      chat: ChatType
-    }
-  }
-}
+export default function Chat() {
+  const { chat } = useLocalSearchParams<{ chat: string }>()
 
-export default function Chat({ route }: ChatScreenProps) {
-  const { chat } = route.params
+  const _chat = JSON.parse(chat) as ChatType
 
-  const { messages, addMessage } = useMessages(chat?.id)
+  const { messages, addMessage } = useMessages(_chat?.id)
   const [seenId, setSeenId] = useState<number>(0)
   const [footerHeight, setFooterHeight] = useState<number>(0)
   const [headerHeight, setHeaderHeight] = useState<number>(0)
@@ -61,8 +56,8 @@ export default function Chat({ route }: ChatScreenProps) {
 
   return (
     <View style={styles.container}>
-      <Header onLayout={setHeaderHeight} chat={chat} />
-      <EmptyModal chat={chat} visible={messages.length === 0} />
+      <Header onLayout={setHeaderHeight} chat={_chat} />
+      <EmptyModal chat={_chat} visible={messages.length === 0} />
       <KeyboardAvoidingLegendList
         data={messages}
         renderItem={renderItem}

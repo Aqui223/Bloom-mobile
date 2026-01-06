@@ -8,13 +8,13 @@ import {
   useSharedValue,
 } from 'react-native-reanimated'
 
-type Result<T> = {
+interface UseSnapScroll<T> {
   animatedRef: AnimatedRef<T>
   scrollHandler: ReturnType<typeof useAnimatedScrollHandler>
   scrollY: SharedValue<number>
 }
 
-export default function useSnapScroll<T extends Component>(snapTo: number = 56): Result<T> {
+export default function useSnapScroll<T extends Component>(snapTo: number = 56): UseSnapScroll<T> {
   const animatedRef = useAnimatedRef<T>()
   const scrollY = useSharedValue(0)
 

@@ -4,7 +4,7 @@ import { createSecureStorage } from '@lib/storage'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 
-type useMe = {
+interface useMe {
   loading: boolean
   error: string
   user: User

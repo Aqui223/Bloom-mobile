@@ -1,24 +1,23 @@
 import { Icon } from '@components/ui'
 import type { ICONS } from '@constants/icons'
-import type React from 'react'
-import { Image, ImageSourcePropType, Text, View, type ViewStyle } from 'react-native'
+import { Text, View, type ViewStyle } from 'react-native'
 import { useReanimatedKeyboardAnimation } from 'react-native-keyboard-controller'
 import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated'
 import { useUnistyles } from 'react-native-unistyles'
 import { styles } from './TitleTemplate.styles'
 
-type TitleTemplateProps = {
+interface TitleTemplateProps {
   icon: keyof typeof ICONS
   title: string
 }
 
-export default function AuthTitleTemplate({ icon, title }: TitleTemplateProps): React.JSX.Element {
-  const { progress } = useReanimatedKeyboardAnimation()
+export default function AuthTitleTemplate({ icon, title }: TitleTemplateProps) {
+  const { progress: keyboardProgress } = useReanimatedKeyboardAnimation()
   const { theme } = useUnistyles()
 
   const animatedViewStyle = useAnimatedStyle(
     (): ViewStyle => ({
-      transform: [{ scale: interpolate(progress.value, [0, 1], [1, 0.5], 'clamp') }],
+      transform: [{ scale: interpolate(keyboardProgress.value, [0, 1], [1, 0.5], 'clamp') }],
       transformOrigin: 'center bottom 0px',
     }),
   )

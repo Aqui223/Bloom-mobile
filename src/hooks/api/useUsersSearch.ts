@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 
 type SearchStatus = 'idle' | 'loading' | 'success' | 'empty' | 'error'
 
-type useUserSearch = {
+interface useUserSearch {
   users: SearchUser[]
   status: SearchStatus
   error: string

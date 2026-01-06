@@ -1,11 +1,10 @@
 import { useChatList } from '@api/providers/ChatsContext'
 import { useWebSocket } from '@api/providers/WebSocketContext'
 import { quickSpring } from '@constants/easings'
-import { ROUTES } from '@constants/routes'
 import type { ChatView } from '@interfaces'
-import { useNavigation } from '@react-navigation/native'
 import useChatsStore from '@stores/chats'
 import useTokenTriggerStore from '@stores/tokenTriggerStore'
+import { useRouter } from 'expo-router'
 import { useCallback, useEffect, useMemo } from 'react'
 import type { ViewStyle } from 'react-native'
 import { Haptics } from 'react-native-nitro-haptics'
@@ -29,7 +28,7 @@ interface useChatItem {
 }
 
 export default function useChatNavigation(chat: ChatView): useChatItem {
-  const navigation = useNavigation()
+  const router = useRouter()
   const chats = useChatList()
   const ws = useWebSocket()
   const { userID } = useTokenTriggerStore()
@@ -60,9 +59,11 @@ export default function useChatNavigation(chat: ChatView): useChatItem {
     const existingChat = chats?.find((c) => c?.members?.some((m) => m?.id === userID) && c?.members?.some((m) => m?.id === targetId))
 
     if (existingChat) {
-      // @ts-expect-error
-      navigation.navigate(ROUTES.chat, {
-        chat: { ...chat, id: existingChat.id },
+      router.push({
+        pathname: '/(app)/chat/[chat]',
+        params: {
+          chat: JSON.stringify({ ...chat, id: existingChat.id }),
+        },
       })
       return
     }
@@ -73,15 +74,17 @@ export default function useChatNavigation(chat: ChatView): useChatItem {
       const message: CreateChatResponse = JSON.parse(event.data)
       if (message?.chat) {
         ws.removeEventListener('message', handleMessage)
-        // @ts-expect-error
-        navigation.navigate(ROUTES.chat, {
-          chat: { ...chat, id: message.chat.id },
+        router.push({
+          pathname: '/(app)/chat/[chat]',
+          params: {
+            chat: JSON.stringify({ ...chat, id: message.chat.id }),
+          },
         })
       }
     }
 
     ws.addEventListener('message', handleMessage)
-  }, [chats, userID, targetId, chat, navigation, ws])
+  }, [chats, userID, targetId, chat, router, ws])
 
   const pin = useCallback(() => {
     console.log(1)
