@@ -1,14 +1,13 @@
 import useGoogleOauth2 from '@api/hooks/useGoogleOauth2'
 import { Button, Icon, Separator } from '@components/ui'
 import type React from 'react'
-import { useEffect } from 'react'
 import { Image, Platform, View } from 'react-native'
 import { useUnistyles } from 'react-native-unistyles'
 import { styles } from './Actions.styles'
 
 export default function AuthActions(): React.JSX.Element {
   const { theme } = useUnistyles()
-  const { result, loading, error, startGoogleAuth } = useGoogleOauth2()
+  const { startGoogleAuth } = useGoogleOauth2()
 
   const iOS = Platform.OS === 'ios'
 
@@ -38,14 +37,16 @@ export default function AuthActions(): React.JSX.Element {
       />
 
       <Separator label="ИЛИ" style={styles.separatorContainer} />
-      <Button
-        labelStyle={styles.buttonLabel(false)}
-        icon={focusedIcon(!iOS, true)}
-        label={!iOS ? 'Продолжить с Apple' : 'Продолжить с Google'}
-        onPress={() => onPress(!iOS ? 'apple' : 'google')}
-        size="xl"
-        variant="textIcon"
-      />
+      {iOS && (
+        <Button
+          labelStyle={styles.buttonLabel(false)}
+          icon={focusedIcon(!iOS, true)}
+          label={!iOS ? 'Продолжить с Apple' : 'Продолжить с Google'}
+          onPress={() => onPress(!iOS ? 'apple' : 'google')}
+          size="xl"
+          variant="textIcon"
+        />
+      )}
     </View>
   )
 }

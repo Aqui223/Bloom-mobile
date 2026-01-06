@@ -11,7 +11,7 @@ export default function AuthLayout() {
 
   if (isLoading) return null
 
-  if (isAuthenticated) return <Redirect href="/(app)/(tabs)/index" />
+  if (isAuthenticated) return <Redirect href="/(app)/(tabs)" />
 
   return (
     <Stack

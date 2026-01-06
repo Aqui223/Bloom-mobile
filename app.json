@@ -1,6 +1,7 @@
 {
 	"expo": {
 		"name": "Bloom",
+		"owner": "bloomMessenger",
 		"slug": "bloom",
 		"scheme": "bloom",
 		"version": "1.0.0",
@@ -37,6 +38,12 @@
 			"typedRoutes": true,
 			"tsconfigPaths": true,
 			"reactCompiler": true
+		},
+		"extra": {
+			"router": {},
+			"eas": {
+				"projectId": "de8aa595-7b9f-47c5-8320-cd27ca0540aa"
+			}
 		}
 	}
 }

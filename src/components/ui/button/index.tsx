@@ -1,9 +1,7 @@
-import { layoutAnimation } from '@constants/animations'
 import { quickSpring } from '@constants/easings'
 import { BlurView } from 'expo-blur'
-import type React from 'react'
-import { useMemo } from 'react'
-import { Pressable, type StyleProp, type TextStyle, type ViewStyle } from 'react-native'
+import React, { type ComponentProps, useMemo } from 'react'
+import { Pressable, type StyleProp, Text, type TextStyle, type ViewStyle } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated'
 import { StyleSheet, useUnistyles } from 'react-native-unistyles'
 import { styles } from './Button.styles'
@@ -11,7 +9,7 @@ import { SIZE_MAP, type Size } from './constats'
 
 type Variant = 'icon' | 'text' | 'textIcon'
 
-type ButtonProps = {
+interface ButtonProps extends ComponentProps<typeof Pressable> {
   ref?: React.Ref<any>
   variant?: Variant
   label?: string
@@ -21,7 +19,7 @@ type ButtonProps = {
   icon?: React.JSX.Element
   children?: React.ReactNode
   blur?: boolean
-} & React.ComponentProps<typeof Pressable>
+}
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable)
 
@@ -36,7 +34,7 @@ export default function Button({
   labelStyle,
   blur = false,
   ...props
-}: ButtonProps): React.ReactNode {
+}: ButtonProps) {
   const { theme } = useUnistyles()
   const opacity = useSharedValue(1)
 
@@ -76,13 +74,11 @@ export default function Button({
       ref={ref}
       {...props}
     >
-      {blur && <BlurView style={StyleSheet.absoluteFill} intensity={40} tint="systemChromeMaterialDark" />}
-      {icon}
-      {label && (
-        <Animated.Text layout={layoutAnimation} style={[styles.label(SIZE_MAP[size]), labelStyle]}>
-          {label}
-        </Animated.Text>
+      {blur && (
+        <BlurView style={StyleSheet.absoluteFill} experimentalBlurMethod="dimezisBlurView" intensity={40} tint="systemChromeMaterialDark" />
       )}
+      {icon}
+      {label && <Text style={[styles.label(SIZE_MAP[size]), labelStyle]}>{label}</Text>}
       {children}
     </AnimatedPressable>
   )

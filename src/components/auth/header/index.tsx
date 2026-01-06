@@ -14,7 +14,7 @@ export default function AuthHeader() {
   const disabled = index === 0 || index === 3
 
   const back = () => {
-    router.canGoBack && router.back()
+    router.canGoBack() && router.back()
   }
 
   const animatedViewStyle = useAnimatedStyle(() => ({
