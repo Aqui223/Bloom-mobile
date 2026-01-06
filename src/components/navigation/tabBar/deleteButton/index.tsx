@@ -36,10 +36,10 @@ export default function TabBarActionButtonDelete(): React.JSX.Element {
             <Animated.View layout={layoutAnimationSpringy} style={styles.deleteCharStack}>
               {countChars.map((char, i) => (
                 <Animated.Text
-                  key={`${char}-${i}`}
+                  key={char}
                   style={styles.deleteChar}
-                  entering={charAnimationIn}
-                  exiting={charAnimationOut}
+                  entering={charAnimationIn()}
+                  exiting={charAnimationOut()}
                   numberOfLines={1}
                 >
                   {char}

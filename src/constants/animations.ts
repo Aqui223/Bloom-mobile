@@ -1,5 +1,14 @@
 import physicsSpring from '@lib/physicSpring'
-import { type ComplexAnimationBuilder, FadeIn, FadeInDown, FadeOut, FadeOutUp, LinearTransition, withSpring } from 'react-native-reanimated'
+import {
+  type ComplexAnimationBuilder,
+  FadeIn,
+  FadeInDown,
+  FadeOut,
+  FadeOutUp,
+  LinearTransition,
+  type WithSpringConfig,
+  withSpring,
+} from 'react-native-reanimated'
 import { quickSpring } from './easings'
 
 type SpringTriple = { mass: number; stiffness: number; damping: number }
@@ -28,8 +37,7 @@ export const springyMenu = physicsSpring({
   dampingRatio: 2.5,
 }) as SpringTriple
 
-export const springyChar = (i: number = 0) =>
-  physicsSpring({ mass: quickSpring.mass, duration: 0.35 + i * 0.07, dampingRatio: 0.65 }) as SpringTriple
+export const springyChar = (i: number = 0) => physicsSpring({ mass: quickSpring.mass, duration: 0.5 + i * 0.05, dampingRatio: 0.65 })
 
 export const springyTabBar = physicsSpring({
   mass: quickSpring.mass,
@@ -135,25 +143,34 @@ export const paperplaneAnimationIn = (): LayoutAnimResult => {
   }
 }
 
-export const charAnimationOut = (): LayoutAnimResult => {
+export const charAnimationOut = (springConfig: WithSpringConfig = quickSpring) => {
   'worklet'
-  return {
-    initialValues: { opacity: 1, transform: [{ scale: 1 }, { translateY: '0%' }] },
-    animations: {
-      opacity: withSpring(0, quickSpring),
-      transform: [{ scale: withSpring(0.5, quickSpring) }, { translateY: withSpring('100%', quickSpring) }],
-    },
+  return (): LayoutAnimResult => {
+    'worklet'
+    return {
+      initialValues: {
+        opacity: 1,
+        transform: [{ scale: 1 }, { translateY: 0 }],
+      },
+      animations: {
+        opacity: withSpring(0, springConfig),
+        transform: [{ scale: withSpring(0.5, springConfig) }, { translateY: withSpring(50, springConfig) }],
+      },
+    }
   }
 }
 
-export const charAnimationIn = (): LayoutAnimResult => {
+export const charAnimationIn = (springConfig: WithSpringConfig = quickSpring) => {
   'worklet'
-  return {
-    initialValues: { opacity: 0, transform: [{ scale: 0.5 }, { translateY: '-100%' }] },
-    animations: {
-      opacity: withSpring(1, quickSpring),
-      transform: [{ scale: withSpring(1, quickSpring) }, { translateY: withSpring('0%', quickSpring) }],
-    },
+  return (): LayoutAnimResult => {
+    'worklet'
+    return {
+      initialValues: { opacity: 0, transform: [{ scale: 0.5 }, { translateY: '-100%' }] },
+      animations: {
+        opacity: withSpring(1, springConfig),
+        transform: [{ scale: withSpring(1, springConfig) }, { translateY: withSpring('0%', springConfig) }],
+      },
+    }
   }
 }
 

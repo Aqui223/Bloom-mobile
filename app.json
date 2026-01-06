@@ -1,5 +1,6 @@
 {
 	"expo": {
+		"jsEngine": "hermes",
 		"name": "Bloom",
 		"owner": "bloomMessenger",
 		"slug": "bloom",
@@ -16,7 +17,8 @@
 		},
 		"ios": {
 			"supportsTablet": false,
-			"bundleIdentifier": "pw.blooom.app"
+			"bundleIdentifier": "pw.blooom.app",
+			"jsEngine": "jsc"
 		},
 		"android": {
 			"adaptiveIcon": {

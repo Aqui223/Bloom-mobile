@@ -15,18 +15,17 @@ type GradientBlurProps = {
   style?: StyleProp<ViewStyle>
 }
 
-export default function GradientBlur({ direction = 'bottom-to-top', ref, style }: GradientBlurProps): React.JSX.Element {
+export default function GradientBlur({ direction = 'bottom-to-top', ref, style }: GradientBlurProps) {
   const { theme } = useUnistyles()
 
   const { start, end } = useMemo(() => {
     switch (direction) {
       case 'top-to-bottom':
-        return { start: { x: 0.5, y: 1 }, end: { x: 0.5, y: 0 } }
+        return { start: { x: 0.5, y: 1 }, end: { x: 0.5, y: 0.5 } }
       case 'bottom-left-to-top-right':
-        return { start: { x: 0, y: 0 }, end: { x: 1, y: 1 } }
-      case 'bottom-to-top':
+        return { start: { x: 0.5, y: 0.5 }, end: { x: 1, y: 1 } }
       default:
-        return { start: { x: 0.5, y: 0 }, end: { x: 0.5, y: 1 } }
+        return { start: { x: 0.5, y: 0.5 }, end: { x: 0.5, y: 1 } }
     }
   }, [direction])
 

@@ -1,13 +1,23 @@
-import { getCharEnter, getCharExit, layoutAnimationSpringy, springyChar } from '@constants/animations'
+import { charAnimationIn, charAnimationOut, layoutAnimationSpringy, quickSpring, springyChar } from '@constants/animations'
 import { AUTH_TITLES } from '@constants/titles'
-import type React from 'react'
 import { useEffect, useState } from 'react'
 import { View } from 'react-native'
-import Animated from 'react-native-reanimated'
+import Animated, { interpolateColor, useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated'
 import { styles } from './Title.styles'
 
-export default function AuthTitle(): React.JSX.Element {
+export default function AuthTitle() {
   const [activeTitle, setActiveTitle] = useState(0)
+  const colorProgress = useSharedValue(0)
+
+  const chars = AUTH_TITLES[activeTitle].title.split('')
+
+  const animatedTextStyle = useAnimatedStyle(() => ({
+    color: interpolateColor(
+      colorProgress.value,
+      AUTH_TITLES.map((_, i) => i),
+      AUTH_TITLES.map((title) => title.color),
+    ),
+  }))
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -16,7 +26,9 @@ export default function AuthTitle(): React.JSX.Element {
     return () => clearInterval(id)
   }, [])
 
-  const chars = AUTH_TITLES[activeTitle].title.split('')
+  useEffect(() => {
+    colorProgress.value = withSpring(activeTitle, quickSpring)
+  }, [activeTitle])
 
   return (
     <View style={styles.titleContainer}>
@@ -24,9 +36,9 @@ export default function AuthTitle(): React.JSX.Element {
         <Animated.Text
           key={`${char}-${Math.random()}`}
           layout={layoutAnimationSpringy}
-          entering={getCharEnter(springyChar(index))}
-          exiting={getCharExit(springyChar(index))}
-          style={styles.char}
+          entering={charAnimationIn(springyChar(index))}
+          exiting={charAnimationOut(springyChar(index))}
+          style={[styles.char, animatedTextStyle]}
         >
           {char}
         </Animated.Text>

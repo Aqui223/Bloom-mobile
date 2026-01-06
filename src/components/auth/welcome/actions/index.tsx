@@ -1,11 +1,10 @@
 import useGoogleOauth2 from '@api/hooks/useGoogleOauth2'
 import { Button, Icon, Separator } from '@components/ui'
-import type React from 'react'
 import { Image, Platform, View } from 'react-native'
 import { useUnistyles } from 'react-native-unistyles'
 import { styles } from './Actions.styles'
 
-export default function AuthActions(): React.JSX.Element {
+export default function AuthActions() {
   const { theme } = useUnistyles()
   const { startGoogleAuth } = useGoogleOauth2()
 

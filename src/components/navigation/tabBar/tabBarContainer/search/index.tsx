@@ -3,7 +3,6 @@ import { charAnimationIn, charAnimationOut, layoutAnimation, zoomAnimationIn, zo
 import { ROUTES } from '@constants/routes'
 import useTabBarStore from '@stores/tabBar'
 import type React from 'react'
-import { TextInput } from 'react-native'
 import Animated, { LayoutAnimationConfig } from 'react-native-reanimated'
 import { useUnistyles } from 'react-native-unistyles'
 import { styles } from './search.styles'
@@ -48,11 +47,11 @@ export default function TabBarSearchButton({ inputRef }): React.JSX.Element {
     >
       <LayoutAnimationConfig skipEntering skipExiting>
         {settingsTab ? (
-          <Animated.View key="editButton" entering={charAnimationIn} exiting={charAnimationOut}>
+          <Animated.View key="editButton" entering={charAnimationIn()} exiting={charAnimationOut()}>
             <Icon icon="pencil" color={theme.colors.text} size={30} />
           </Animated.View>
         ) : (
-          <Animated.View key="searchButton" entering={charAnimationIn} exiting={charAnimationOut}>
+          <Animated.View key="searchButton" entering={charAnimationIn()} exiting={charAnimationOut()}>
             <Icon icon="magnifyingglass" size={30} />
           </Animated.View>
         )}

@@ -29,7 +29,7 @@ export default function Checkbox({ onValueChange, value, style, ref, onTouch, ..
         {value ? (
           <>
             <Animated.View style={styles.background} entering={zoomAnimationIn} exiting={zoomAnimationOut} key="checkboxBackground" />
-            <Animated.View entering={charAnimationIn} exiting={charAnimationOut} key="checkboxIcon">
+            <Animated.View entering={charAnimationIn()} exiting={charAnimationOut()} key="checkboxIcon">
               <Icon icon="checkmark" size={16} color={theme.colors.white} />
             </Animated.View>
           </>

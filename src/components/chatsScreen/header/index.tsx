@@ -38,7 +38,7 @@ export default function Header() {
           {edit ? (
             <>
               <Animated.View style={styles.buttonBackground} entering={zoomAnimationIn} exiting={zoomAnimationOut} />
-              <Animated.View entering={charAnimationIn} exiting={charAnimationOut}>
+              <Animated.View entering={charAnimationIn()} exiting={charAnimationOut()}>
                 <Icon icon="checkmark" color={theme.colors.white} />
               </Animated.View>
             </>
