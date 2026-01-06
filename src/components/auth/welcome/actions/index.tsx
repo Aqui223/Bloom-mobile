@@ -1,11 +1,13 @@
 import useGoogleOauth2 from '@api/hooks/useGoogleOauth2'
 import { Button, Icon, Separator } from '@components/ui'
+import { useInsets } from '@hooks'
 import { Image, Platform, View } from 'react-native'
 import { useUnistyles } from 'react-native-unistyles'
 import { styles } from './Actions.styles'
 
 export default function AuthActions() {
   const { theme } = useUnistyles()
+  const insets = useInsets()
   const { startGoogleAuth } = useGoogleOauth2()
 
   const iOS = Platform.OS === 'ios'
@@ -24,7 +26,7 @@ export default function AuthActions() {
   }
 
   return (
-    <View style={styles.actionsContainer}>
+    <View style={styles.actionsContainer(52 + insets.bottom)}>
       <Button
         style={styles.button(true)}
         labelStyle={styles.buttonLabel(true)}

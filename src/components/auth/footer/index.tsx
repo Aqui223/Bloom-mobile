@@ -18,7 +18,7 @@ export default function AuthFooter() {
     backgroundColor: interpolateColor(
       progress.value,
       [0, 1, 2, 3],
-      [theme.colors.foreground, theme.colors.foreground, theme.colors.primary, theme.colors.red],
+      [theme.colors.foregroundTransparent, theme.colors.foregroundTransparent, theme.colors.primary, theme.colors.red],
     ),
   }))
 

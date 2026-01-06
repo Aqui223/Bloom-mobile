@@ -1,14 +1,11 @@
 import AuthActions from '@components/auth/welcome/actions'
 import AuthTitle from '@components/auth/welcome/title'
-import { useInsets } from '@hooks'
 import { View } from 'react-native'
 import { StyleSheet } from 'react-native-unistyles'
 
 export default function Welcome() {
-  const insets = useInsets()
-
   return (
-    <View style={styles.container(52 + insets.bottom)}>
+    <View style={styles.container}>
       <AuthTitle />
       <AuthActions />
     </View>
@@ -16,10 +13,9 @@ export default function Welcome() {
 }
 
 const styles = StyleSheet.create((theme) => ({
-  container: (paddingBottom: number) => ({
+  container: {
     flex: 1,
     justifyContent: 'flex-end',
-    paddingBottom,
     backgroundColor: theme.colors.background,
-  }),
+  },
 }))
