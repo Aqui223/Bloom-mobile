@@ -5,6 +5,7 @@ import { WebSocketProvider } from '@api/providers/WebSocketContext'
 import { PortalProvider } from '@gorhom/portal'
 import initRealm from '@lib/initRealm'
 import { createSecureStorage } from '@lib/storage'
+import { SessionProvider } from '@providers/SessionProvider'
 import useStorageStore from '@stores/storage'
 import { useFonts } from 'expo-font'
 import { Stack } from 'expo-router'
@@ -49,18 +50,20 @@ export default function RootLayout() {
         <GestureHandlerRootView style={{ flex: 1 }}>
           <PortalProvider>
             <StatusBar style="auto" />
-            <WebSocketProvider>
-              <ChatsProvider>
-                <MessagesProvider>
-                  <SeenMessagesProvider>
-                    <Stack id={undefined} screenOptions={{ headerShown: false, contentStyle: styles.content }}>
-                      <Stack.Screen name="(app)" options={{ headerShown: false }} />
-                      <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-                    </Stack>
-                  </SeenMessagesProvider>
-                </MessagesProvider>
-              </ChatsProvider>
-            </WebSocketProvider>
+            <SessionProvider>
+              <WebSocketProvider>
+                <ChatsProvider>
+                  <MessagesProvider>
+                    <SeenMessagesProvider>
+                      <Stack id={undefined} screenOptions={{ headerShown: false, contentStyle: styles.content }}>
+                        <Stack.Screen name="(app)" options={{ headerShown: false }} />
+                        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+                      </Stack>
+                    </SeenMessagesProvider>
+                  </MessagesProvider>
+                </ChatsProvider>
+              </WebSocketProvider>
+            </SessionProvider>
           </PortalProvider>
         </GestureHandlerRootView>
       </KeyboardProvider>

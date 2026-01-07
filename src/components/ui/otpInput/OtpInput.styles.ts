@@ -35,7 +35,7 @@ export const styles = StyleSheet.create((theme) => ({
     position: 'absolute',
     aspectRatio: 3 / 4,
     zIndex: 2,
-    borderRadius: theme.radius.sm + 2,
+    borderRadius: theme.radius.sm,
     borderWidth: 2,
     borderColor: theme.colors.primary,
   },

@@ -2,7 +2,7 @@ import { Icon, Input } from '@components/ui'
 import { zoomAnimationIn, zoomAnimationOut } from '@constants/animations'
 import useAuthStore from '@stores/auth'
 import { useEffect, useRef, useState } from 'react'
-import { Platform, Pressable, type TextInput } from 'react-native'
+import { Pressable, type TextInput } from 'react-native'
 import Animated from 'react-native-reanimated'
 import { useUnistyles } from 'react-native-unistyles'
 import { styles } from './Input.styles'
@@ -24,7 +24,11 @@ export default function AuthPasswordInput() {
       onChangeText={setPasssword}
       maxLength={64}
       secureTextEntry={secure}
-      keyboardType={Platform.OS === 'ios' ? 'numbers-and-punctuation' : 'visible-password'}
+      keyboardType="default"
+      autoCapitalize="none"
+      autoCorrect={false}
+      textContentType="password"
+      autoComplete="password"
       icon={<Icon size={26} icon="lock" color={theme.colors.secondaryText} />}
       placeholder="Пароль здесь"
       size="lg"

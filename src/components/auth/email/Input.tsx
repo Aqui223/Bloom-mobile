@@ -55,6 +55,10 @@ export default function AuthEmailInput(): React.JSX.Element {
       onChangeText={setEmail}
       maxLength={64}
       keyboardType="email-address"
+      autoCapitalize="none"
+      autoCorrect={false}
+      textContentType="emailAddress"
+      autoComplete="email"
       icon={icon}
       placeholder="example@gmail.com"
       size="lg"

@@ -1,17 +1,15 @@
 import AuthFooter from '@components/auth/footer'
 import AuthHeader from '@components/auth/header'
-import { useTokenCheck } from '@hooks'
 import { Stack } from '@layouts/Stack'
 import { screenTransition } from '@layouts/transition'
+import { useSession } from '@providers/SessionProvider'
 import { Redirect } from 'expo-router'
 import { View } from 'react-native'
 
 export default function AuthLayout() {
-  const { isAuthenticated, isLoading } = useTokenCheck()
+  const { token } = useSession()
 
-  if (isLoading) return null
-
-  if (isAuthenticated) return <Redirect href="/(app)/(tabs)" />
+  if (token) return <Redirect href="/(app)/(tabs)" />
 
   return (
     <Stack

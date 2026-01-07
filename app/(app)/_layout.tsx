@@ -1,13 +1,12 @@
-import { useTokenCheck } from '@hooks'
 import { Stack } from '@layouts/Stack'
 import { screenTransition } from '@layouts/transition'
+import { useSession } from '@providers/SessionProvider'
 import { Redirect } from 'expo-router'
 
 export default function AppLayout() {
-  const { isAuthenticated, isLoading } = useTokenCheck()
-  if (isLoading) return null
+  const { token } = useSession()
 
-  if (!isAuthenticated) return <Redirect href="/(auth)/Welcome" />
+  if (token) return <Redirect href="/(auth)/Welcome" />
 
   return (
     <Stack id={undefined}>

@@ -1,6 +1,6 @@
 import { charAnimationIn, charAnimationOut, layoutAnimationSpringy, quickSpring, springyChar } from '@constants/animations'
 import { AUTH_TITLES } from '@constants/titles'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { View } from 'react-native'
 import Animated, { interpolateColor, useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated'
 import { styles } from './Title.styles'
@@ -9,7 +9,7 @@ export default function AuthTitle() {
   const [activeTitle, setActiveTitle] = useState(0)
   const colorProgress = useSharedValue(0)
 
-  const chars = AUTH_TITLES[activeTitle].title.split('')
+  const chars = useMemo(() => AUTH_TITLES[activeTitle].title.split(''), [activeTitle])
 
   const animatedTextStyle = useAnimatedStyle(() => ({
     color: interpolateColor(
