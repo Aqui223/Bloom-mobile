@@ -1,8 +1,9 @@
 import { getFadeIn, getFadeOut, layoutAnimation, vSlideAnimationIn, vSlideAnimationOut } from '@constants/animations'
+import { useNavigationState } from '@react-navigation/native'
 import useTabBarStore from '@stores/tabBar'
 import { BlurView } from 'expo-blur'
 import type React from 'react'
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useRef } from 'react'
 import type { LayoutChangeEvent, TextInput } from 'react-native'
 import Animated, { LayoutAnimationConfig, useSharedValue } from 'react-native-reanimated'
 import { StyleSheet } from 'react-native-unistyles'
@@ -13,8 +14,9 @@ import TabBarSearchBackButton from './search/backButton'
 import TabBarSearchInput from './search/Input'
 import { styles } from './TabBarContainer.styles'
 
-export default function TabBarContainer({ state, navigation }): React.JSX.Element {
-  const { setActiveTab, isSearch, isSearchFocused } = useTabBarStore()
+export default function TabBarContainer(): React.JSX.Element {
+  const { isSearch, isSearchFocused } = useTabBarStore()
+  const state = useNavigationState((state) => state)
   const inputRef = useRef<TextInput>(null)
   const tabBarWidth = useSharedValue(0)
   const colorProgress = useSharedValue(0)
@@ -23,10 +25,6 @@ export default function TabBarContainer({ state, navigation }): React.JSX.Elemen
   const onLayoutTabBar = useCallback((event: LayoutChangeEvent) => {
     if (tabBarWidth.value <= 1) tabBarWidth.value = event.nativeEvent.layout.width
   }, [])
-
-  useEffect(() => {
-    setActiveTab(state.routes[state.index].name)
-  }, [state])
 
   return (
     <Animated.View exiting={vSlideAnimationOut} entering={vSlideAnimationIn} style={styles.container}>
@@ -52,7 +50,7 @@ export default function TabBarContainer({ state, navigation }): React.JSX.Elemen
                 tabBarWidth={tabBarWidth}
               />
               {state.routes.map((route, index) => {
-                return <TabBarItem key={route.key} route={route} focused={state.index === index} navigation={navigation} />
+                return <TabBarItem key={route.key} route={route} focused={state.index === index} />
               })}
             </Animated.View>
           )}

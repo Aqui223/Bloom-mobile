@@ -1,6 +1,7 @@
 import { Button, Icon } from '@components/ui'
 import { charAnimationIn, charAnimationOut, layoutAnimation, zoomAnimationIn, zoomAnimationOut } from '@constants/animations'
 import { ROUTES } from '@constants/routes'
+import { useNavigationState } from '@react-navigation/native'
 import useTabBarStore from '@stores/tabBar'
 import type React from 'react'
 import Animated, { LayoutAnimationConfig } from 'react-native-reanimated'
@@ -11,7 +12,8 @@ const AnimatedButton = Animated.createAnimatedComponent(Button)
 
 export default function TabBarSearchButton({ inputRef }): React.JSX.Element {
   const { theme } = useUnistyles()
-  const { isSearch, activeTab, setIsSearch, isSearchFocused, setSearchValue, searchValue } = useTabBarStore()
+  const { isSearch, setIsSearch, isSearchFocused, setSearchValue, searchValue } = useTabBarStore()
+  const activeTab = useNavigationState((state) => state.routes[state.index].name)
 
   const settingsTab = activeTab === ROUTES.tabs.settings
   const renderX = isSearch ? isSearchFocused || searchValue.trim().length : false

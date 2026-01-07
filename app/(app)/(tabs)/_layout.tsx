@@ -14,10 +14,10 @@ const springOptions: BottomTabNavigationOptions = {
 export default function TabsLayout() {
   return (
     <Tabs screenOptions={{ headerShown: false, animation: 'fade', sceneStyle: styles.scene }} tabBar={(props) => <TabBar {...props} />}>
-      <Tabs.Screen name="friends" options={springOptions} />
-      <Tabs.Screen name="explore" options={springOptions} />
+      <Tabs.Screen name="Friends" options={springOptions} />
+      <Tabs.Screen name="Explore" options={springOptions} />
       <Tabs.Screen name="index" options={springOptions} />
-      <Tabs.Screen name="settings" options={springOptions} />
+      <Tabs.Screen name="Settings" options={springOptions} />
     </Tabs>
   )
 }

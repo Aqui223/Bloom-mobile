@@ -13,7 +13,7 @@ import TabBarActionButtonDelete from './deleteButton'
 import { styles } from './TabBar.styles'
 import TabBarContainer from './tabBarContainer'
 
-export default function TabBar({ state, navigation }): React.JSX.Element {
+export default function TabBar(): React.JSX.Element {
   const insets = useInsets()
   const { theme } = useUnistyles()
   const { setTabBarHeight, tabBarHeight } = useTabBarStore()
@@ -39,7 +39,7 @@ export default function TabBar({ state, navigation }): React.JSX.Element {
       style={[styles.tabBarContainer, animatedContainerStyle]}
     >
       <GradientBlur />
-      {!edit ? <TabBarContainer state={state} navigation={navigation} /> : <TabBarActionButtonDelete />}
+      {!edit ? <TabBarContainer /> : <TabBarActionButtonDelete />}
     </Animated.View>
   )
 }

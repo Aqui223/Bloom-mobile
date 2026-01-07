@@ -1,6 +1,7 @@
 import { Button, Icon } from '@components/ui'
 import { zoomAnimationIn, zoomAnimationOut } from '@constants/animations'
 import { TAB_ICONS } from '@constants/tabBar'
+import { useNavigationState } from '@react-navigation/native'
 import useTabBarStore from '@stores/tabBar'
 import type React from 'react'
 import Animated from 'react-native-reanimated'
@@ -10,7 +11,8 @@ const AnimatedButton = Animated.createAnimatedComponent(Button)
 
 export default function TabBarSearchBackButton(): React.JSX.Element {
   const { theme } = useUnistyles()
-  const { activeTab, setIsSearch } = useTabBarStore()
+  const { setIsSearch } = useTabBarStore()
+  const activeTab = useNavigationState((state) => state.routes[state.index].name)
 
   const tabIcon = TAB_ICONS[activeTab]
 
