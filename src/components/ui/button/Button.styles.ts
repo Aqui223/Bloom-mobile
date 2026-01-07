@@ -15,10 +15,10 @@ export const styles = StyleSheet.create((theme) => ({
     justifyContent: 'center',
     flexDirection: 'row',
     height: size,
-    width: size > SIZE_MAP['lg'] ? '100%' : 'auto',
+    width: size >= SIZE_MAP.xl ? '100%' : 'auto',
     overflow: 'hidden',
     aspectRatio: isIcon ? 1 : undefined,
-    paddingHorizontal,
+    paddingHorizontal: size >= SIZE_MAP.xl ? 0 : paddingHorizontal,
     borderCurve: 'continuous',
     borderRadius: theme.radius.full,
     backgroundColor: blur ? theme.colors.foregroundBlur : theme.colors.foreground,
@@ -26,7 +26,7 @@ export const styles = StyleSheet.create((theme) => ({
   }),
   label: (size: number) => ({
     color: theme.colors.text,
-    fontSize: size >= SIZE_MAP['lg'] ? theme.fontSize.lg : theme.fontSize.md,
+    fontSize: size >= SIZE_MAP.lg ? theme.fontSize.lg : theme.fontSize.md,
     fontFamily: theme.fontFamily.medium,
   }),
 }))

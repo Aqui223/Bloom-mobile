@@ -1,31 +1,24 @@
 import { Button, Icon } from '@components/ui'
 import { getFadeIn, getFadeOut, layoutAnimationSpringy } from '@constants/animations'
 import { useAuthFooter, useInsets } from '@hooks'
-import { useReanimatedKeyboardAnimation } from 'react-native-keyboard-controller'
-import Animated, { interpolateColor, useAnimatedStyle } from 'react-native-reanimated'
+import { KeyboardStickyView, useReanimatedKeyboardAnimation } from 'react-native-keyboard-controller'
+import Animated, { interpolate, interpolateColor, useAnimatedStyle } from 'react-native-reanimated'
 import { useUnistyles } from 'react-native-unistyles'
 import { styles } from './Footer.styles'
-
-const AnimatedButton = Animated.createAnimatedComponent(Button)
 
 export default function AuthFooter() {
   const insets = useInsets()
   const { theme } = useUnistyles()
   const { index, label, isDisabled, progress, handlePress } = useAuthFooter()
-  const { progress: keyboardProgress, height: keyboardHeight } = useReanimatedKeyboardAnimation()
+  const { progress: keyboardProgress } = useReanimatedKeyboardAnimation()
 
-  const animatedButtonStyle = useAnimatedStyle(() => ({
+  const animatedButtonBackgroundStyle = useAnimatedStyle(() => ({
     backgroundColor: interpolateColor(
       progress.value,
       [0, 1, 2, 3],
       [theme.colors.foregroundTransparent, theme.colors.foregroundTransparent, theme.colors.primary, theme.colors.red],
     ),
-  }))
-
-  const animatedViewStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: keyboardHeight.value }],
-    paddingBottom: keyboardProgress.get() >= 0.1 ? theme.spacing.lg : insets.bottom,
-    paddingHorizontal: keyboardProgress.get() >= 0.1 ? theme.spacing.lg : theme.spacing.xxxl,
+    transform: [{ scaleX: interpolate(keyboardProgress.value, [0, 1], [1, 1.2]) }],
   }))
 
   const animatedLabelStyle = useAnimatedStyle(() => ({
@@ -37,13 +30,13 @@ export default function AuthFooter() {
   }))
 
   return (
-    <Animated.View style={[styles.footer, animatedViewStyle]}>
-      <AnimatedButton
+    <KeyboardStickyView offset={{ opened: -theme.spacing.lg, closed: -insets.bottom }} style={styles.footer}>
+      <Button
         disabled={isDisabled}
         onPress={handlePress}
+        style={styles.button}
         size="xl"
         variant="textIcon"
-        style={animatedButtonStyle}
         icon={
           index === 0 && (
             <Animated.View entering={getFadeIn()} exiting={getFadeOut()}>
@@ -52,6 +45,7 @@ export default function AuthFooter() {
           )
         }
       >
+        <Animated.View style={[styles.buttonBackground, animatedButtonBackgroundStyle]} />
         <Animated.View layout={layoutAnimationSpringy} style={styles.partsContainer}>
           {label.split(' ').map((part) => (
             <Animated.Text
@@ -65,7 +59,7 @@ export default function AuthFooter() {
             </Animated.Text>
           ))}
         </Animated.View>
-      </AnimatedButton>
-    </Animated.View>
+      </Button>
+    </KeyboardStickyView>
   )
 }

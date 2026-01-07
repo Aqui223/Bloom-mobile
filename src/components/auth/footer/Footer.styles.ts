@@ -4,6 +4,7 @@ export const styles = StyleSheet.create((theme) => ({
   footer: {
     width: '100%',
     position: 'absolute',
+    paddingHorizontal: theme.spacing.lg,
     bottom: 0,
   },
   buttonLabel: {
@@ -13,5 +14,14 @@ export const styles = StyleSheet.create((theme) => ({
   },
   partsContainer: {
     flexDirection: 'row',
+  },
+  button: {
+    backgroundColor: 'transparent',
+  },
+  buttonBackground: {
+    ...StyleSheet.absoluteFillObject,
+    marginHorizontal: theme.spacing.md,
+    borderRadius: theme.radius.full,
+    borderCurve: 'continuous',
   },
 }))
