@@ -11,12 +11,8 @@ interface PrivateKeysResponse {
 
 async function usernameHandler(token: string, username: string): Promise<void> {
   try {
-    await axios.post(
-      `${API_URL}/user/edit`,
-      { username },
-      { headers: { Authorization: `Bearer ${token}` } }
-    )
-  } catch { }
+    await axios.post(`${API_URL}/user/edit`, { username }, { headers: { Authorization: `Bearer ${token}` } })
+  } catch {}
 }
 
 async function passwordHandler(token: string, password: string, mmkv: any): Promise<void> {

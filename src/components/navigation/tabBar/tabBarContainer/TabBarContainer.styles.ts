@@ -19,7 +19,7 @@ export const styles = StyleSheet.create((theme) => ({
   },
   tabBarWrapper: {
     flex: 1,
-    backgroundColor: Platform.OS === "ios" ? theme.colors.foregroundBlur : theme.colors.foreground,
+    backgroundColor: Platform.OS === 'ios' ? theme.colors.foregroundBlur : theme.colors.foreground,
     borderRadius: theme.radius.full,
     zIndex: 1,
     justifyContent: 'center',
