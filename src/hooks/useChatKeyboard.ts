@@ -15,14 +15,17 @@ export default function useChatKeyboard(): UseChatKeyboard {
   const mmkv = useStorageStore((state) => state.mmkv)
   const keyboardHeight = useKeyboardState((s) => s.height)
   const { progress } = useReanimatedKeyboardAnimation()
+
   const [height, setHeight] = useState<number>(() => {
     const stored = mmkv.getNumber('keyboardHeight')
-    return stored ? stored : FALLBACK_HEIGHT
+    return stored ?? FALLBACK_HEIGHT
   })
 
   const hasSavedRealHeight = useRef(false)
 
   useEffect(() => {
+    if (keyboardHeight === 0) return
+
     if (keyboardHeight === height) return
 
     setHeight(keyboardHeight)

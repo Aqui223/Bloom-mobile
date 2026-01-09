@@ -24,11 +24,11 @@ export default function GradientBlur({ direction = 'bottom-to-top', ref, style, 
   const { start, end } = useMemo(() => {
     switch (direction) {
       case 'top-to-bottom':
-        return { start: { x: 0.5, y: 1 }, end: { x: 0.5, y: 0.5 } }
+        return { start: { x: 0.5, y: 0.85 }, end: { x: 0.5, y: 0 } }
       case 'bottom-left-to-top-right':
         return { start: { x: 0.5, y: 0.5 }, end: { x: 1, y: 1 } }
       default:
-        return { start: { x: 0.5, y: 0 }, end: { x: 0.5, y: 0.5 } }
+        return { start: { x: 0.5, y: 0 }, end: { x: 0.5, y: 0.85 } }
     }
   }, [direction])
 
@@ -61,7 +61,7 @@ export default function GradientBlur({ direction = 'bottom-to-top', ref, style, 
       <LinearGradient
         start={start}
         end={end}
-        colors={['transparent', theme.colors.gradientBlur]}
+        colors={['transparent', theme.colors.background]}
         style={[StyleSheet.absoluteFill, keyboard ? styles.gradient(insets.bottom) : null, style]}
       />
     </>

@@ -5,22 +5,22 @@ import { styles } from './Message.styles'
 import MessageBubble from './MessageBubble'
 import MessageStatus from './MessageStatus'
 
-type MessageProps = {
+interface MessageProps {
   message: MessageType | null
-  seen?: boolean
-  isGroupEnd?: boolean
-  isGroupStart?: boolean
+  seen: boolean
+  paddingBottom: number
+  groupEnd: boolean
 }
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable)
 
-export default function Message({ message, seen, isGroupEnd, isGroupStart }: MessageProps) {
+export default function Message({ message, seen, paddingBottom, groupEnd }: MessageProps) {
   return (
-    <AnimatedPressable style={[styles.messageWrapper(message?.isMe, !isGroupEnd && !isGroupStart)]}>
+    <AnimatedPressable style={[styles.messageWrapper(message?.isMe, paddingBottom)]}>
       <MessageBubble message={message} />
 
       <LayoutAnimationConfig skipEntering skipExiting>
-        {isGroupEnd && <MessageStatus message={message} seen={seen} />}
+        {groupEnd && <MessageStatus message={message} seen={seen} />}
       </LayoutAnimationConfig>
     </AnimatedPressable>
   )

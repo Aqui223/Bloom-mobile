@@ -24,7 +24,7 @@ const options: Option[] = [
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable)
 
-export default function Header({ chat, onLayout }: HeaderProps): React.ReactNode {
+export default function Header({ chat }: HeaderProps): React.ReactNode {
   const { theme } = useUnistyles()
   const { isOpen, triggerProps, closeMenu, menuPosition, triggerAnimatedStyle } = useContextMenu()
   const navigation = useNavigation()
@@ -35,10 +35,7 @@ export default function Header({ chat, onLayout }: HeaderProps): React.ReactNode
   })
 
   return (
-    <Animated.View
-      onLayout={(e) => onLayout(e.nativeEvent.layout.height)}
-      style={[styles.header, { paddingTop: insets.top }, animatedViewStyles]}
-    >
+    <Animated.View style={[styles.header, { paddingTop: insets.top }, animatedViewStyles]}>
       <GradientBlur direction="top-to-bottom" />
       <Button blur variant="icon" onPress={() => navigation.goBack()}>
         <Icon icon="chevron.left" color={theme.colors.text} />

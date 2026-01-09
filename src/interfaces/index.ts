@@ -35,6 +35,8 @@ export interface Message {
   nonce?: string
   reply_to?: Message
   type?: string
+  groupStart?: boolean
+  groupEnd?: boolean
 }
 
 export interface Chat {

@@ -9,12 +9,14 @@ export const styles = StyleSheet.create((theme) => ({
     minHeight: 44,
     backgroundColor: isMe ? theme.colors.primary : theme.colors.foreground,
   }),
-  messageWrapper: (isMe: boolean, isGrouped: boolean) => ({
-    gap: theme.spacing.md,
-    position: 'relative',
-    paddingBottom: isGrouped ? theme.spacing.sm : theme.spacing.lg,
-    alignItems: isMe ? 'flex-end' : 'flex-start',
-  }),
+  messageWrapper: (isMe: boolean, paddingBottom) => {
+    return {
+      gap: theme.spacing.md,
+      position: 'relative',
+      paddingBottom,
+      alignItems: isMe ? 'flex-end' : 'flex-start',
+    }
+  },
   messageContent: {
     paddingHorizontal: theme.spacing.lg,
     padding: theme.spacing.md,
@@ -39,6 +41,8 @@ export const styles = StyleSheet.create((theme) => ({
   metaRowText: {
     color: theme.colors.secondaryText,
     fontSize: theme.fontSize.sm,
+    position: 'absolute',
+    bottom: theme.spacing.lg,
     fontFamily: theme.fontFamily.medium,
   },
   messageBubbleWrapper: {
