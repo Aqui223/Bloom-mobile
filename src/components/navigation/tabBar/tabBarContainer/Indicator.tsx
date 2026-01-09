@@ -3,9 +3,9 @@ import { TAB_COLORS } from '@constants/tabBar'
 import type { TabValue } from '@interfaces'
 import { useNavigationState } from '@react-navigation/native'
 import useTabBarStore from '@stores/tabBar'
-import { useEffect, useMemo } from 'react'
+import { useEffect } from 'react'
 import type { ViewStyle } from 'react-native'
-import Animated, { interpolateColor, type SharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated'
+import Animated, { type SharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated'
 import { styles } from './TabBarContainer.styles'
 
 interface TabBarIndicatorProps {
@@ -22,19 +22,19 @@ export default function TabBarIndicator({ x, colorProgress }: TabBarIndicatorPro
   const tabsCount = routes?.length
   const TAB_COLORS_RES = TAB_COLORS(true)
 
-  const { colorInputRange, colorOutputRange } = useMemo(() => {
-    const keys = Object.keys(TAB_COLORS_RES)
-    return {
-      colorInputRange: routes.map((e) => keys.indexOf(e)),
-      colorOutputRange: Object.values(TAB_COLORS_RES) as string[],
-    }
-  }, [routes, TAB_COLORS_RES])
+  // const { colorInputRange, colorOutputRange } = useMemo(() => {
+  //   const keys = Object.keys(TAB_COLORS_RES)
+  //   return {
+  //     colorInputRange: routes.map((e) => keys.indexOf(e)),
+  //     colorOutputRange: Object.values(TAB_COLORS_RES) as string[],
+  //   }
+  // }, [routes, TAB_COLORS_RES])
 
   const animatedStyle = useAnimatedStyle(
     (): ViewStyle => ({
       transform: [{ translateX: x.get() }],
       width: tabBarWidth / 4 + 5,
-      backgroundColor: interpolateColor(colorProgress.get(), colorInputRange, colorOutputRange),
+      // backgroundColor: interpolateColor(colorProgress.get(), colorInputRange, colorOutputRange),
     }),
   )
 

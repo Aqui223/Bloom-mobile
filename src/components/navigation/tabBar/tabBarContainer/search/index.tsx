@@ -54,7 +54,7 @@ export default function TabBarSearchButton({ inputRef }): React.JSX.Element {
           </Animated.View>
         ) : (
           <Animated.View key="searchButton" entering={charAnimationIn()} exiting={charAnimationOut()}>
-            <Icon icon="magnifyingglass" size={30} />
+            <Icon icon="magnifyingglass" color={theme.colors.text} size={30} />
           </Animated.View>
         )}
       </LayoutAnimationConfig>

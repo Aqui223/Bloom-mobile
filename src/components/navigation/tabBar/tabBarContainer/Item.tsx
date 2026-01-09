@@ -44,7 +44,6 @@ export default function TabBarItem({ route, focused }: TabBarItemProps) {
           scale: scale.value,
         },
       ],
-      opacity: withSpring(focused ? 1 : theme.opacity.contentText, quickSpring),
     }),
   )
 
@@ -63,7 +62,7 @@ export default function TabBarItem({ route, focused }: TabBarItemProps) {
       onPressIn={() => iconScale()}
       onPressOut={() => iconScale(true)}
     >
-      <Icon animatedProps={animatedProps} size={30} icon={TAB_ICONS[route.name]} />
+      <Icon animatedProps={animatedProps} color={theme.colors.text} size={30} icon={TAB_ICONS[route.name]} />
     </AnimatedPressable>
   )
 }

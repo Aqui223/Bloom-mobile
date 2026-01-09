@@ -34,6 +34,7 @@ export const styles = StyleSheet.create((theme) => ({
     transformOrigin: 'center',
     borderCurve: 'continuous',
     height: 54 - theme.spacing.xs * 2,
+    backgroundColor: theme.colors.indicator,
     borderRadius: theme.radius.full,
   },
   tabBarItem: {

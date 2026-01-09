@@ -4,7 +4,7 @@ import type { ICONS } from './icons'
 
 export const TAB_COLORS = (backdrop?: boolean): Record<TabValue, string> =>
   ({
-    Friends: staticColor[backdrop ? 'greenBackdrop' : 'green'],
+    Friends: staticColor[backdrop ? 'orangeBackdrop' : 'orange'],
     Explore: staticColor[backdrop ? 'yellowBackdrop' : 'yellow'],
     index: staticColor[backdrop ? 'primaryBackdrop' : 'primary'],
     Settings: staticColor[backdrop ? 'pinkBackdrop' : 'pink'],
