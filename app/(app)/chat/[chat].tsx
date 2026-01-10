@@ -4,10 +4,9 @@ import Header from '@components/chatScreen/header'
 import Message from '@components/chatScreen/message'
 import { useChatController, useChatKeyboard, useInsets } from '@hooks'
 import type { Message as MessageType } from '@interfaces'
-import { FlashList } from '@shopify/flash-list'
 import { useLocalSearchParams } from 'expo-router'
 import { useCallback, useState } from 'react'
-import { View } from 'react-native'
+import { FlatList, Platform, View } from 'react-native'
 import { KeyboardStickyView } from 'react-native-keyboard-controller'
 import { StyleSheet, useUnistyles } from 'react-native-unistyles'
 
@@ -25,23 +24,17 @@ export default function Chat() {
 
   const renderItem = useCallback(
     ({ item }: { item: MessageType }) => {
-      if (item?.type === 'date_header') {
-        return null
-      }
+      const grouped = !item?.groupEnd && !item?.groupStart
 
-      const grouped = !item.groupEnd && !item.groupStart
+      const paddingBottom = grouped ? theme.spacing.sm : item?.groupEnd ? endPadding : theme.spacing.lg
 
-      const paddingBottom = grouped ? theme.spacing.sm : item.groupEnd ? endPadding : theme.spacing.lg
-
-      return (
-        paddingBottom > 0 && <Message seen={seenID === item?.id} message={item} paddingBottom={paddingBottom} groupEnd={item.groupEnd} />
-      )
+      return <Message seen={seenID === item?.id} message={item} paddingBottom={paddingBottom} groupEnd={item?.groupEnd} />
     },
-    [seenID, messages, endPadding],
+    [seenID, endPadding],
   )
 
   const keyExtractor = useCallback((item: MessageType, index: number) => {
-    return String(item.nonce ?? index)
+    return String(item.id ?? item.nonce)
   }, [])
 
   return (
@@ -49,21 +42,19 @@ export default function Chat() {
       <Header chat={_chat} />
       <EmptyModal chat={_chat} visible={messages.length === 0} />
       <KeyboardStickyView style={styles.list}>
-        {footerHeight > 0 && (
-          <FlashList
-            data={messages}
-            ListHeaderComponent={<View style={{ height: height, width: '100%' }} />}
-            renderItem={renderItem}
-            maintainVisibleContentPosition={{
-              autoscrollToBottomThreshold: 0.2,
-              startRenderingFromBottom: true,
-            }}
-            keyExtractor={keyExtractor}
-            contentContainerStyle={styles.listContent(footerHeight, headerHeight)}
-            keyboardDismissMode="on-drag"
-            showsVerticalScrollIndicator={false}
-          />
-        )}
+        <FlatList
+          data={messages}
+          ListFooterComponent={<View style={{ height: height, width: '100%', backgroundColor: 'red' }} />}
+          renderItem={renderItem}
+          extraData={messages}
+          removeClippedSubviews={Platform.OS === 'ios'}
+          inverted
+          scrollToOverflowEnabled
+          keyExtractor={keyExtractor}
+          contentContainerStyle={styles.listContent(headerHeight, footerHeight)}
+          keyboardDismissMode="on-drag"
+          showsVerticalScrollIndicator={false}
+        />
       </KeyboardStickyView>
       <Footer setFooterHeight={setFooterHeight} footerHeight={footerHeight} onSend={addMessage} />
     </View>
@@ -80,7 +71,7 @@ const styles = StyleSheet.create((theme) => ({
   },
   listContent: (paddingBottom: number, paddingTop: number) => ({
     paddingHorizontal: theme.spacing.lg,
-    paddingBottom: paddingBottom + theme.spacing.md,
-    paddingTop,
+    paddingBottom,
+    paddingTop: paddingTop + theme.spacing.md,
   }),
 }))

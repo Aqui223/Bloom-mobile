@@ -11,7 +11,7 @@ export default function useChatController(chat) {
   const CHAT_TIME_WINDOW = 5 * 60 * 1000
 
   const computedMessages = useMemo(() => {
-    return messages.map((item, index) => {
+    return messages.reverse().map((item, index) => {
       const prev = messages[index - 1]
       const next = messages[index + 1]
 

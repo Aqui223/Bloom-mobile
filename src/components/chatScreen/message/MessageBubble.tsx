@@ -3,7 +3,7 @@ import formatSentTime from '@lib/formatSentTime'
 import type React from 'react'
 import { Text, View } from 'react-native'
 import Animated from 'react-native-reanimated'
-import ReplyBlock from '../replyBlock'
+// import ReplyBlock from '../replyBlock'
 import { styles } from './Message.styles'
 
 type MessageBubbleProps = {
@@ -15,7 +15,7 @@ export default function MessageBubble({ message }: MessageBubbleProps): React.JS
 
   return (
     <Animated.View style={styles.message(isMe)}>
-      <ReplyBlock isMe={isMe} message={message.reply_to} />
+      {/* <ReplyBlock isMe={isMe} message={message.reply_to} /> */}
 
       <View style={styles.messageContent}>
         <Text style={styles.text(isMe)}>

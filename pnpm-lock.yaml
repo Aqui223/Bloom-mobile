@@ -60,8 +60,8 @@ importers:
         specifier: ^2.0.1
         version: 2.0.1
       '@shopify/flash-list':
-        specifier: ^2.2.0
-        version: 2.2.0(@babel/runtime@7.28.4)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.7)(react@19.1.0))(react@19.1.0)
+        specifier: ^2.1.0
+        version: 2.1.0(@babel/runtime@7.28.4)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.7)(react@19.1.0))(react@19.1.0)
       axios:
         specifier: ^1.13.2
         version: 1.13.2
@@ -1549,8 +1549,8 @@ packages:
   '@segment/loosely-validate-event@2.0.0':
     resolution: {integrity: sha512-ZMCSfztDBqwotkl848ODgVcAmN4OItEWDCkshcKz0/W6gGSQayuuCtWV/MlodFivAZD793d6UgANd6wCXUfrIw==}
 
-  '@shopify/flash-list@2.2.0':
-    resolution: {integrity: sha512-mL61IofcfBNRZ/qazIf+pghGULkcZUQ7EZNldH1JBbIjtDb25ADSiQrt62ZTnRz0H5+bPFEZUmN9+WChHzX8pw==}
+  '@shopify/flash-list@2.1.0':
+    resolution: {integrity: sha512-/EIQlptG456yM5o9qNmNsmaZEFEOGvG3WGyb6GUAxSLlcKUGlPUkPI2NLW5wQSDEY4xSRa5zocUI+9xwmsM4Kg==}
     peerDependencies:
       '@babel/runtime': '*'
       react: '*'
@@ -6889,7 +6889,7 @@ snapshots:
       component-type: 1.2.2
       join-component: 1.1.0
 
-  '@shopify/flash-list@2.2.0(@babel/runtime@7.28.4)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.7)(react@19.1.0))(react@19.1.0)':
+  '@shopify/flash-list@2.1.0(@babel/runtime@7.28.4)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.2.7)(react@19.1.0))(react@19.1.0)':
     dependencies:
       '@babel/runtime': 7.28.4
       react: 19.1.0

@@ -3,7 +3,7 @@ import AuthPasswordInput from '@components/auth/password/PasswordInput'
 import AuthTitleTemplate from '@components/auth/titleTemplate'
 import { ActionText } from '@components/ui'
 import { layoutAnimation, quickSpring } from '@constants/animations'
-import { useInsets } from '@hooks'
+import { useChatKeyboard, useInsets } from '@hooks'
 import useAuthStore from '@stores/auth'
 import { useEffect } from 'react'
 import { useReanimatedKeyboardAnimation } from 'react-native-keyboard-controller'
@@ -17,6 +17,8 @@ export default function SignupPassword() {
   const insets = useInsets()
   const { theme } = useUnistyles()
   const { error, exists } = useAuthStore()
+  // Needs only for read and write first keyboard height to mmkv storage
+  const { height: _height } = useChatKeyboard()
   const errorValue = useSharedValue(0)
 
   const animatedStyles = useAnimatedStyle(() => {
