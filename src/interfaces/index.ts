@@ -67,6 +67,7 @@ export interface Option {
 }
 
 export type TabValue = TabsObject[keyof TabsObject]
+export type TabBarType = 'default' | 'edit' | 'settings'
 
 export type IconType = 'transparent' | 'gradient'
 export type ColorKey = keyof typeof staticColor | null

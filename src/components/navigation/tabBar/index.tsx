@@ -1,7 +1,6 @@
 import { GradientBlur } from '@components/ui'
 import { layoutAnimation } from '@constants/animations'
 import { useInsets } from '@hooks'
-import useChatsStore from '@stores/chats'
 import useTabBarStore from '@stores/tabBar'
 import type React from 'react'
 import { useEffect, useMemo } from 'react'
@@ -18,19 +17,17 @@ export const TAB_BAR_HEIGHT = 54
 const AnimatedStickyView = Animated.createAnimatedComponent(KeyboardStickyView)
 
 export default function TabBar(): React.JSX.Element {
-  const { setTabBarHeight, setTabBarWidth } = useTabBarStore()
+  const { setHeight, setWidth, type } = useTabBarStore()
   const { theme } = useUnistyles()
   const { width } = useWindowDimensions()
   const insets = useInsets()
-  const { bottom } = useInsets()
-  const { edit } = useChatsStore()
 
-  const tabBarHeight = useMemo(() => TAB_BAR_HEIGHT + theme.spacing.lg + bottom, [theme, bottom])
+  const tabBarHeight = useMemo(() => TAB_BAR_HEIGHT + theme.spacing.lg + insets.bottom, [theme, insets.bottom])
   const tabBarWidth = useMemo(() => width - theme.spacing.xxl * 2 - theme.spacing.md - TAB_BAR_HEIGHT, [width, theme])
 
   useEffect(() => {
-    setTabBarHeight(tabBarHeight)
-    setTabBarWidth(tabBarWidth)
+    setHeight(tabBarHeight)
+    setWidth(tabBarWidth)
   }, [tabBarHeight, tabBarWidth])
 
   return (
@@ -40,7 +37,7 @@ export default function TabBar(): React.JSX.Element {
       style={styles.tabBarContainer}
     >
       <GradientBlur keyboard />
-      {!edit ? <TabBarContainer /> : <TabBarActionButtonDelete />}
+      {type === 'default' ? <TabBarContainer /> : <TabBarActionButtonDelete />}
     </AnimatedStickyView>
   )
 }

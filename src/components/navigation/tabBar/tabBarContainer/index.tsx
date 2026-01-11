@@ -14,23 +14,22 @@ import TabBarSearchInput from './search/Input'
 import { styles } from './TabBarContainer.styles'
 
 export default function TabBarContainer() {
-  const { isSearch, isSearchFocused } = useTabBarStore()
+  const { search, searchFocused } = useTabBarStore()
   const state = useNavigationState((state) => state)
   const inputRef = useRef<TextInput>(null)
-  const colorProgress = useSharedValue(0)
   const x = useSharedValue(0)
 
   return (
     <Animated.View exiting={vSlideAnimationOut} entering={vSlideAnimationIn} style={styles.container}>
       <LayoutAnimationConfig skipEntering skipExiting>
-        {isSearch && !isSearchFocused && <TabBarSearchBackButton />}
+        {search && !searchFocused && <TabBarSearchBackButton />}
         <Animated.View layout={layoutAnimation} style={styles.tabBarWrapper}>
           {Platform.OS === 'ios' && <BlurView style={StyleSheet.absoluteFill} intensity={40} tint="systemChromeMaterialDark" />}
-          {isSearch ? (
+          {search ? (
             <TabBarSearchInput key="tabBarSearchInput" ref={inputRef} />
           ) : (
             <Animated.View key="tabBarContent" exiting={getFadeOut()} entering={getFadeIn()} style={styles.tabBar}>
-              <TabBarIndicator x={x} colorProgress={colorProgress} />
+              <TabBarIndicator x={x} />
               {state.routes.map((route, index) => {
                 return <TabBarItem key={route.key} route={route} focused={state.index === index} />
               })}

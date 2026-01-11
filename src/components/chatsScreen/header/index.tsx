@@ -3,6 +3,7 @@ import { Button, GradientBlur, Icon } from '@components/ui'
 import { charAnimationIn, charAnimationOut, quickSpring, zoomAnimationIn, zoomAnimationOut } from '@constants/animations'
 import { useInsets } from '@hooks'
 import useChatsScreenStore from '@stores/chats'
+import useTabBarStore from '@stores/tabBar'
 import { useEffect, useState } from 'react'
 import { View } from 'react-native'
 import Animated, { useAnimatedStyle, withSpring } from 'react-native-reanimated'
@@ -18,10 +19,16 @@ export default function Header() {
   const { theme } = useUnistyles()
   const [status, setStatus] = useState('connecting')
   const { setHeaderHeight, setEdit, edit } = useChatsScreenStore()
+  const setType = useTabBarStore((state) => state.setType)
 
   const animatedButtonStyle = useAnimatedStyle(() => ({
     opacity: withSpring(edit ? 0 : 1, quickSpring),
   }))
+
+  const editPress = () => {
+    setEdit(!edit)
+    setType(edit ? 'default' : 'edit')
+  }
 
   useEffect(() => {
     if (ws) {
@@ -34,7 +41,7 @@ export default function Header() {
     <View onLayout={(e) => setHeaderHeight(e.nativeEvent.layout.height)} style={[styles.header, { paddingTop: insets.top }]}>
       <GradientBlur direction="top-to-bottom" />
       <View style={[styles.topHeader]}>
-        <Button onPress={() => setEdit(!edit)} blur variant="icon">
+        <Button onPress={editPress} blur variant="icon">
           {edit ? (
             <>
               <Animated.View style={styles.buttonBackground} entering={zoomAnimationIn} exiting={zoomAnimationOut} />
