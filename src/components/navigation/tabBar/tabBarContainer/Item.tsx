@@ -1,5 +1,5 @@
 import Icon from '@components/ui/Icon'
-import { quickSpring } from '@constants/easings'
+import { quickSpring, springy } from '@constants/animations'
 import { TAB_COLORS, TAB_ICONS } from '@constants/tabBar'
 import type { TabValue } from '@interfaces'
 import { useRouter } from 'expo-router'
@@ -26,7 +26,7 @@ export default function TabBarItem({ route, focused }: TabBarItemProps) {
   const TAB_COLORS_RES = TAB_COLORS()
 
   const iconScale = (out: boolean = false) => {
-    scale.value = withSpring(out ? 1 : 1.2, quickSpring)
+    scale.value = withSpring(out ? 1 : 1.2, springy)
   }
 
   const onPress = useCallback(() => {

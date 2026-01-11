@@ -1,8 +1,10 @@
+import { quickSpring } from '@constants/easings'
 import type { Message } from '@interfaces'
 import formatSentTime from '@lib/formatSentTime'
 import type React from 'react'
+import { useEffect } from 'react'
 import { Text, View } from 'react-native'
-import Animated, { interpolateColor, useAnimatedStyle, useSharedValue } from 'react-native-reanimated'
+import Animated, { interpolateColor, useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated'
 import { staticColor } from 'unistyles'
 // import ReplyBlock from '../replyBlock'
 import { styles } from './Message.styles'
@@ -29,6 +31,10 @@ export default function MessageBubble({ message, seen }: MessageBubbleProps): Re
     }),
     [seen],
   )
+
+  useEffect(() => {
+    statusValue.set(withSpring(seen ? 1 : 0, quickSpring))
+  }, [seen])
 
   return (
     <Animated.View style={[styles.message(isMe, seen), animatedViewStyles]}>
