@@ -16,6 +16,7 @@ export const styles = StyleSheet.create((theme) => ({
     paddingHorizontal: theme.spacing.md - 2 + theme.spacing.xs,
     justifyContent: 'center',
     alignItems: 'center',
+    overflow: 'hidden',
   },
   tabBarWrapper: {
     flex: 1,

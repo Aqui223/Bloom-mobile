@@ -1,6 +1,5 @@
 import { Button, Icon } from '@components/ui'
-import { charAnimationIn, charAnimationOut, layoutAnimation, zoomAnimationIn, zoomAnimationOut } from '@constants/animations'
-import { ROUTES } from '@constants/routes'
+import { layoutAnimation, zoomAnimationIn, zoomAnimationOut } from '@constants/animations'
 import { useNavigationState } from '@react-navigation/native'
 import useTabBarStore from '@stores/tabBar'
 import type React from 'react'
@@ -15,7 +14,7 @@ export default function TabBarSearchButton({ inputRef }): React.JSX.Element {
   const { isSearch, setIsSearch, isSearchFocused, setSearchValue, searchValue } = useTabBarStore()
   const activeTab = useNavigationState((state) => state.routes[state.index].name)
 
-  const settingsTab = activeTab === ROUTES.tabs.settings
+  const settingsTab = activeTab === 'Settings'
   const renderX = isSearch ? isSearchFocused || searchValue.trim().length : false
 
   const blurInput = () => {
@@ -49,11 +48,11 @@ export default function TabBarSearchButton({ inputRef }): React.JSX.Element {
     >
       <LayoutAnimationConfig skipEntering skipExiting>
         {settingsTab ? (
-          <Animated.View key="editButton" entering={charAnimationIn()} exiting={charAnimationOut()}>
+          <Animated.View key="editButton" entering={zoomAnimationIn} exiting={zoomAnimationOut}>
             <Icon icon="pencil" color={theme.colors.text} size={30} />
           </Animated.View>
         ) : (
-          <Animated.View key="searchButton" entering={charAnimationIn()} exiting={charAnimationOut()}>
+          <Animated.View key="searchButton" entering={zoomAnimationIn} exiting={zoomAnimationOut}>
             <Icon icon="magnifyingglass" color={theme.colors.text} size={30} />
           </Animated.View>
         )}
