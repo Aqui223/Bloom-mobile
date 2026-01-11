@@ -1,7 +1,6 @@
 import { quickSpring } from '@constants/easings'
 import type { SettingsItem as SettingsItemType } from '@interfaces'
 import { lightenColor } from '@lib/lightenColor'
-import type React from 'react'
 import { Pressable, Text, View, type ViewStyle } from 'react-native'
 import Animated, { interpolateColor, useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated'
 import { useUnistyles } from 'react-native-unistyles'
@@ -15,7 +14,7 @@ interface SettingsItemProps {
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable)
 
-export default function SettingsItem({ item }: SettingsItemProps): React.JSX.Element {
+export default function SettingsItem({ item }: SettingsItemProps) {
   const { theme } = useUnistyles()
   const color = useSharedValue<number>(0)
 

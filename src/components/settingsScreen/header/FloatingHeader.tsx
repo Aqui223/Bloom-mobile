@@ -7,7 +7,7 @@ import type { TextStyle, ViewStyle } from 'react-native'
 import Animated, { interpolate, type SharedValue, useAnimatedStyle } from 'react-native-reanimated'
 import { styles } from './Header.styles'
 
-type FloatingHeaderProps = {
+interface FloatingHeaderProps {
   scrollY: SharedValue<number>
   user: User
 }

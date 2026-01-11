@@ -2,7 +2,6 @@ import type { ICONS } from '@constants/icons'
 import type { SettingsItem } from '@interfaces'
 import { lightenColor } from '@lib/lightenColor'
 import { LinearGradient } from 'expo-linear-gradient'
-import type React from 'react'
 import { View } from 'react-native'
 import { useUnistyles } from 'react-native-unistyles'
 import Icon from '../../Icon'
@@ -14,7 +13,7 @@ interface SettingsIconProps {
   type: SettingsItem['iconType']
 }
 
-export default function SettingsIcon({ icon, color, type }: SettingsIconProps): React.JSX.Element {
+export default function SettingsIcon({ icon, color, type }: SettingsIconProps) {
   const { theme } = useUnistyles()
 
   const gradientColors = [lightenColor(color, 10), color]

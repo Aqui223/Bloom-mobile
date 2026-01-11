@@ -6,7 +6,6 @@ export const styles = StyleSheet.create((theme) => ({
     gap: theme.spacing.md,
   },
   group: {
-    borderRadius: theme.radius.xl,
     gap: theme.spacing.sm,
     borderCurve: 'continuous',
     overflow: 'hidden',

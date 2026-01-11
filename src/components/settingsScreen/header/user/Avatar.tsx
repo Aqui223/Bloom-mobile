@@ -3,7 +3,7 @@ import type { User } from '@interfaces'
 import useSettingsScreenStore from '@stores/settings'
 import { BlurView, type BlurViewProps } from 'expo-blur'
 import type React from 'react'
-import type { ViewStyle } from 'react-native'
+import { Platform, type ViewStyle } from 'react-native'
 import Animated, {
   interpolate,
   type SharedValue,
@@ -17,7 +17,7 @@ import { styles } from './User.styles'
 
 const AnimatedBlurView = Animated.createAnimatedComponent(BlurView)
 
-type HeaderAvatarProps = {
+interface HeaderAvatarProps {
   scrollY: SharedValue<number>
   user: User
 }
@@ -41,7 +41,7 @@ export default function HeaderAvatar({ scrollY, user }: HeaderAvatarProps): Reac
 
   const animatedBlurStyle = useAnimatedProps(
     (): BlurViewProps => ({
-      intensity: interpolate(scrollY.get(), [0, snapEndPosition], [0, 64], 'clamp'),
+      intensity: interpolate(scrollY.get(), [0, snapEndPosition], [0, 40], 'clamp'),
     }),
   )
 
@@ -68,14 +68,9 @@ export default function HeaderAvatar({ scrollY, user }: HeaderAvatarProps): Reac
   )
 
   return (
-    <Animated.View renderToHardwareTextureAndroid shouldRasterizeIOS style={[styles.avatarWrapper, animatedStyle]}>
+    <Animated.View style={[styles.avatarWrapper, animatedStyle]}>
       <Avatar size="2xl" image={user?.avatar} username={user?.username || user?.display_name} style={styles.avatar} />
-      <AnimatedBlurView
-        tint="dark"
-        experimentalBlurMethod="dimezisBlurView"
-        animatedProps={animatedBlurStyle}
-        style={StyleSheet.absoluteFill}
-      />
+      {Platform.OS === 'ios' && <AnimatedBlurView tint="dark" animatedProps={animatedBlurStyle} style={StyleSheet.absoluteFill} />}
     </Animated.View>
   )
 }

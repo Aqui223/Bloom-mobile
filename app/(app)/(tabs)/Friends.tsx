@@ -13,15 +13,15 @@ import { StyleSheet } from 'react-native-unistyles'
 
 export default function TabFriends() {
   const { snapEndPosition } = useSettingsScreenStore()
-  const { tabBarHeight } = useTabBarStore()
+  const { height } = useTabBarStore()
   const { scrollY, animatedRef, scrollHandler } = useSnapScroll<any>(snapEndPosition)
   const { user } = useMe()
 
   const data = useMemo(
     () =>
       SETTINGS_SECTIONS({
-        username: user?.username,
-        description: user?.description,
+        username: user?.username || 'Без юзернейма',
+        description: user?.description || 'Без описания',
         friends: user?.friends_count,
         theme: 'Светлое',
         language: 'Русский',
@@ -33,9 +33,12 @@ export default function TabFriends() {
     return item?.id
   }, [])
 
-  const renderItem = useCallback(({ item }: { item: SettingsSection }) => {
-    return <SettingsGroup section={item} />
-  }, [])
+  const renderItem = useCallback(
+    ({ item }: { item: SettingsSection }) => {
+      return <SettingsGroup section={item} />
+    },
+    [data],
+  )
 
   return (
     <View style={styles.container}>
@@ -45,7 +48,7 @@ export default function TabFriends() {
         keyExtractor={keyExtractor}
         ListHeaderComponent={<Header scrollY={scrollY} user={user} />}
         onScroll={scrollHandler}
-        contentContainerStyle={styles.list(tabBarHeight)}
+        contentContainerStyle={styles.list(height)}
         showsVerticalScrollIndicator={false}
         data={data}
         renderItem={renderItem}

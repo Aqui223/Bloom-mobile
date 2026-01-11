@@ -5,7 +5,7 @@ import Animated, { interpolate, type SharedValue, useAnimatedStyle } from 'react
 import { useUnistyles } from 'react-native-unistyles'
 import { styles } from './User.styles'
 
-type UserProps = {
+interface UserProps {
   scrollY: SharedValue<number>
   user: UserType
 }

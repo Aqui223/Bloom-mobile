@@ -8,7 +8,7 @@ import { styles } from './Header.styles'
 import User from './user'
 import HeaderAvatar from './user/Avatar'
 
-type HeaderProps = {
+interface HeaderProps {
   scrollY: SharedValue<number>
   user: UserType
 }
