@@ -7,6 +7,7 @@ import { decrypt as sskDecrypt } from '@lib/skid/serversideKeyEncryption'
 import useStorageStore from '@stores/storage'
 import { createContext, useContext, useEffect, useState } from 'react'
 import getChats from '../lib/chats/getChats'
+import getChatsFromStorage from '../lib/chats/getChatsFromStorage'
 import { useWebSocket } from './WebSocketContext'
 
 const ChatsContext = createContext(null)
@@ -118,6 +119,7 @@ export default function ChatsProvider({ children }) {
 
   useEffect(() => {
     if (ws) {
+      setChats(getChatsFromStorage(mmkv))
       ;(async () => {
         try {
           // get chats from api

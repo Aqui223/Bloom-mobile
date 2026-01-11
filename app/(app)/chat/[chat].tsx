@@ -4,9 +4,10 @@ import Header from '@components/chatScreen/header'
 import Message from '@components/chatScreen/message'
 import { useChatController, useChatKeyboard, useInsets } from '@hooks'
 import type { Message as MessageType } from '@interfaces'
+import { FlashList } from '@shopify/flash-list'
 import { useLocalSearchParams } from 'expo-router'
 import { useCallback, useState } from 'react'
-import { FlatList, Platform, View } from 'react-native'
+import { View } from 'react-native'
 import { KeyboardStickyView } from 'react-native-keyboard-controller'
 import { StyleSheet, useUnistyles } from 'react-native-unistyles'
 
@@ -33,8 +34,8 @@ export default function Chat() {
     [seenID, endPadding],
   )
 
-  const keyExtractor = useCallback((item: MessageType, index: number) => {
-    return String(item.id ?? item.nonce)
+  const keyExtractor = useCallback((item: MessageType) => {
+    return String(item?.nonce)
   }, [])
 
   return (
@@ -42,16 +43,16 @@ export default function Chat() {
       <Header chat={_chat} />
       <EmptyModal chat={_chat} visible={messages.length === 0} />
       <KeyboardStickyView style={styles.list}>
-        <FlatList
+        <FlashList
           data={messages}
-          ListFooterComponent={<View style={{ height: height, width: '100%', backgroundColor: 'red' }} />}
+          ListHeaderComponent={<View style={{ height: height, width: '100%' }} />}
           renderItem={renderItem}
-          extraData={messages}
-          removeClippedSubviews={Platform.OS === 'ios'}
-          inverted
-          scrollToOverflowEnabled
+          maintainVisibleContentPosition={{
+            autoscrollToBottomThreshold: 0.2,
+            startRenderingFromBottom: true,
+          }}
           keyExtractor={keyExtractor}
-          contentContainerStyle={styles.listContent(headerHeight, footerHeight)}
+          contentContainerStyle={styles.listContent(footerHeight, headerHeight)}
           keyboardDismissMode="on-drag"
           showsVerticalScrollIndicator={false}
         />
