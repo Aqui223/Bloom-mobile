@@ -3,7 +3,6 @@ import MessagesProvider from '@api/providers/MessagesContext'
 import SeenMessagesProvider from '@api/providers/SeenMessagesContext'
 import { WebSocketProvider } from '@api/providers/WebSocketContext'
 import { PortalProvider } from '@gorhom/portal'
-import initRealm from '@lib/initRealm'
 import { createSecureStorage } from '@lib/storage'
 import { SessionProvider } from '@providers/SessionProvider'
 import useStorageStore from '@stores/storage'
@@ -25,15 +24,13 @@ export default function RootLayout() {
     'OpenRunde-Bold': require('@assets/fonts/OpenRunde-Bold.ttf'),
   })
 
-  const { setMMKV, setRealm } = useStorageStore()
+  const { setMMKV } = useStorageStore()
 
   useEffect(() => {
     ;(async () => {
       try {
         const storage = await createSecureStorage('user-storage')
-        const realm = await initRealm()
         setMMKV(storage)
-        setRealm(realm)
       } catch (error) {
         console.error(error)
       }

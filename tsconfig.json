@@ -26,7 +26,10 @@
     "noEmit": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": false,
+    "useDefineForClassFields": false
   },
   "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts", "src/api/providers/WebSocketContext.js"],
   "exclude": ["node_modules", "babel.config.js", "metro.config.js"]
