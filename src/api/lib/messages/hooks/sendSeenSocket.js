@@ -1,4 +1,7 @@
-export default function (realm, ws, chat_id, messages, setMessages) {
+import { Q } from '@nozbe/watermelondb'
+import { database } from 'src/db'
+
+export default async function (ws, chat_id, messages, setMessages) {
   try {
     const lastMessage = messages[messages?.length - 1]
 
@@ -14,9 +17,15 @@ export default function (realm, ws, chat_id, messages, setMessages) {
       )
 
       // change seen status in local storage
-      realm.write(() => {
-        const msg = realm.objectForPrimaryKey('Message', lastMessage?.id)
-        if (msg) msg.seen = new Date()
+      await database.write(async () => {
+        const collection = await database.get('messages')
+
+        const msgs = await collection.query(Q.where('server_id', lastUnseenMessage?.id)).fetch()
+        const msg = msgs[0]
+        if (msg)
+          await msg.update((m) => {
+            m.seen = new Date()
+          })
       })
 
       setMessages((prev) =>
@@ -44,9 +53,15 @@ export default function (realm, ws, chat_id, messages, setMessages) {
     )
 
     // change last unseen message status in local storage
-    realm.write(() => {
-      const msg = realm.objectForPrimaryKey('Message', lastUnseenMessage?.id)
-      if (msg) msg.seen = new Date()
+    await database.write(async () => {
+      const collection = await database.get('messages')
+
+      const msgs = await collection.query(Q.where('server_id', lastUnseenMessage?.id)).fetch()
+      const msg = msgs[0]
+      if (msg)
+        await msg.update((m) => {
+          m.seen = new Date()
+        })
     })
 
     setMessages((prev) =>

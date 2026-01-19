@@ -1,10 +1,11 @@
 import getChatFromStorage from '@lib/getChatFromStorage'
 import decrypt from '@lib/skid/decrypt'
 import { decrypt as sskDecrypt } from '@lib/skid/serversideKeyEncryption'
-import Realm from 'realm'
+import { Q } from '@nozbe/watermelondb'
+import { database } from 'src/db'
 import getReplyToMessageFromStorage from './getReplyToMessageFromStorage'
 
-export default async function (realm, mmkv, chat_id, messages) {
+export default async function (mmkv, chat_id, messages) {
   if (!messages) return
 
   // is chat in storage check
@@ -25,7 +26,7 @@ export default async function (realm, mmkv, chat_id, messages) {
       let reply_to
       if (message?.reply_to) {
         try {
-          const reply_to_message = getReplyToMessageFromStorage(realm, message?.reply_to?.id)
+          const reply_to_message = getReplyToMessageFromStorage(message?.reply_to?.id)
 
           if (reply_to_message) {
             reply_to = reply_to_message
@@ -93,23 +94,34 @@ export default async function (realm, mmkv, chat_id, messages) {
     }))
 
   // write decrypted messages to local storage
-  realm.write(() => {
-    decryptedMessages.forEach((message) => {
-      realm.create(
-        'Message',
-        {
-          id: message?.id,
-          chat_id: message?.chat_id,
-          content: message?.content,
-          author_id: message?.from_id,
-          date: new Date(message?.date),
-          seen: null,
-          nonce: message?.nonce,
-          reply_to: message?.reply_to,
-        },
-        Realm.UpdateMode.Modified,
-      )
-    })
+  await database.write(async () => {
+    const collection = database.get('messages')
+
+    for (const message of decryptedMessages) {
+      const existing = await collection.query(Q.where('server_id', message?.id)).fetch()
+
+      if (existing[0]) {
+        await existing[0].update((m) => {
+          m.chatId = message.chat_id
+          m.content = message.content
+          m.authorId = message.from_id
+          m.date = new Date(message.date)
+          m.nonce = message.nonce
+          m.replyToId = message?.reply_to?.id
+        })
+      } else {
+        await collection.create((m) => {
+          m.serverId = message?.id
+          m.chatId = message.chat_id
+          m.content = message.content
+          m.authorId = message.from_id
+          m.date = new Date(message.date)
+          m.seen = null
+          m.nonce = message.nonce
+          m.replyToId = message?.reply_to?.id
+        })
+      }
+    }
   })
 
   return decryptedMessages

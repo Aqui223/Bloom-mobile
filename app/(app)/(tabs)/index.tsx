@@ -29,7 +29,7 @@ export default function TabChats() {
   )
 
   const keyExtractor = useCallback((item: Chat) => {
-    return String(item.id)
+    return String(item?.id)
   }, [])
 
   const renderItem = useCallback(({ item, id }: { item: Chat; id: number }) => {
@@ -47,10 +47,14 @@ export default function TabChats() {
           renderItem={({ item }) => renderItem({ item, id: userID })}
           keyExtractor={keyExtractor}
           showsVerticalScrollIndicator
-          contentContainerStyle={{ paddingTop: headerHeight, paddingBottom: tabBarHeight }}
+          // Добавляем проверку (?? 0), чтобы избежать undefined
+          contentContainerStyle={{
+            paddingTop: headerHeight ?? 0,
+            paddingBottom: tabBarHeight ?? 0,
+          }}
           scrollIndicatorInsets={{
-            top: headerHeight - insets.realTop,
-            bottom: tabBarHeight - insets.realBottom,
+            top: (headerHeight ?? 0) - (insets.realTop ?? 0),
+            bottom: (tabBarHeight ?? 0) - (insets.realBottom ?? 0),
           }}
         />
         {chats?.length === 0 ? (

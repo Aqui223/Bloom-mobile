@@ -2,9 +2,8 @@ import getReplyToMessageFromStorage from '@api/lib/messages/getReplyToMessageFro
 import getChatFromStorage from '@lib/getChatFromStorage'
 import decrypt from '@lib/skid/decrypt'
 import { decrypt as sskDecrypt } from '@lib/skid/serversideKeyEncryption'
-import useStorageStore from '@stores/storage'
 import { createContext, useContext, useEffect, useState } from 'react'
-import Realm from 'realm'
+import { database } from 'src/db'
 import { useWebSocket } from './WebSocketContext'
 
 const MessagesContext = createContext(null)
@@ -14,8 +13,6 @@ export default function MessagesProvider({ children }) {
   const [messages, setMessages] = useState([])
   // websocket context
   const ws = useWebSocket()
-  // local realm storage
-  const { realm } = useStorageStore()
 
   useEffect(() => {
     if (ws) {
@@ -44,7 +41,7 @@ export default function MessagesProvider({ children }) {
         let reply_to
         if (message?.reply_to) {
           try {
-            const reply_to_message = getReplyToMessageFromStorage(realm, message?.reply_to?.id)
+            const reply_to_message = getReplyToMessageFromStorage(message?.reply_to?.id)
 
             if (reply_to_message) {
               reply_to = reply_to_message
@@ -92,21 +89,17 @@ export default function MessagesProvider({ children }) {
               ])
 
               // add decrypted message to local storage
-              realm.write(() => {
-                realm.create(
-                  'Message',
-                  {
-                    id: message?.id,
-                    chat_id: message?.chat_id,
-                    content: decrypted?.content,
-                    author_id: decrypted?.from_id,
-                    date: new Date(),
-                    seen: null,
-                    nonce: message?.nonce,
-                    reply_to: reply_to_json,
-                  },
-                  Realm.UpdateMode.Modified,
-                )
+              await database.write(async () => {
+                await database.get('messages').create((msg) => {
+                  msg.serverId = message?.id
+                  msg.chatId = message?.chat_id
+                  msg.content = decrypted?.content
+                  msg.authorId = decrypted?.from_id
+                  msg.date = new Date()
+                  msg.seen = null
+                  msg.nonce = message?.nonce
+                  msg.replyToId = reply_to_json?.id
+                })
               })
 
               return
@@ -148,23 +141,21 @@ export default function MessagesProvider({ children }) {
             setMessages((prev) => [...prev, decrypted])
 
             // add decrypted message to local storage
-            realm.write(() => {
-              realm.create(
-                'Message',
-                {
-                  id: message?.id,
-                  chat_id: message?.chat_id,
-                  content: decrypted?.content,
-                  author_id: decrypted?.from_id,
-                  date: new Date(),
-                  seen: null,
-                  nonce: message?.nonce,
-                  reply_to: reply_to_json,
-                },
-                Realm.UpdateMode.Modified,
-              )
+            await database.write(async () => {
+              await database.get('messages').create((msg) => {
+                msg.serverId = message?.id
+                msg.chatId = message?.chat_id
+                msg.content = decrypted?.content
+                msg.authorId = decrypted?.from_id
+                msg.date = new Date()
+                msg.seen = null
+                msg.nonce = message?.nonce
+                msg.replyToId = reply_to_json?.id
+              })
             })
-          } catch {}
+          } catch (error) {
+            console.log(error)
+          }
         }
       })
     }

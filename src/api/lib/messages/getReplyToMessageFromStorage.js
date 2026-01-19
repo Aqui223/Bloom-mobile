@@ -1,3 +1,10 @@
-export default function (realm, id) {
-  return realm.objects('Message').filtered('id == $0', id)[0]
+import { Q } from '@nozbe/watermelondb'
+import { database } from 'src/db'
+
+export default async function (id) {
+  const collection = database.get('messages')
+
+  const results = await collection.query(Q.where('server_id', id)).fetch()
+
+  return results[0] ?? null
 }

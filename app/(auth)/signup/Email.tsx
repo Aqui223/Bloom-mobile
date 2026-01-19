@@ -18,8 +18,6 @@ export default function SignupEmail() {
   const error = useAuthStore((state) => state.error)
   const errorValue = useSharedValue(0)
 
-  console.log(error)
-
   const animatedStyles = useAnimatedStyle(() => {
     return { transform: [{ translateY: (keyboard.height.value + insets.top) / 2 }] }
   })

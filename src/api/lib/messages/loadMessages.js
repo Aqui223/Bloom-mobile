@@ -1,19 +1,25 @@
 import decryptMessages from '@api/lib/messages/decryptMessages'
 import { getChatMessagesBeforeID } from '@api/lib/messages/getChatMessages'
 import mergeAndSort from '@api/lib/utils/mergeAndSort'
+import { Q } from '@nozbe/watermelondb'
+import { database } from 'src/db'
 
-export default async function (realm, mmkv, chat_id, messages, setMessages) {
+export default async function (mmkv, chat_id, messages, setMessages) {
   const lastMessage = messages[0]
 
   if (!lastMessage || !lastMessage?.id) return
 
-  const nextMessages =
-    realm.objects('Message').filtered('id < $0 && chat_id == $1', lastMessage?.id, chat_id).sorted('id', true).slice(0, 20) ?? null
+  const collection = database.get('messages')
+  const nextMessagesArray = await collection
+    .query(Q.and(Q.where('server_id', Q.lt(lastMessage?.id ?? 0)), Q.where('chat_id', chat_id)), Q.sortBy('server_id', Q.desc))
+    .fetch()
+
+  const nextMessages = nextMessagesArray.slice(0, 20) ?? null
 
   if (!nextMessages || nextMessages.length < 1) {
     const messages = await getChatMessagesBeforeID(chat_id, lastMessage?.id || 0)
 
-    const decrypted_messages = await decryptMessages(realm, mmkv, chat_id, messages)
+    const decrypted_messages = await decryptMessages(mmkv, chat_id, messages)
 
     if (!decrypted_messages) return
 
@@ -21,8 +27,17 @@ export default async function (realm, mmkv, chat_id, messages, setMessages) {
   } else {
     const userId = parseInt(mmkv.getString('user_id'), 10)
 
-    const mutated_messages = nextMessages.map((message) => ({ ...message, isMe: message.author_id === userId }))
+    const mutatedMessages = nextMessages.map((message) => ({
+      id: message.serverId,
+      chatId: message.chatId,
+      content: message.content,
+      authorId: message.authorId,
+      date: message.date,
+      seen: message.seen,
+      nonce: message.nonce,
+      isMe: message.authorId === userId,
+    }))
 
-    setMessages((prev) => mergeAndSort(prev, mutated_messages))
+    setMessages((prev) => mergeAndSort(prev, mutatedMessages))
   }
 }

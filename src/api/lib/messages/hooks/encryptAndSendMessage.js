@@ -2,7 +2,7 @@ import sendMessage from '@api/lib/sendMessage'
 import mergeAndSort from '@api/lib/utils/mergeAndSort'
 import getReplyToMessageFromStorage from '../getReplyToMessageFromStorage'
 
-export default async function (realm, mmkv, ws, content, reply_to, messages, setMessages, chat_id) {
+export default async function (mmkv, ws, content, reply_to, messages, setMessages, chat_id) {
   try {
     // send message socket
     const nonce = await sendMessage(content, reply_to, chat_id, messages?.length, ws)
@@ -10,7 +10,7 @@ export default async function (realm, mmkv, ws, content, reply_to, messages, set
     let _reply_to
     if (reply_to) {
       try {
-        const reply_to_message = getReplyToMessageFromStorage(realm, reply_to)
+        const reply_to_message = getReplyToMessageFromStorage(reply_to)
 
         if (reply_to_message) {
           _reply_to = reply_to_message

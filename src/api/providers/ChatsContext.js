@@ -4,8 +4,10 @@ import setChatKeysToStorage from '@lib/setChatKeysToStorage'
 import decrypt from '@lib/skid/decrypt'
 import generateKeys from '@lib/skid/generateKeys'
 import { decrypt as sskDecrypt } from '@lib/skid/serversideKeyEncryption'
+import { Q } from '@nozbe/watermelondb'
 import useStorageStore from '@stores/storage'
 import { createContext, useContext, useEffect, useState } from 'react'
+import { database } from 'src/db'
 import getChats from '../lib/chats/getChats'
 import getChatsFromStorage from '../lib/chats/getChatsFromStorage'
 import { useWebSocket } from './WebSocketContext'
@@ -18,11 +20,24 @@ export default function ChatsProvider({ children }) {
   // websocket context
   const ws = useWebSocket()
   // storages
-  const { mmkv, realm } = useStorageStore()
+  const { mmkv } = useStorageStore()
 
   function safeObject(obj) {
-    if (!obj) return
-    return JSON.parse(JSON.stringify(obj))
+    if (!obj) return null
+
+    // Проверяем, является ли объект моделью WatermelonDB
+    if (obj._raw) {
+      // Возвращаем копию сырых данных
+      return { ...obj._raw }
+    }
+
+    // Для обычных объектов пытаемся сделать глубокую копию
+    try {
+      return JSON.parse(JSON.stringify(obj))
+    } catch (e) {
+      console.warn('safeObject failed on circular structure', e)
+      return obj // Возвращаем как есть, если не удалось скопировать
+    }
   }
 
   async function decryptMessage(_chat, message) {
@@ -67,11 +82,14 @@ export default function ChatsProvider({ children }) {
   }
 
   async function sort(chats) {
+    const collection = await database.get('messages')
     const enrichedChats = await Promise.all(
       chats?.map(async (chat) => {
-        const realmResult = realm.objects('Message').filtered('chat_id == $0', chat?.id).sorted('date', true)[0]
+        const results = await collection.query(Q.where('chat_id', chat?.id ?? 0), Q.sortBy('date', Q.desc)).fetch()
 
-        const localLastMessage = realmResult ? safeObject(realmResult) : null
+        const firstMessage = results[0]
+
+        const localLastMessage = firstMessage ? safeObject(firstMessage) : null
 
         let decryptedLastMessage = null
         const msg = chat?.last_message
@@ -119,6 +137,7 @@ export default function ChatsProvider({ children }) {
 
   useEffect(() => {
     if (ws) {
+      // if (ws?.readyState === WebSocket?.OPEN) {
       setChats(getChatsFromStorage(mmkv))
       ;(async () => {
         try {
@@ -204,36 +223,40 @@ export default function ChatsProvider({ children }) {
   }, [ws])
 
   useEffect(() => {
-    const listeners = []
+    const subscriptions = []
 
-    ;(async () => {
-      chats.forEach((chat) => {
-        // get all chat messages
-        const messages = realm.objects('Message').filtered('chat_id == $0', chat.id)
+    chats.forEach((chat) => {
+      const collection = database.get('messages')
 
-        // realm listener
-        const listener = (_collection, changes) => {
-          if (changes.insertions.length > 0) {
-            // change chat last message if last message changed in local realm storage
-            setChats((prev) => {
-              const updated = prev.map((c) => (c.id === chat.id ? { ...c, last_message: safeObject(messages.sorted('date', true)[0]) } : c))
+      const messagesQuery = collection.query(Q.where('chat_id', chat.id), Q.sortBy('date', Q.desc), Q.take(1))
 
-              updated.sort((a, b) => {
-                const dateA = a.last_message?.date ? new Date(a.last_message.date).getTime() : 0
-                const dateB = b.last_message?.date ? new Date(b.last_message.date).getTime() : 0
-                return dateB - dateA
-              })
+      const subscription = messagesQuery.observe().subscribe((messages) => {
+        if (messages.length > 0) {
+          const latestMessage = safeObject(messages[0])
 
-              return updated
+          setChats((prev) => {
+            const existingChat = prev.find((c) => c.id === chat.id)
+            if (existingChat?.last_message?.id === latestMessage.id) {
+              return prev
+            }
+
+            const updated = prev.map((c) => (c.id === chat.id ? { ...c, last_message: latestMessage } : c))
+
+            return [...updated].sort((a, b) => {
+              const dateA = a.last_message?.date ? new Date(a.last_message.date).getTime() : 0
+              const dateB = b.last_message?.date ? new Date(b.last_message.date).getTime() : 0
+              return dateB - dateA
             })
-          }
+          })
         }
-
-        // init listener
-        messages.addListener(listener)
-        listeners.push({ messages, listener })
       })
-    })()
+
+      subscriptions.push(subscription)
+    })
+
+    return () => {
+      subscriptions.map((s) => s.unsubscribe())
+    }
   }, [chats])
 
   return <ChatsContext.Provider value={chats}>{children}</ChatsContext.Provider>

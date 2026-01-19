@@ -1,5 +1,6 @@
-import useStorageStore from '@stores/storage'
+import { Q } from '@nozbe/watermelondb'
 import { createContext, useContext, useEffect, useState } from 'react'
+import { database } from 'src/db'
 import { useWebSocket } from './WebSocketContext'
 
 const SeenMessagesContext = createContext(null)
@@ -9,8 +10,6 @@ export default function SeenMessagesProvider({ children }) {
   const [seenMessages, setSeenMessages] = useState([])
   // websocket context
   const ws = useWebSocket()
-  // local realm storage
-  const { realm } = useStorageStore()
 
   useEffect(() => {
     if (ws) {
@@ -30,11 +29,16 @@ export default function SeenMessagesProvider({ children }) {
           const messages = message?.messages
 
           // change seen messages status in local storage
-          realm.write(() => {
-            messages?.forEach((message_id) => {
-              const msg = realm.objectForPrimaryKey('Message', message_id)
-              if (msg) msg.seen = message?.seen_at
-            })
+          await database.write(async () => {
+            const collection = await database.get('messages')
+
+            const msgs = await collection.query(Q.where('id', Q.oneOf(messages.map(String)))).fetch()
+
+            for (const message of msgs ?? []) {
+              await message.update((m) => {
+                m.seen = message?.seen_at
+              })
+            }
           })
 
           // add seen messages to seen messages var
