@@ -25,18 +25,12 @@ export default function ChatsProvider({ children }) {
   function safeObject(obj) {
     if (!obj) return null
 
-    // Проверяем, является ли объект моделью WatermelonDB
-    if (obj._raw) {
-      // Возвращаем копию сырых данных
-      return { ...obj._raw }
-    }
+    if (obj._raw) return { ...obj._raw }
 
-    // Для обычных объектов пытаемся сделать глубокую копию
     try {
       return JSON.parse(JSON.stringify(obj))
-    } catch (e) {
-      console.warn('safeObject failed on circular structure', e)
-      return obj // Возвращаем как есть, если не удалось скопировать
+    } catch {
+      return obj
     }
   }
 

@@ -17,14 +17,14 @@ import { StyleSheet } from 'react-native-unistyles'
 
 export default function TabChats() {
   const { headerHeight } = useChatsScreenStore()
-  const { tabBarHeight, isSearch } = useTabBarStore()
+  const { tabBarHeight, search } = useTabBarStore()
   const { userID } = useTokenTriggerStore()
   const insets = useInsets()
   const chats = useChatList()
 
   const animatedViewStyle = useAnimatedStyle(
     (): ViewStyle => ({
-      opacity: withSpring(isSearch ? 0 : 1, fastSpring),
+      opacity: withSpring(search ? 0 : 1, fastSpring),
     }),
   )
 
@@ -47,7 +47,6 @@ export default function TabChats() {
           renderItem={({ item }) => renderItem({ item, id: userID })}
           keyExtractor={keyExtractor}
           showsVerticalScrollIndicator
-          // Добавляем проверку (?? 0), чтобы избежать undefined
           contentContainerStyle={{
             paddingTop: headerHeight ?? 0,
             paddingBottom: tabBarHeight ?? 0,
