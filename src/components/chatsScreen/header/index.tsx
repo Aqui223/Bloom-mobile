@@ -31,9 +31,10 @@ export default function Header() {
   }
 
   useEffect(() => {
-    if (ws) {
-      ws.onopen = () => setStatus('connected')
-      ws.onclose = () => setStatus('connecting')
+    if (ws?.readyState === ws?.OPEN) {
+      setStatus('connected')
+    } else {
+      setStatus('connecting')
     }
   }, [ws])
 

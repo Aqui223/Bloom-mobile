@@ -130,19 +130,20 @@ export default function ChatsProvider({ children }) {
   }
 
   useEffect(() => {
-    if (ws) {
-      // if (ws?.readyState === WebSocket?.OPEN) {
-      setChats(getChatsFromStorage(mmkv))
-      ;(async () => {
-        try {
-          // get chats from api
-          const _chats = await getChats(ws)
-          if (_chats) setChats(await sort(_chats))
-        } catch (error) {
-          console.log(error)
-        }
-      })()
+    setChats(getChatsFromStorage(mmkv))
+    ;(async () => {
+      try {
+        // get chats from api
+        const _chats = await getChats(ws)
+        if (_chats) setChats(await sort(_chats))
+      } catch (error) {
+        console.log(error)
+      }
+    })()
+  }, [])
 
+  useEffect(() => {
+    if (ws?.readyState === WebSocket?.OPEN) {
       // websocket message listener
       ws.addEventListener('message', async (msg) => {
         try {

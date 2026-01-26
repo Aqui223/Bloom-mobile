@@ -1,67 +1,90 @@
 import { WEBSOCKET_URL } from '@constants/api'
-import { createSecureStorage } from '@lib/storage'
+import { useSession } from '@providers/SessionProvider'
 import { createContext, useContext, useEffect, useRef, useState } from 'react'
 import { AppState } from 'react-native'
 
 const WebSocketContext = createContext(null)
 
-export const WebSocketProvider = ({ children }) => {
-  // socket var
+export function WebSocketProvider({ children }) {
+  const { token } = useSession()
+
   const [socket, setSocket] = useState(null)
-  // reconnect timeout ref
+
   const reconnectTimeout = useRef(null)
-  // react native app state ref
   const appState = useRef(AppState.currentState)
 
-  // websocket connect function
-  const connect = async () => {
-    // mmkv storage init
-    const storage = await createSecureStorage('user-storage')
-    // create websocket connection using current user token got from mmkv storage
-    const ws = new WebSocket(WEBSOCKET_URL + storage.getString('token'))
+  const connect = (jwt) => {
+    if (!jwt) return
 
-    // if ws connected clear reconnect timeout ref
+    setSocket((prev) => {
+      prev?.close()
+      return null
+    })
+
+    const ws = new WebSocket(WEBSOCKET_URL + jwt)
+
     ws.onopen = () => {
+      setSocket(ws)
+    }
+
+    ws.onclose = () => {
+      setSocket(null)
+
+      if (!reconnectTimeout.current && appState.current === 'active') {
+        reconnectTimeout.current = setTimeout(() => {
+          reconnectTimeout.current = null
+          connect(jwt)
+        }, 3000)
+      }
+    }
+
+    ws.onerror = () => {
+      ws.close()
+    }
+  }
+
+  useEffect(() => {
+    if (!token) {
+      setSocket((prev) => {
+        prev?.close()
+        return null
+      })
+      return
+    }
+
+    connect(token)
+
+    return () => {
       if (reconnectTimeout.current) {
         clearTimeout(reconnectTimeout.current)
         reconnectTimeout.current = null
       }
     }
+  }, [token])
 
-    // if ws closed set timeout ref
-    ws.onclose = () => {
-      if (!reconnectTimeout.current) reconnectTimeout.current = setTimeout(connect, 3000)
-    }
-
-    setSocket(ws)
-  }
-
+  // app state
   useEffect(() => {
-    // connect websocket
-    connect()
-
-    // app state listener
-    const subscription = AppState.addEventListener('change', (nextState) => {
-      if (appState.current.match(/active/) && nextState.match(/inactive|background/)) {
-        // if app closed then close socket connection
-        if (socket) socket.close()
-      } else if (appState.current.match(/inactive|background/) && nextState === 'active') {
-        // if app opened then open socket connection
-        connect()
+    const sub = AppState.addEventListener('change', (next) => {
+      if (appState.current === 'active' && next.match(/inactive|background/)) {
+        setSocket((prev) => {
+          prev?.close()
+          return null
+        })
       }
-      // set new app state
-      appState.current = nextState
+
+      if (appState.current.match(/inactive|background/) && next === 'active' && token) {
+        connect(token)
+      }
+
+      appState.current = next
     })
 
-    // cleanup function
-    return () => {
-      if (reconnectTimeout.current) clearTimeout(reconnectTimeout.current)
-      if (socket) socket.close()
-      subscription.remove()
-    }
-  }, [])
+    return () => sub.remove()
+  }, [token])
 
   return <WebSocketContext.Provider value={socket}>{children}</WebSocketContext.Provider>
 }
 
-export const useWebSocket = () => useContext(WebSocketContext)
+export function useWebSocket() {
+  return useContext(WebSocketContext)
+}

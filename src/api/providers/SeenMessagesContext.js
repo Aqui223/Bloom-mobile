@@ -12,7 +12,7 @@ export default function SeenMessagesProvider({ children }) {
   const ws = useWebSocket()
 
   useEffect(() => {
-    if (ws) {
+    if (ws?.readyState === WebSocket?.OPEN) {
       // websocket socket listener
       ws.addEventListener('message', async (msg) => {
         // parse socket
