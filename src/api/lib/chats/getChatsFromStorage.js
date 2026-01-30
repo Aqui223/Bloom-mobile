@@ -28,9 +28,9 @@ export default function (mmkv) {
         {
           id: user?.id || 0,
           username: user?.username || '',
-          kyber_public_key: chat?.keys?.my?.kyberPublicKey,
-          ecdh_public_key: chat?.keys?.my?.ecdhPublicKey,
-          ed_public_key: chat?.keys?.my?.edPublicKey,
+          kyber_public_key: chat?.keys?.my?.kyber_public_key,
+          ecdh_public_key: chat?.keys?.my?.ecdh_public_key,
+          ed_public_key: chat?.keys?.my?.ed_public_key,
         },
       ],
     }

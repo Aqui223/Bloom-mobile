@@ -53,12 +53,12 @@ async function passwordHandler(token: string, password: string, mmkv: any): Prom
             id: k.chat_id,
             keys: {
               my: {
-                kyberPublicKey: k.kyberPublicKey,
-                ecdhPublicKey: k.ecdhPublicKey,
-                edPublicKey: k.edPublicKey,
-                kyberSecretKey: k.kyberSecretKey,
-                ecdhSecretKey: k.ecdhSecretKey,
-                edSecretKey: k.edSecretKey,
+                kyber_public_key: k.kyber_public_key,
+                ecdh_public_key: k.ecdh_public_key,
+                ed_public_key: k.ed_public_key,
+                kyber_secret_key: k.kyber_secret_key,
+                ecdh_secret_key: k.ecdh_secret_key,
+                ed_secret_key: k.ed_secret_key,
               },
               recipient: {},
             },

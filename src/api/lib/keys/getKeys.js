@@ -1,5 +1,5 @@
 // format
-// [{ chat_id, kyberSecretKey, ecdhSecretKey, edSecretKey }, ...]
+// [{ chat_id, kyber_secret_key, ecdh_secret_key, ed_secret_key }, ...]
 
 export default function (mmkv) {
   let chats
@@ -14,12 +14,12 @@ export default function (mmkv) {
     if (!_keys) return {}
     return {
       chat_id: chat?.id,
-      kyberPublicKey: _keys.kyberPublicKey,
-      ecdhPublicKey: _keys.ecdhPublicKey,
-      edPublicKey: _keys.edPublicKey,
-      kyberSecretKey: _keys.kyberSecretKey,
-      ecdhSecretKey: _keys.ecdhSecretKey,
-      edSecretKey: _keys.edSecretKey,
+      kyber_public_key: _keys.kyber_public_key,
+      ecdh_public_key: _keys.ecdh_public_key,
+      ed_public_key: _keys.ed_public_key,
+      kyber_secret_key: _keys.kyber_secret_key,
+      ecdh_secret_key: _keys.ecdh_secret_key,
+      ed_secret_key: _keys.ed_secret_key,
     }
   })
 }

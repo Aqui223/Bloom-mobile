@@ -16,11 +16,11 @@ export default function (): Keys {
   const { publicKey: edPublicKey, secretKey: edSecretKey } = ed.keygen()
 
   return {
-    kyberPublicKey: bytesToBase64(kyberPublicKey),
-    kyberSecretKey: bytesToBase64(kyberSecretKey),
-    ecdhPublicKey: bytesToBase64(ecdhPublicKey),
-    ecdhSecretKey: bytesToBase64(ecdhSecretKey),
-    edPublicKey: bytesToBase64(edPublicKey),
-    edSecretKey: bytesToBase64(edSecretKey),
+    kyber_public_key: bytesToBase64(kyberPublicKey),
+    kyber_secret_key: bytesToBase64(kyberSecretKey),
+    ecdh_public_key: bytesToBase64(ecdhPublicKey),
+    ecdh_secret_key: bytesToBase64(ecdhSecretKey),
+    ed_public_key: bytesToBase64(edPublicKey),
+    ed_secret_key: bytesToBase64(edSecretKey),
   }
 }

@@ -18,9 +18,9 @@ export default function decrypt(
 
   if (isAuthor) {
     const { sessionKey: ssSender } = hybridDecrypt(
-      base64ToUint8Array(sender.ecdhPublicKey),
-      base64ToUint8Array(sender.ecdhSecretKey),
-      base64ToUint8Array(sender.kyberSecretKey),
+      base64ToUint8Array(sender.ecdh_public_key),
+      base64ToUint8Array(sender.ecdh_secret_key),
+      base64ToUint8Array(sender.kyber_secret_key),
       base64ToUint8Array(payload.encapsulated_key_sender),
     )
 
@@ -28,9 +28,9 @@ export default function decrypt(
     cek = decryptCekWithKek(kekSender, base64ToUint8Array(payload.cek_wrap_sender_iv), base64ToUint8Array(payload.cek_wrap_sender))
   } else {
     const { sessionKey: ssReceiver } = hybridDecrypt(
-      base64ToUint8Array(sender.ecdhPublicKey),
-      base64ToUint8Array(me.ecdhSecretKey),
-      base64ToUint8Array(me.kyberSecretKey),
+      base64ToUint8Array(sender.ecdh_public_key),
+      base64ToUint8Array(me.ecdh_secret_key),
+      base64ToUint8Array(me.kyber_secret_key),
       base64ToUint8Array(payload.encapsulated_key),
     )
 
@@ -39,7 +39,7 @@ export default function decrypt(
   }
 
   const signatureValid: boolean = verifySignature(
-    base64ToUint8Array(sender.edPublicKey),
+    base64ToUint8Array(sender.ed_public_key),
     JSON.parse(payload?.signed_payload),
     payload.signature,
   )

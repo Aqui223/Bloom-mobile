@@ -153,9 +153,7 @@ export default function MessagesProvider({ children }) {
                 msg.replyToId = reply_to_json?.id
               })
             })
-          } catch (error) {
-            console.log(error)
-          }
+          } catch {}
         }
       })
     }

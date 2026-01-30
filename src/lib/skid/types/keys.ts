@@ -1,8 +1,8 @@
 export interface Keys {
-  kyberPublicKey: string
-  kyberSecretKey: string
-  ecdhPublicKey: string
-  ecdhSecretKey: string
-  edPublicKey: string
-  edSecretKey: string
+  kyber_public_key: string
+  kyber_secret_key: string
+  ecdh_public_key: string
+  ecdh_secret_key: string
+  ed_public_key: string
+  ed_secret_key: string
 }

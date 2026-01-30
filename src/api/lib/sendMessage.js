@@ -13,7 +13,7 @@ export default async function (content, reply_to, chat_id, count, ws) {
     let encrypted
 
     // if recipient dont assigned keys use skid soft mode
-    if (!chatData?.keys?.recipient?.kyberPublicKey) {
+    if (!chatData?.keys?.recipient?.kyber_public_key) {
       try {
         // skid soft mode (or serversidekey = ssk) encryption
         // need message content, current user id, chat key

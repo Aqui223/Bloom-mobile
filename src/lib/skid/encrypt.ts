@@ -14,9 +14,9 @@ import type { UserKeys } from './types/userKeys'
 
 export default function encrypt(content: string, sender: UserKeys, receiver: UserKeys, counter: number): EncryptedMessage {
   const { sessionKey: ssReceiver, cipherText: ctReceiver } = hybridEncrypt(
-    base64ToUint8Array(receiver.ecdhPublicKey),
-    base64ToUint8Array(receiver.kyberPublicKey),
-    base64ToUint8Array(sender.ecdhSecretKey),
+    base64ToUint8Array(receiver.ecdh_public_key),
+    base64ToUint8Array(receiver.kyber_public_key),
+    base64ToUint8Array(sender.ecdh_secret_key),
   )
 
   const cekRaw: Uint8Array = randomBytes(32)
@@ -27,9 +27,9 @@ export default function encrypt(content: string, sender: UserKeys, receiver: Use
   const wrappedCekReceiver: Uint8Array = encryptCekWithKek(kekReceiver, wrapIvReceiver, cekRaw)
 
   const { sessionKey: ssSender, cipherText: ctSender } = hybridEncrypt(
-    base64ToUint8Array(sender.ecdhPublicKey),
-    base64ToUint8Array(sender.kyberPublicKey),
-    base64ToUint8Array(sender.ecdhSecretKey),
+    base64ToUint8Array(sender.ecdh_public_key),
+    base64ToUint8Array(sender.kyber_public_key),
+    base64ToUint8Array(sender.ecdh_secret_key),
   )
 
   const wrapSaltSender: Uint8Array = randomBytes(32)
@@ -59,7 +59,7 @@ export default function encrypt(content: string, sender: UserKeys, receiver: Use
     cek_wrap_sender_salt: bytesToBase64(wrapSaltSender),
   }
 
-  const signature: string = signPayload(base64ToUint8Array(sender.edSecretKey), toSign)
+  const signature: string = signPayload(base64ToUint8Array(sender.ed_secret_key), toSign)
 
   return {
     ...toSign,

@@ -10,7 +10,7 @@ export default async function (mmkv, keys) {
     let newDump = dump
     const existantChat = dump.find((_keys) => _keys.chat_id === keys.chat_id)
     if (existantChat) {
-      if (['edPublicKey', 'ecdhPublicKey', 'kyberPublicKey'].every((key) => existantChat[key] === keys[key])) return
+      if (['ed_public_key', 'ecdh_public_key', 'kyber_public_key'].every((key) => existantChat[key] === keys[key])) return
 
       const existantChatIndex = dump.indexOf(existantChat)
       newDump[existantChatIndex] = keys

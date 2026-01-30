@@ -47,9 +47,9 @@ export default async function getChats(ws) {
             JSON.stringify({
               type: 'add_keys',
               chat_id: chat?.id,
-              kyber_public_key: myKeys.kyberPublicKey,
-              ecdh_public_key: myKeys.ecdhPublicKey,
-              ed_public_key: myKeys.edPublicKey,
+              kyber_public_key: myKeys.kyber_public_key,
+              ecdh_public_key: myKeys.ecdh_public_key,
+              ed_public_key: myKeys.ed_public_key,
             }),
           )
         }
