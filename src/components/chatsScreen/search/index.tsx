@@ -61,12 +61,7 @@ export default function Search(): React.JSX.Element {
       {isStoryEmpty ? (
         <EmptyModal key="emptyStory" text="В истории поиска пусто... Введите свой первый запрос!" icon="magnifyingglass" color="primary" />
       ) : isEmpty ? (
-        <EmptyModal
-          key="emptyResult"
-          text={`К сожалению... по запросу "${searchValue}" ничего не найдено. Попробуйте снова`}
-          icon="eye.slashed"
-          color="red"
-        />
+        <EmptyModal key="emptyResult" text={`К сожалению, по запросу "${searchValue}" ничего не найдено.`} icon="eye.slashed" color="red" />
       ) : null}
     </Animated.View>
   ) : null
