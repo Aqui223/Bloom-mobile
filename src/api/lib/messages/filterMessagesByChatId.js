@@ -4,7 +4,7 @@ export default function (mmkv, chat_id, messages) {
 
   // filter messages by current chat_id
   return messages
-    .filter((m) => m.chat_id === chat_id && !messages?.find((_message) => _message?.content === m?.content && _message?.isFake))
+    .filter((m) => m.chat_id === chat_id)
     .map((m) => ({
       ...m,
       isMe: m.from_id === userId,

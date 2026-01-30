@@ -44,7 +44,7 @@ export default function (chat_id) {
 
   // GET NEW MESSAGES FROM MESSAGE SOCKET
   useEffect(() => {
-    getNewMessagesFromMessageSocket(setMessages, newMessages, chat_id, messages, clearNewMessages)
+    getNewMessagesFromMessageSocket(mmkv, setMessages, newMessages, chat_id, messages, clearNewMessages)
   }, [newMessages, chat_id, messages])
 
   // GET CHANGES OF SEEN MESSAGES STATUS
