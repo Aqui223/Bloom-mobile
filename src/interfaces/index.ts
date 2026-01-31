@@ -28,6 +28,7 @@ export interface Message {
   id: number
   date: Date
   isMe?: boolean
+  isSending?: boolean
   content: string
   author_id: number
   chat_id: number

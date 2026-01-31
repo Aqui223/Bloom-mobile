@@ -11,13 +11,12 @@ export default function (mmkv, setMessages, newMessages, chat_id, messages, clea
     if (filtered.length > 0) {
       const newFilteredMessages = filtered.map((newMessage) => {
         const isMessageAlreadyExists = messages.find((message) => message?.nonce === newMessage?.nonce)
-        const { raw, ...message } = newMessage
 
         if (isMessageAlreadyExists) {
-          return { ...isMessageAlreadyExists, ...message, isFake: false, nonce: raw?.nonce }
+          return { ...isMessageAlreadyExists, ...newMessage, isSending: false, nonce: newMessage?.nonce }
         }
 
-        return { ...message, nonce: raw?.nonce }
+        return { ...newMessage, nonce: newMessage?.nonce }
       })
 
       setMessages((prev) => mergeAndSort(prev, newFilteredMessages))

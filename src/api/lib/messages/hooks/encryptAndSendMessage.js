@@ -35,7 +35,7 @@ export default async function (mmkv, ws, content, reply_to, messages, setMessage
     const newMsg = {
       id: lastId + 1,
       isMe: true,
-      isFake: true,
+      isSending: true,
       nonce,
       chat_id,
       content,
