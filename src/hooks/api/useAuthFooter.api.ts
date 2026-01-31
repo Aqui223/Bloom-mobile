@@ -79,7 +79,7 @@ export const authApi = {
       const res = await axios.get(`${API_URL}/user/exists`, { params: { email } })
       exists = res.data?.exists
     } catch (error: any) {
-      if (error.response?.status === 404) {
+      if (!error?.response?.data?.exists) {
         exists = false
       } else {
         throw new Error(error.response?.data?.message || 'Failed to check user')

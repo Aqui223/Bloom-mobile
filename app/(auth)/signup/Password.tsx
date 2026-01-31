@@ -16,7 +16,7 @@ export default function SignupPassword() {
   const keyboard = useReanimatedKeyboardAnimation()
   const insets = useInsets()
   const { theme } = useUnistyles()
-  const { error, exists } = useAuthStore()
+  const { error, exists, dbUsername } = useAuthStore()
   // Needs only for read and write first keyboard height to mmkv storage
   const { height: _height } = useChatKeyboard()
   const errorValue = useSharedValue(0)
@@ -39,12 +39,12 @@ export default function SignupPassword() {
   return (
     <Animated.View style={[styles.container(116 + insets.bottom), animatedStyles]}>
       <AuthTitleTemplate icon="lock" title={exists ? 'Введите пароль' : 'Пароль и ник'} />
-      {exists ? null : <AuthNickInput />}
+      {exists && dbUsername.length > 0 ? null : <AuthNickInput />}
       <AuthPasswordInput />
       <AnimatedActionText
         layout={layoutAnimation}
         style={animatedTextStyles}
-        actionText={error || exists ? '' : 'синхранизации ключей'}
+        actionText={error || exists ? '' : 'синхронизации ключей'}
         text={
           error
             ? error

@@ -19,7 +19,7 @@ interface UseAuthFooter {
 export default function useAuthFooter(): UseAuthFooter {
   const router = useRouter()
   const index = useNavigationState((s) => s.index)
-  const { email, emailValid, otp, username, password, setError, error, setExists } = useAuthStore()
+  const { exists, email, emailValid, otp, username, dbUsername, password, setError, setDbUsername, error, setExists } = useAuthStore()
   const { mmkv } = useStorageStore()
   const progress = useSharedValue(0)
   const [loading, setLoading] = useState(false)
@@ -75,13 +75,14 @@ export default function useAuthFooter(): UseAuthFooter {
         mmkv.set('token', data.token)
         mmkv.set('user_id', String(data.user?.id))
         mmkv.set('user', JSON.stringify(data.user))
+        setDbUsername(data?.user?.username)
         router.navigate('/(auth)/signup/Password')
         return
       }
 
       if (index === 3) {
         const token = mmkv.getString('token')!
-        await authApi.handleUsernameAndPasswordStep(token, username, password, mmkv)
+        await authApi.handleUsernameAndPasswordStep(token, dbUsername?.length > 0 && exists ? dbUsername : username, password, mmkv)
         setLoading(false)
         router.navigate('/(app)/(tabs)')
       }
