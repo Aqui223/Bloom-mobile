@@ -3,6 +3,7 @@ import getChatFromStorage from '@lib/getChatFromStorage'
 import generateKeys from '@lib/skid/generateKeys'
 import { createSecureStorage } from '@lib/storage'
 import axios from 'axios'
+import addChatKeysRequest from '../keys/addChatKeys.js'
 import addKeysToDump from '../keys/addKeysToDump.js'
 
 export default async function getChats(ws) {
@@ -43,15 +44,12 @@ export default async function getChats(ws) {
           myKeys = generateKeys()
 
           // send new public keys to recipient
-          ws.send(
-            JSON.stringify({
-              type: 'add_keys',
-              chat_id: chat?.id,
-              kyber_public_key: myKeys.kyber_public_key,
-              ecdh_public_key: myKeys.ecdh_public_key,
-              ed_public_key: myKeys.ed_public_key,
-            }),
-          )
+          addChatKeysRequest({
+            chat_id: chat?.id,
+            kyber_public_key: myKeys.kyber_public_key,
+            ecdh_public_key: myKeys.ecdh_public_key,
+            ed_public_key: myKeys.ed_public_key,
+          })
         }
 
         // find chat from mmkv storage (wtf i need to use chat variable mb??idk)

@@ -1,3 +1,4 @@
+import readMessagesRequest from '@api/lib/messages/read'
 import { Q } from '@nozbe/watermelondb'
 import { database } from 'src/db'
 
@@ -7,20 +8,15 @@ export default async function (ws, chat_id, messages, setMessages) {
 
     // if message not seen and message sent by recipient
     if (!lastMessage?.seen && !lastMessage?.isMe) {
-      // send seen socket
-      ws.send(
-        JSON.stringify({
-          type: 'message_seen',
-          chat_id,
-          messages: [lastMessage?.id],
-        }),
-      )
+      // send read messages request
+      const response = await readMessagesRequest(chat_id, [lastMessage?.id])
+      if (!response) return
 
       // change seen status in local storage
       await database.write(async () => {
         const collection = await database.get('messages')
 
-        const msgs = await collection.query(Q.where('server_id', lastUnseenMessage?.id)).fetch()
+        const msgs = await collection.query(Q.where('server_id', lastMessage?.id)).fetch()
         const msg = msgs[0]
         if (msg)
           await msg.update((m) => {
@@ -43,14 +39,9 @@ export default async function (ws, chat_id, messages, setMessages) {
     const lastUnseenMessage = [...messages].reverse().find((m) => !m.seen && !m.isMe)
     if (!lastUnseenMessage) return
 
-    // send seen socket for last unseen message
-    ws.send(
-      JSON.stringify({
-        type: 'message_seen',
-        chat_id,
-        messages: [lastUnseenMessage?.id],
-      }),
-    )
+    // send read request for last unseen message
+    const response = await readMessagesRequest(chat_id, [lastUnseenMessage?.id])
+    if (!response) return
 
     // change last unseen message status in local storage
     await database.write(async () => {

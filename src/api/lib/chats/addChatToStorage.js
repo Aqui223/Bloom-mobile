@@ -1,3 +1,4 @@
+import addChatKeysRequest from '@api/lib/keys/addChatKeys'
 import addKeysToDump from '@api/lib/keys/addKeysToDump'
 import generateKeys from '@lib/skid/generateKeys'
 import { createSecureStorage } from '@lib/storage'
@@ -19,15 +20,12 @@ export default async function (chat_id, encryption_key) {
   const myKeys = generateKeys()
 
   // send current user public keys
-  //   ws.send(
-  //     JSON.stringify({
-  //       type: 'add_keys',
-  //       chat_id: chat_id,
-  //       kyber_public_key: myKeys.kyber_public_key,
-  //       ecdh_public_key: myKeys.ecdh_public_key,
-  //       ed_public_key: myKeys.ed_public_key,
-  //     }),
-  //   )
+  addChatKeysRequest({
+    chat_id,
+    kyber_public_key: myKeys.kyber_public_key,
+    ecdh_public_key: myKeys.ecdh_public_key,
+    ed_public_key: myKeys.ed_public_key,
+  })
 
   // add chat to mmkv storage
   chats = [
