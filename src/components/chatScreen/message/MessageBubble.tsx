@@ -14,7 +14,7 @@ interface MessageBubbleProps {
   seen: boolean
 }
 
-export default function MessageBubble({ message, seen }: MessageBubbleProps): React.JSX.Element {
+export default function MessageBubble({ message, seen }: MessageBubbleProps) {
   const isMe: boolean = message?.isMe
   const statusValue = useSharedValue(0)
 
