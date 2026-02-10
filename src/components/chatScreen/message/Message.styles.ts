@@ -13,6 +13,7 @@ export const styles = StyleSheet.create((theme) => ({
     return {
       gap: theme.spacing.md,
       position: 'relative',
+      justifyContent: 'center',
       marginBottom,
       alignItems: isMe ? 'flex-end' : 'flex-start',
     }
@@ -39,4 +40,11 @@ export const styles = StyleSheet.create((theme) => ({
     color: isMe ? theme.colors.white : theme.colors.text,
     opacity: theme.opacity.contentText,
   }),
+  statusCanvas: {
+    width: 30,
+    height: 30,
+    backgroundColor: 'transparent',
+    right: -16,
+    position: 'absolute',
+  },
 }))

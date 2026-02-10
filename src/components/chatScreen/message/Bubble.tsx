@@ -10,7 +10,7 @@ interface MessageBubbleProps {
   seen: boolean
 }
 
-export default function MessageBubble({ message, seen }: MessageBubbleProps) {
+export default function MessageBubble({ message }: MessageBubbleProps) {
   const isMe: boolean = message?.isMe
 
   return (
