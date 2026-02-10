@@ -31,11 +31,11 @@ export default function TabBarItem({ route, focused }: TabBarItemProps) {
 
   const onPress = useCallback(() => {
     if (!focused) {
-      // @ts-expect-error
-      router.push(`/(app)/(tabs)/${route.name === 'index' ? '' : route.name}`)
+      // @ts-expect-error idk why it doesn't work without expect-error, but it does work, fuckass expo-router
+      router.replace(`/(app)/(tabs)/${route.name === 'index' ? '' : route.name}`)
       Haptics.impact('light')
     }
-  }, [focused])
+  }, [focused, route])
 
   const animatedStyle = useAnimatedStyle(
     (): ViewStyle => ({
