@@ -29,7 +29,7 @@ export default function (chat_id) {
   const addMessage = async (content, reply_to) => encryptAndSendMessage(mmkv, ws, content, reply_to, messages, setMessages, chat_id)
 
   const messagesWithDates = useMemo(() => {
-    return addDateHeaders([...messages]).reverse()
+    return [...messages].reverse()
   }, [messages])
 
   // GET MESSAGES FROM API

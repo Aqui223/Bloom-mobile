@@ -6,7 +6,7 @@ import { useChatController, useChatKeyboard, useInsets } from '@hooks'
 import type { DateHeader, Message as MessageType } from '@interfaces'
 import { FlashList } from '@shopify/flash-list'
 import { useLocalSearchParams } from 'expo-router'
-import { useCallback, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { View } from 'react-native'
 import { KeyboardStickyView } from 'react-native-keyboard-controller'
 import { StyleSheet, useUnistyles } from 'react-native-unistyles'
@@ -15,6 +15,12 @@ export default function Chat() {
   const { chat } = useLocalSearchParams<{ chat: string }>()
 
   const { messages, seenID, addMessage, nextPage, _chat } = useChatController(chat)
+
+  // 1. Запоминаем время монтирования компонента.
+  // Все сообщения, созданные ДО этого момента — это история (не анимируем).
+  // Все, что придет ПОСЛЕ — это новые (анимируем).
+  const mountTimestamp = useRef(Date.now())
+
   const [footerHeight, setFooterHeight] = useState<number>(0)
   const insets = useInsets()
   const { theme } = useUnistyles()
@@ -25,18 +31,20 @@ export default function Chat() {
   const renderItem = useCallback(
     ({ item }: { item: MessageType }) => {
       const grouped = !item?.groupEnd && !item?.groupStart
-
       const marginBottom = grouped ? theme.spacing.sm : item?.groupEnd ? theme.spacing.lg : theme.spacing.sm
 
-      return <Message seen={seenID >= item?.id} message={item} marginBottom={marginBottom} />
+      return (
+        <Message
+          seen={seenID >= item?.id}
+          message={item}
+          shouldAnimated={mountTimestamp.current} // Передаем булево значение
+        />
+      )
     },
     [seenID],
   )
 
   const keyExtractor = useCallback((item) => {
-    if ('date' in item && !('_id' in item)) {
-      return (item as DateHeader)._id
-    }
     return String((item as MessageType).nonce)
   }, [])
 
@@ -52,8 +60,9 @@ export default function Chat() {
             ListHeaderComponent={<View style={{ height: height, width: '100%' }} />}
             renderItem={renderItem}
             onStartReachedThreshold={0.5}
+            maxItemsInRecyclePool={0}
             maintainVisibleContentPosition={{
-              autoscrollToBottomThreshold: 0.2,
+              disabled: true,
               startRenderingFromBottom: true,
             }}
             onStartReached={nextPage}
@@ -70,6 +79,7 @@ export default function Chat() {
   )
 }
 
+// ... styles остаются теми же
 const styles = StyleSheet.create((theme) => ({
   container: {
     flex: 1,

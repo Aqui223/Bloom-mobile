@@ -1,13 +1,13 @@
 import { StyleSheet } from 'react-native-unistyles'
 
 export const styles = StyleSheet.create((theme) => ({
-  message: (isMe: boolean) => ({
+  message: (isMe: boolean, mountFinished: boolean) => ({
     maxWidth: '82%',
     borderRadius: theme.radius.lg,
     borderCurve: 'continuous',
     zIndex: 10,
     minHeight: 42,
-    backgroundColor: isMe ? theme.colors.primary : theme.colors.foreground,
+    backgroundColor: mountFinished ? (isMe ? theme.colors.primary : theme.colors.foreground) : 'transparent',
   }),
   messageWrapper: (isMe: boolean, marginBottom) => {
     return {
@@ -41,8 +41,8 @@ export const styles = StyleSheet.create((theme) => ({
     opacity: theme.opacity.contentText,
   }),
   statusCanvas: {
-    width: 30,
-    height: 30,
+    width: 120,
+    height: 60,
     backgroundColor: 'transparent',
     right: -16,
     position: 'absolute',
