@@ -1,4 +1,4 @@
-import Chat from '@components/chatsScreen/chat'
+import Chat from '@components/chats/chat'
 import type { Chat as ChatType, ChatView } from '@interfaces'
 import formatSentTime from '@lib/formatSentTime'
 import { useMemo } from 'react'

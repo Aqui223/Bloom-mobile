@@ -2,6 +2,7 @@ import ChatsProvider from '@api/providers/ChatsContext'
 import MessagesProvider from '@api/providers/MessagesContext'
 import SeenMessagesProvider from '@api/providers/SeenMessagesContext'
 import { WebSocketProvider } from '@api/providers/WebSocketContext'
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
 import { PortalProvider } from '@gorhom/portal'
 import { createSecureStorage } from '@lib/storage'
 import { SessionProvider } from '@providers/SessionProvider'
@@ -54,10 +55,12 @@ export default function RootLayout() {
                   <ChatsProvider>
                     <MessagesProvider>
                       <SeenMessagesProvider>
-                        <Stack id={undefined} screenOptions={{ headerShown: false, contentStyle: styles.content }}>
-                          <Stack.Screen name="(app)" options={{ headerShown: false }} />
-                          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-                        </Stack>
+                        <BottomSheetModalProvider>
+                          <Stack id={undefined} screenOptions={{ headerShown: false, contentStyle: styles.content }}>
+                            <Stack.Screen name="(app)" options={{ headerShown: false }} />
+                            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+                          </Stack>
+                        </BottomSheetModalProvider>
                       </SeenMessagesProvider>
                     </MessagesProvider>
                   </ChatsProvider>

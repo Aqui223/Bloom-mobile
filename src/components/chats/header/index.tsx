@@ -1,11 +1,12 @@
 import { useWebSocket } from '@api/providers/WebSocketContext'
 import { Button, GradientBlur, Icon } from '@components/ui'
 import { charAnimationIn, charAnimationOut, quickSpring, zoomAnimationIn, zoomAnimationOut } from '@constants/animations'
+import { BottomSheetBackdrop, BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet'
 import { useInsets } from '@hooks'
 import useChatsStore from '@stores/chats'
 import useTabBarStore from '@stores/tabBar'
-import { useEffect, useState } from 'react'
-import { View } from 'react-native'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { Text, View } from 'react-native'
 import Animated, { useAnimatedStyle, withSpring } from 'react-native-reanimated'
 import { useUnistyles } from 'react-native-unistyles'
 import { styles } from './header.styles'
@@ -20,6 +21,17 @@ export default function Header() {
   const [status, setStatus] = useState('connecting')
   const { setHeaderHeight, setEdit, edit, clearSelectedChats } = useChatsStore()
   const setType = useTabBarStore((state) => state.setType)
+
+  // ref
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null)
+
+  // callbacks
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present()
+  }, [])
+  const handleSheetChanges = useCallback((index: number) => {
+    console.log('handleSheetChanges', index)
+  }, [])
 
   const animatedButtonStyle = useAnimatedStyle(() => ({
     opacity: withSpring(edit ? 0 : 1, quickSpring),
@@ -38,6 +50,8 @@ export default function Header() {
       setStatus('connecting')
     }
   }, [ws])
+
+  const renderBackdrop = useCallback((props) => <BottomSheetBackdrop {...props} appearsOnIndex={0} disappearsOnIndex={-1} />, [])
 
   return (
     <View onLayout={(e) => setHeaderHeight(e.nativeEvent.layout.height)} style={[styles.header, { paddingTop: insets.top }]}>
@@ -58,9 +72,23 @@ export default function Header() {
           )}
         </Button>
         <Title state={status} />
-        <AnimatedButton style={animatedButtonStyle} blur variant="icon">
+        <AnimatedButton onPress={handlePresentModalPress} style={animatedButtonStyle} blur variant="icon">
           <Icon icon="plus" color={theme.colors.text} />
         </AnimatedButton>
+        <BottomSheetModal enablePanDownToClose backdropComponent={renderBackdrop} ref={bottomSheetModalRef} onChange={handleSheetChanges}>
+          <BottomSheetView style={{ flex: 1, alignItems: 'center' }}>
+            <Text>Awesome 🎉</Text>
+            <Text>Awesome 🎉</Text>
+            <Text>Awesome 🎉</Text>
+            <Text>Awesome 🎉</Text>
+            <Text>Awesome 🎉</Text>
+            <Text>Awesome 🎉</Text>
+            <Text>Awesome 🎉</Text>
+            <Text>Awesome 🎉</Text>
+            <Text>Awesome 🎉</Text>
+            <Text>Awesome 🎉</Text>
+          </BottomSheetView>
+        </BottomSheetModal>
       </View>
     </View>
   )
