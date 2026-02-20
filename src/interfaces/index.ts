@@ -20,8 +20,8 @@ export interface User {
   username: string
   description: string
   avatar: string
-  friends_count: number
-  email: string
+  friends_count?: number
+  email?: string
 }
 
 export interface Message {
