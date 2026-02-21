@@ -21,12 +21,14 @@ export default function GradientBlur({ direction = 'bottom-to-top', ref, style, 
   const { theme } = useUnistyles()
   const insets = useInsets()
 
+  const gradientStyles = [StyleSheet.absoluteFill, keyboard ? styles.gradient(insets.bottom) : null, style]
+
   const { start, end } = useMemo(() => {
     switch (direction) {
       case 'top-to-bottom':
         return { start: { x: 0.5, y: 1 }, end: { x: 0.5, y: 0 } }
       case 'bottom-left-to-top-right':
-        return { start: { x: 0.5, y: 0.5 }, end: { x: 1, y: 1 } }
+        return { start: { x: 0.5, y: 0 }, end: { x: 1, y: 1 } }
       default:
         return { start: { x: 0.5, y: 0 }, end: { x: 0.5, y: 1 } }
     }
@@ -49,7 +51,7 @@ export default function GradientBlur({ direction = 'bottom-to-top', ref, style, 
       {Platform.OS !== 'android' && (
         <MaskedView
           ref={ref}
-          style={[StyleSheet.absoluteFill, style]}
+          style={gradientStyles}
           maskElement={
             <LinearGradient start={start} end={end} locations={locations as any} colors={colors as any} style={StyleSheet.absoluteFill} />
           }
@@ -58,12 +60,7 @@ export default function GradientBlur({ direction = 'bottom-to-top', ref, style, 
         </MaskedView>
       )}
 
-      <LinearGradient
-        start={start}
-        end={end}
-        colors={['transparent', theme.colors.gradientBlur]}
-        style={[StyleSheet.absoluteFill, keyboard ? styles.gradient(insets.bottom) : null, style]}
-      />
+      <LinearGradient start={start} end={end} colors={['transparent', theme.colors.gradientBlur]} style={gradientStyles} />
     </>
   )
 }

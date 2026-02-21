@@ -104,7 +104,7 @@ export const reversedZoomAnimationIn = (): LayoutAnimResult => {
 export const messageAnimationIn = (): LayoutAnimResult => {
   'worklet'
   return {
-    initialValues: { transform: [{ scale: 0.5 }, { translateX: '175%' }] },
+    initialValues: { transform: [{ scale: 0.5 }, { translateX: '200%' }] },
     animations: {
       transform: [{ scale: withSpring(1, normalSpring) }, { translateX: withSpring('0%', normalSpring) }],
     },

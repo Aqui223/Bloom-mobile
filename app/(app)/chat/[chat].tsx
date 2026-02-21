@@ -22,6 +22,7 @@ export default function Chat() {
   const { messages, seenID, addMessage, nextPage, _chat } = useChatController({ chat, listRef: listRef.current })
 
   const headerHeight = insets.top + 44 + theme.spacing.md
+  const keyboardOffset = { closed: -insets.bottom + 16, opened: theme.spacing.sm - 2 }
 
   const renderItem = useCallback(
     ({ item }: { item: MessageType }) => {
@@ -51,7 +52,7 @@ export default function Chat() {
       <Header chat={_chat} />
       <EmptyModal chat={_chat} visible={messages.length === 0} />
       {messages.length > 0 && footerHeight && (
-        <KeyboardStickyView style={styles.list}>
+        <KeyboardStickyView offset={keyboardOffset} style={styles.list}>
           <FlashList
             data={messages}
             ref={listRef}

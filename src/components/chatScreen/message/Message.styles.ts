@@ -21,7 +21,7 @@ export const styles = StyleSheet.create((theme) => ({
   },
   messageContent: {
     paddingHorizontal: theme.spacing.lg - 2,
-    padding: theme.spacing.sm,
+    padding: theme.spacing.sm + 2,
     minHeight: 40,
     flexDirection: 'row',
     width: '100%',
@@ -29,8 +29,8 @@ export const styles = StyleSheet.create((theme) => ({
   text: (isMe: boolean) => ({
     fontSize: theme.fontSize.md,
     fontFamily: theme.fontFamily.regular,
+    textAlignVertical: 'center',
     color: isMe ? theme.colors.white : theme.colors.text,
-    textAlign: 'left',
   }),
   secondaryText: (isMe: boolean) => ({
     fontSize: theme.fontSize.xs,

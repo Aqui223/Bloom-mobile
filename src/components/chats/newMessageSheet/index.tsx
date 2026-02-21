@@ -71,6 +71,7 @@ export default function NewMessageSheet({ ref }: NewMessageSheetProps) {
           style={{ flex: 1 }}
           keyExtractor={keyExtractor}
           renderItem={renderItem}
+          maintainVisibleContentPosition={{ disabled: true }}
           data={users}
           renderScrollComponent={BottomSheetScrollable}
         />

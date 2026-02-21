@@ -22,7 +22,7 @@ export default function StatusBubble({ isActive, width, height, setMountFinished
   const canvasHeight = height * 2
 
   const cx2 = useDerivedValue(() => {
-    const start = screenWidth + width
+    const start = screenWidth + width + 16
     const end = screenWidth - width - 32
     return interpolate(progress.value, [0, 1], [start, end])
   })
