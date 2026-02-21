@@ -27,6 +27,10 @@ export default function AuthNickInput() {
       value={username}
       onChangeText={setUsername}
       maxLength={20}
+      keyboardType="default"
+      autoCapitalize="none"
+      autoCorrect={false}
+      textContentType="name"
       icon={<Icon size={24} icon="person" color={theme.colors.secondaryText} />}
       placeholder="a-Z . _ - 2-20 длина"
       size="lg"
