@@ -25,7 +25,7 @@ export const styles = StyleSheet.create((theme) => ({
     zIndex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    // overflow: 'hidden',
+    overflow: 'hidden',
     borderCurve: 'continuous',
   },
   indicator: {
