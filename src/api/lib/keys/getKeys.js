@@ -1,5 +1,4 @@
 // format
-// [{ chat_id, kyber_secret_key, ecdh_secret_key, ed_secret_key }, ...]
 
 export default function (mmkv) {
   let chats
@@ -11,8 +10,9 @@ export default function (mmkv) {
 
   return chats.map((chat) => {
     return {
-      chat_id: chat?.id,
+      id: chat?.id,
       key: chat?.key,
+      members: chat?.members,
     }
   })
 }

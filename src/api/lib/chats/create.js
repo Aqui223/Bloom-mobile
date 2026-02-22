@@ -1,5 +1,7 @@
+import { Buffer } from '@craftzdog/react-native-buffer'
 import encryptKey from '@lib/skid/encryptKey'
 import { randomBytes } from '@noble/hashes/utils.js'
+import changeChatKey from '../keys/changeChatKey'
 import sendEncryptedKeys from '../keys/sendEncryptedKeys'
 import getMySession from '../sessions/getMySession'
 import getUserSessions from '../sessions/getUserSessions'
@@ -15,6 +17,8 @@ export default async function createChat(recipient) {
   await addChatToStorage(chat?.id)
 
   const chat_key = randomBytes(32)
+
+  await changeChatKey(chat?.id, Buffer.from(chat_key).toString('base64'))
 
   const recipient_sessions = await getUserSessions(recipient)
   if (!recipient_sessions) return

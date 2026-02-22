@@ -161,7 +161,7 @@ export default function ChatsProvider({ children }) {
     chats.forEach((chat) => {
       const collection = database.get('messages')
 
-      const messagesQuery = collection.query(Q.where('chat_id', chat.id), Q.sortBy('date', Q.desc), Q.take(1))
+      const messagesQuery = collection.query(Q.where('chat_id', chat?.id || null), Q.sortBy('date', Q.desc), Q.take(1))
 
       const subscription = messagesQuery.observe().subscribe((messages) => {
         if (messages.length > 0) {

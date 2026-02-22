@@ -1,20 +1,24 @@
-export default function (mmkv, chat_id, new_key) {
+import { createSecureStorage } from '@lib/storage'
+
+export default async function (chat_id, new_key) {
+  const storage = await createSecureStorage('user-storage')
+
   let chats
   try {
-    chats = JSON.parse(mmkv.getString('chats'))
+    chats = JSON.parse(storage.getString('chats'))
   } catch {
     chats = []
   }
 
   chats = chats.map((chat) => {
     return {
-      chat_id: chat?.id,
+      id: chat?.id,
       key: chat?.id === chat_id ? new_key : chat?.key,
     }
   })
 
   // set new chats
-  mmkv.set('chats', JSON.stringify(chats))
+  storage.set('chats', JSON.stringify(chats))
 
   return chats
 }
