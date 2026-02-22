@@ -105,7 +105,7 @@ export default function useAuthFooter(): UseAuthFooter {
         const token = mmkv.getString('token')!
         await authApi.handleUsernameAndPasswordStep(token, dbUsername?.length > 0 && exists ? dbUsername : username, password, mmkv)
         setLoading(false)
-        router.navigate('/(app)/(tabs)')
+        router.replace('/(app)/(tabs)')
       }
     } catch (e: any) {
       setLoading(false)
