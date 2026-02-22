@@ -1,10 +1,17 @@
 import addChatToStorage from '@api/lib/chats/addChatToStorage'
+import changeChatKey from '@api/lib/keys/changeChatKey'
+import getMySession from '@api/lib/sessions/getMySession'
+import getUserSessions from '@api/lib/sessions/getUserSessions'
+import getMyUser from '@api/lib/users/getMyUser'
+import { Buffer } from '@craftzdog/react-native-buffer'
 import getChatFromStorage from '@lib/getChatFromStorage'
+import decryptKey from '@lib/skid/decryptKey'
 import { decrypt as sskDecrypt } from '@lib/skid/serversideKeyEncryption'
 import { Q } from '@nozbe/watermelondb'
 import useStorageStore from '@stores/storage'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { database } from 'src/db'
+import getChatById from '../lib/chats/getChatById'
 import getChats from '../lib/chats/getChats'
 import getChatsFromStorage from '../lib/chats/getChatsFromStorage'
 import { useWebSocket } from './WebSocketContext'
@@ -149,6 +156,39 @@ export default function ChatsProvider({ children }) {
             await addChatToStorage(message?.id)
 
             addChat(message)
+          } else if (message?.type === 'keys.new') {
+            const myUser = await getMyUser()
+            const mySession = await getMySession()
+
+            const chat = await getChatById(message?.chat_id)
+            if (!chat) return
+
+            const recipient = chat?.members?.find((member) => member?.id !== myUser?.id)
+
+            const recipient_sessions = await getUserSessions(recipient?.id)
+            if (!recipient_sessions) return
+
+            const recipient_session = recipient_sessions?.find((session) => session?.id === message?.from_session_id)
+            if (!recipient_session) return
+
+            const encrypted_key = message?.keys?.find((key) => key?.session_id === mySession?.id)
+            if (!encrypted_key) return
+
+            const decrypted = decryptKey(
+              { ...encrypted_key, ciphertext: encrypted_key?.encrypted_key, cek_wrap_salt: encrypted_key?.salt },
+              mySession,
+              {
+                kyber_public_key: recipient_session?.kyber_pub,
+                ecdh_public_key: recipient_session?.ecdh_pub,
+                edPublicKey: recipient_session?.identity_pub,
+              },
+            )
+
+            const chatFromStorage = await getChatFromStorage(message?.chat_id)
+            if (!chatFromStorage) {
+              await addChatToStorage(message?.chat_id)
+            }
+            await changeChatKey(message?.chat_id, Buffer.from(decrypted).toString('base64'))
           }
         } catch {}
       })
