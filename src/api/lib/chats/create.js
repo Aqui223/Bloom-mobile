@@ -4,27 +4,15 @@ import { randomBytes } from '@noble/hashes/utils.js'
 import changeChatKey from '../keys/changeChatKey'
 import sendEncryptedKeys from '../keys/sendEncryptedKeys'
 import getMySession from '../sessions/getMySession'
+import getMySessions from '../sessions/getMySessions'
 import getUserSessions from '../sessions/getUserSessions'
+import getMyUser from '../users/getMyUser'
 import addChatToStorage from './addChatToStorage'
 import createChatRequest from './createChatRequest'
 
-export default async function createChat(recipient) {
-  const mySession = await getMySession()
-
-  const chat = await createChatRequest(recipient)
-  if (!chat) return null
-
-  await addChatToStorage(chat?.id)
-
-  const chat_key = randomBytes(32)
-
-  await changeChatKey(chat?.id, Buffer.from(chat_key).toString('base64'))
-
-  const recipient_sessions = await getUserSessions(recipient)
-  if (!recipient_sessions) return
-
+function encryptKeys(sessions, chat_key, mySession) {
   let keys = []
-  for (const session of recipient_sessions) {
+  for (const session of sessions) {
     if (session?.identity_pub && session?.ecdh_pub && session?.kyber_pub) {
       const encrypted = encryptKey(chat_key, mySession, {
         kyber_public_key: session?.kyber_pub,
@@ -47,8 +35,39 @@ export default async function createChat(recipient) {
     }
   }
 
+  return keys
+}
+
+export default async function createChat(recipient) {
+  const mySession = await getMySession()
+  const myUser = await getMyUser()
+
+  const chat = await createChatRequest(recipient)
+  if (!chat) return null
+
+  await addChatToStorage(chat?.id)
+
+  const chat_key = randomBytes(32)
+
+  await changeChatKey(chat?.id, Buffer.from(chat_key).toString('base64'))
+
+  const recipient_sessions = await getUserSessions(recipient)
+  if (!recipient_sessions) return
+
+  const keys = encryptKeys(recipient_sessions, chat_key, mySession)
+
   if (keys.length > 0) {
     const add_chat_keys = await sendEncryptedKeys(chat?.id, recipient, keys)
+    if (!add_chat_keys) return
+  }
+
+  const my_sessions = await getMySessions()
+  if (!my_sessions) return
+
+  const my_keys = encryptKeys(my_sessions?.filter((session) => session?.id !== mySession?.id).filter(Boolean), chat_key, mySession)
+
+  if (my_keys.length > 0) {
+    const add_chat_keys = await sendEncryptedKeys(chat?.id, myUser?.id, my_keys)
     if (!add_chat_keys) return
   }
 
