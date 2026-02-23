@@ -1,6 +1,8 @@
 import addChatToStorage from '@api/lib/chats/addChatToStorage'
 import changeChatKey from '@api/lib/keys/changeChatKey'
+import getEncryptedKeys from '@api/lib/keys/getEncryptedKeys'
 import getMySession from '@api/lib/sessions/getMySession'
+import getMySessions from '@api/lib/sessions/getMySessions'
 import getUserSessions from '@api/lib/sessions/getUserSessions'
 import getMyUser from '@api/lib/users/getMyUser'
 import { Buffer } from '@craftzdog/react-native-buffer'
@@ -132,6 +134,55 @@ export default function ChatsProvider({ children }) {
           // get chats from api
           const _chats = await getChats(ws)
           if (_chats) setChats(await sort(_chats))
+        } catch (error) {
+          console.log(error)
+        }
+      })()
+    }
+  }, [ws])
+
+  useEffect(() => {
+    if (ws?.readyState === WebSocket?.OPEN) {
+      ;(async () => {
+        try {
+          const myUser = await getMyUser()
+          const mySession = await getMySession()
+
+          const encrypted_keys = await getEncryptedKeys()
+
+          let mySessions = []
+          if (encrypted_keys?.find((key) => key?.from_session_id === key?.session_id)) {
+            mySessions = await getMySessions()
+          }
+
+          for (const key of encrypted_keys) {
+            let recipient_session
+            if (key?.from_session_id === key?.session_id) {
+              recipient_session = mySessions?.find((session) => session?.id === key?.from_session_id)
+            } else {
+              const chat = await getChatById(key?.chat_id)
+              if (!chat) return
+
+              const recipient = chat?.members?.find((member) => member?.id !== myUser?.id)
+
+              const recipient_sessions = await getUserSessions(recipient?.id)
+              if (!recipient_sessions) return
+
+              recipient_session = recipient_sessions?.find((session) => session?.id === key?.from_session_id)
+            }
+
+            const decrypted = decryptKey({ ...key, ciphertext: key?.encrypted_key, cek_wrap_salt: key?.salt }, mySession, {
+              kyber_public_key: recipient_session?.kyber_pub,
+              ecdh_public_key: recipient_session?.ecdh_pub,
+              edPublicKey: recipient_session?.identity_pub,
+            })
+
+            const chatFromStorage = await getChatFromStorage(key?.chat_id)
+            if (!chatFromStorage) {
+              await addChatToStorage(key?.chat_id)
+            }
+            await changeChatKey(key?.chat_id, Buffer.from(decrypted).toString('base64'))
+          }
         } catch (error) {
           console.log(error)
         }
