@@ -8,13 +8,16 @@ import useTabBarStore from '@stores/tabBar'
 import { useMemo } from 'react'
 import { View } from 'react-native'
 import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated'
-import { StyleSheet } from 'react-native-unistyles'
+import { StyleSheet, useUnistyles } from 'react-native-unistyles'
 
 export default function TabSettings() {
   const { snapEndPosition, headerHeight } = useSettingsScreenStore()
   const height = useTabBarStore((state) => state.height)
+  const { theme } = useUnistyles()
   const scrollY = useSharedValue(0)
   const { user } = useMe()
+
+  const snapOffset = snapEndPosition + theme.spacing.lg
 
   const data = useMemo(
     () =>
@@ -30,7 +33,8 @@ export default function TabSettings() {
 
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (e) => {
-      scrollY.set(e.contentOffset.y)
+      const y = e.contentOffset.y
+      scrollY.set(y)
     },
   })
 
@@ -40,12 +44,13 @@ export default function TabSettings() {
       <Animated.ScrollView
         onScroll={scrollHandler}
         decelerationRate="fast"
-        snapToOffsets={[0, headerHeight]}
+        snapToOffsets={[0, snapOffset]}
         snapToAlignment="start"
+        snapToEnd={false}
         contentContainerStyle={styles.list(height, headerHeight)}
         showsVerticalScrollIndicator={false}
       >
-        <UserEmail user={user} />
+        <UserEmail scrollY={scrollY} user={user} />
         {data.map((item, _index) => (
           <SettingsGroup key={item.id} section={item} />
         ))}

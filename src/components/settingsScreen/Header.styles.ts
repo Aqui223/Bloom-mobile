@@ -22,4 +22,10 @@ export const styles = StyleSheet.create((theme) => ({
     textAlign: 'center',
     marginBottom: theme.spacing.xxl,
   },
+  gradientWrapper: (height: number) => ({
+    width: '100%',
+    position: 'absolute',
+    height,
+    bottom: theme.spacing.sm,
+  }),
 }))
