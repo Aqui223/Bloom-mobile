@@ -1,6 +1,8 @@
 import { Buffer } from '@craftzdog/react-native-buffer'
 import encryptKey from '@lib/skid/encryptKey'
+import { createSecureStorage } from '@lib/storage'
 import { randomBytes } from '@noble/hashes/utils.js'
+import addKeysToDump from '../keys/addKeysToDump'
 import changeChatKey from '../keys/changeChatKey'
 import sendEncryptedKeys from '../keys/sendEncryptedKeys'
 import getMySession from '../sessions/getMySession'
@@ -39,6 +41,8 @@ function encryptKeys(sessions, chat_key, mySession) {
 }
 
 export default async function createChat(recipient) {
+  const storage = await createSecureStorage('user-storage')
+
   const mySession = await getMySession()
   const myUser = await getMyUser()
 
@@ -70,6 +74,8 @@ export default async function createChat(recipient) {
     const add_chat_keys = await sendEncryptedKeys(chat?.id, myUser?.id, my_keys)
     if (!add_chat_keys) return
   }
+
+  await addKeysToDump(storage, { id: chat?.id, key: Buffer.from(chat_key).toString('base64') })
 
   return chat
 }

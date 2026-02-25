@@ -8,11 +8,5 @@ export default function (mmkv) {
     chats = []
   }
 
-  return chats.map((chat) => {
-    return {
-      id: chat?.id,
-      key: chat?.key,
-      members: chat?.members,
-    }
-  })
+  return chats
 }
