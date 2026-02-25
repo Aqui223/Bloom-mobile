@@ -23,9 +23,9 @@ export default function AuthLayout() {
       )}
     >
       <Stack.Screen name="Welcome" />
-      <Stack.Screen name="signup/Email" options={screenTransition(false)} />
-      <Stack.Screen name="signup/Otp" options={screenTransition(false)} />
-      <Stack.Screen name="signup/Password" options={screenTransition(false)} />
+      <Stack.Screen name="signup/Email" options={screenTransition()} />
+      <Stack.Screen name="signup/Otp" options={screenTransition()} />
+      <Stack.Screen name="signup/Password" options={screenTransition()} />
     </Stack>
   )
 }

@@ -1,4 +1,4 @@
-import { charAnimationIn, charAnimationOut, layoutAnimationSpringy, quickSpring, springyChar } from '@constants/animations'
+import { charAnimationIn, charAnimationOut, makeLayoutAnimation, quickSpring, springyChar } from '@constants/animations'
 import { AUTH_TITLES } from '@constants/titles'
 import { useEffect, useMemo, useState } from 'react'
 import { View } from 'react-native'
@@ -35,9 +35,9 @@ export default function AuthTitle() {
       {chars.map((char, index) => (
         <Animated.Text
           key={`${char}-${Math.random()}`}
-          layout={layoutAnimationSpringy}
-          entering={charAnimationIn(springyChar(index))}
-          exiting={charAnimationOut(springyChar(index))}
+          layout={makeLayoutAnimation(springyChar(1))}
+          entering={charAnimationIn(springyChar(index), false)}
+          exiting={charAnimationOut(springyChar(index), false)}
           style={[styles.char, animatedTextStyle]}
         >
           {char}

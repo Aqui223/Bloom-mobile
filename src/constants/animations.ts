@@ -133,7 +133,7 @@ export const paperplaneAnimationIn = (): LayoutAnimResult => {
   }
 }
 
-export const charAnimationOut = (springConfig: WithSpringConfig = quickSpring) => {
+export const charAnimationOut = (springConfig: WithSpringConfig = quickSpring, scale: boolean = true) => {
   'worklet'
   return (): LayoutAnimResult => {
     'worklet'
@@ -144,21 +144,21 @@ export const charAnimationOut = (springConfig: WithSpringConfig = quickSpring) =
       },
       animations: {
         opacity: withSpring(0, springConfig),
-        transform: [{ scale: withSpring(0.5, springConfig) }, { translateY: withSpring(50, springConfig) }],
+        transform: [{ scale: scale ? withSpring(0.5, springConfig) : 1 }, { translateY: withSpring(50, springConfig) }],
       },
     }
   }
 }
 
-export const charAnimationIn = (springConfig: WithSpringConfig = quickSpring) => {
+export const charAnimationIn = (springConfig: WithSpringConfig = quickSpring, scale: boolean = true) => {
   'worklet'
   return (): LayoutAnimResult => {
     'worklet'
     return {
-      initialValues: { opacity: 0, transform: [{ scale: 0.5 }, { translateY: '-100%' }] },
+      initialValues: { opacity: 0, transform: [{ scale: scale ? 0.5 : 1 }, { translateY: '-100%' }] },
       animations: {
         opacity: withSpring(1, springConfig),
-        transform: [{ scale: withSpring(1, springConfig) }, { translateY: withSpring('0%', springConfig) }],
+        transform: [{ scale: scale ? withSpring(1, springConfig) : 1 }, { translateY: withSpring('0%', springConfig) }],
       },
     }
   }
