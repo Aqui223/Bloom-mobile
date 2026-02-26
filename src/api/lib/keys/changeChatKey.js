@@ -12,7 +12,7 @@ export default async function (chat_id, new_key) {
 
   chats = chats.map((chat) => {
     return {
-      id: chat?.id,
+      ...chat,
       key: chat?.id === chat_id ? new_key : chat?.key,
     }
   })
