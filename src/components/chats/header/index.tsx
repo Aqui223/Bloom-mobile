@@ -1,15 +1,14 @@
 import { useWebSocket } from '@api/providers/WebSocketContext'
 import { Button, GradientBlur, Icon } from '@components/ui'
 import { charAnimationIn, charAnimationOut, quickSpring, zoomAnimationIn, zoomAnimationOut } from '@constants/animations'
-import type { BottomSheetModal } from '@gorhom/bottom-sheet'
 import { useInsets } from '@hooks'
 import useChatsStore from '@stores/chats'
 import useTabBarStore from '@stores/tabBar'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useRouter } from 'expo-router'
+import { useCallback, useEffect, useState } from 'react'
 import { View } from 'react-native'
 import Animated, { useAnimatedStyle, withSpring } from 'react-native-reanimated'
 import { useUnistyles } from 'react-native-unistyles'
-import NewMessageSheet from '../newMessageSheet'
 import { styles } from './header.styles'
 import Title from './Title'
 
@@ -22,10 +21,10 @@ export default function Header() {
   const [status, setStatus] = useState('connecting')
   const { setHeaderHeight, setEdit, edit, clearSelectedChats } = useChatsStore()
   const setType = useTabBarStore((state) => state.setType)
-  const sheetRef = useRef<BottomSheetModal>(null)
+  const router = useRouter()
 
   const handlePresentModalPress = useCallback(() => {
-    sheetRef.current?.present()
+    router.navigate('/NewMessage')
   }, [])
 
   const animatedButtonStyle = useAnimatedStyle(() => ({
@@ -47,33 +46,28 @@ export default function Header() {
   }, [ws])
 
   return (
-    <>
-      <View onLayout={(e) => setHeaderHeight(e.nativeEvent.layout.height)} style={[styles.header, { paddingTop: insets.top }]}>
-        <GradientBlur direction="top-to-bottom" />
-        <View style={[styles.topHeader]}>
-          <Button onPress={editPress} blur variant="icon">
-            {edit ? (
-              <>
-                <Animated.View style={styles.buttonBackground} entering={zoomAnimationIn} exiting={zoomAnimationOut} />
-                <Animated.View entering={charAnimationIn()} exiting={charAnimationOut()}>
-                  <Icon icon="checkmark" color={theme.colors.white} />
-                </Animated.View>
-              </>
-            ) : (
-              <Animated.View entering={zoomAnimationIn} exiting={zoomAnimationOut}>
-                <Icon icon="pencil" color={theme.colors.text} />
+    <View onLayout={(e) => setHeaderHeight(e.nativeEvent.layout.height)} style={[styles.header, { paddingTop: insets.top }]}>
+      <GradientBlur direction="top-to-bottom" />
+      <View style={[styles.topHeader]}>
+        <Button onPress={editPress} blur variant="icon">
+          {edit ? (
+            <>
+              <Animated.View style={styles.buttonBackground} entering={zoomAnimationIn} exiting={zoomAnimationOut} />
+              <Animated.View entering={charAnimationIn()} exiting={charAnimationOut()}>
+                <Icon icon="checkmark" color={theme.colors.white} />
               </Animated.View>
-            )}
-          </Button>
-          <Title state={status} />
-          <AnimatedButton onPress={handlePresentModalPress} style={animatedButtonStyle} blur variant="icon">
-            <Icon icon="plus" color={theme.colors.text} />
-          </AnimatedButton>
-        </View>
+            </>
+          ) : (
+            <Animated.View entering={zoomAnimationIn} exiting={zoomAnimationOut}>
+              <Icon icon="pencil" color={theme.colors.text} />
+            </Animated.View>
+          )}
+        </Button>
+        <Title state={status} />
+        <AnimatedButton onPress={handlePresentModalPress} style={animatedButtonStyle} blur variant="icon">
+          <Icon icon="plus" color={theme.colors.text} />
+        </AnimatedButton>
       </View>
-
-      {/* Sheets */}
-      <NewMessageSheet ref={sheetRef} />
-    </>
+    </View>
   )
 }
