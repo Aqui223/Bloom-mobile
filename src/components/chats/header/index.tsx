@@ -12,8 +12,6 @@ import { useUnistyles } from 'react-native-unistyles'
 import { styles } from './header.styles'
 import Title from './Title'
 
-const AnimatedButton = Animated.createAnimatedComponent(Button)
-
 export default function Header() {
   const ws = useWebSocket()
   const insets = useInsets()
@@ -64,9 +62,9 @@ export default function Header() {
           )}
         </Button>
         <Title state={status} />
-        <AnimatedButton onPress={handlePresentModalPress} style={animatedButtonStyle} blur variant="icon">
+        <Button onPress={handlePresentModalPress} style={animatedButtonStyle} blur variant="icon">
           <Icon icon="plus" color={theme.colors.text} />
-        </AnimatedButton>
+        </Button>
       </View>
     </View>
   )

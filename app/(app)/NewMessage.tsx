@@ -1,15 +1,23 @@
 import Chat from '@components/chats/chat'
+import { Button, GradientBlur, Icon } from '@components/ui'
 import { API_URL } from '@constants/api'
+import { useInsets } from '@hooks'
 import type { User } from '@interfaces'
 import axios from 'axios'
+import { useRouter } from 'expo-router'
 import { useCallback, useEffect, useState } from 'react'
-import { View } from 'react-native'
+import { Text, View } from 'react-native'
 import Transition from 'react-native-screen-transitions'
-import { StyleSheet } from 'react-native-unistyles'
+import { StyleSheet, useUnistyles } from 'react-native-unistyles'
 
 export default function NewMessage() {
   const [users, setUsers] = useState<User[]>()
-  const [loadingUsers, setLoadingUsers] = useState(false)
+  const insets = useInsets()
+  const [_loadingUsers, setLoadingUsers] = useState(false)
+  const { theme } = useUnistyles()
+  const router = useRouter()
+
+  const headerHeight = theme.spacing.lg + theme.spacing.md + 44
 
   const renderItem = useCallback(({ item }) => {
     return <Chat chat={item} isSearch />
@@ -18,6 +26,10 @@ export default function NewMessage() {
   const keyExtractor = useCallback((item: User) => {
     return String(item?.id)
   }, [])
+
+  const handlePress = () => {
+    router.back()
+  }
 
   useEffect(() => {
     const abortController = new AbortController()
@@ -29,13 +41,7 @@ export default function NewMessage() {
           signal: abortController.signal,
         })
         setUsers(response.data)
-        console.log('Users loaded:', response.data[0])
-      } catch (error) {
-        if (axios.isCancel(error)) {
-          console.log('Запрос отменен (компонент размонтирован)')
-        } else {
-          console.error('Ошибка при загрузке пользователей:', error)
-        }
+      } catch (_error) {
       } finally {
         setLoadingUsers(false)
       }
@@ -49,7 +55,21 @@ export default function NewMessage() {
   }, [])
   return (
     <View style={styles.container}>
-      <Transition.FlatList style={{ flex: 1 }} keyExtractor={keyExtractor} renderItem={renderItem} data={users} />
+      <Transition.FlatList
+        style={{ flex: 1 }}
+        keyExtractor={keyExtractor}
+        scrollIndicatorInsets={{ bottom: insets.bottom, top: headerHeight }}
+        contentContainerStyle={styles.listContent(insets.bottom, headerHeight)}
+        renderItem={renderItem}
+        data={users}
+      />
+      <View style={styles.header}>
+        <GradientBlur direction="top-to-bottom" />
+        <Button onPress={handlePress} blur variant="icon">
+          <Icon icon="x" color={theme.colors.text} />
+        </Button>
+        <Text style={styles.title}>Новый чат</Text>
+      </View>
     </View>
   )
 }
@@ -62,9 +82,23 @@ const styles = StyleSheet.create((theme) => ({
     flex: 1,
   },
   listContent: (paddingBottom: number, paddingTop: number) => ({
-    paddingHorizontal: theme.spacing.lg,
     paddingBottom,
-    gap: theme.spacing.sm,
-    paddingTop: paddingTop + theme.spacing.md,
+    paddingTop: paddingTop,
   }),
+  header: {
+    width: '100%',
+    padding: theme.spacing.lg,
+    position: 'absolute',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingBottom: theme.spacing.md,
+    paddingRight: 44 + theme.spacing.lg,
+  },
+  title: {
+    fontSize: theme.fontSize.lg,
+    textAlign: 'center',
+    flex: 1,
+    fontFamily: theme.fontFamily.semibold,
+    color: theme.colors.text,
+  },
 }))

@@ -76,6 +76,6 @@ export default function RootLayout() {
 
 const styles = StyleSheet.create((theme) => ({
   content: {
-    backgroundColor: theme.colors.background,
+    backgroundColor: theme.colors.black,
   },
 }))

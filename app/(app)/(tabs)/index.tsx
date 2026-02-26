@@ -4,7 +4,6 @@ import Header from '@components/chats/header'
 import Search from '@components/chats/search'
 import { EmptyModal } from '@components/ui'
 import { fastSpring } from '@constants/easings'
-import { useInsets } from '@hooks'
 import type { Chat } from '@interfaces'
 import { LegendList } from '@legendapp/list'
 import useChatsScreenStore from '@stores/chats'
@@ -19,7 +18,6 @@ export default function TabChats() {
   const { headerHeight } = useChatsScreenStore()
   const { height, search } = useTabBarStore()
   const { userID } = useTokenTriggerStore()
-  const insets = useInsets()
   const { chats } = useChatList()
 
   const animatedViewStyle = useAnimatedStyle(
@@ -48,12 +46,12 @@ export default function TabChats() {
           keyExtractor={keyExtractor}
           showsVerticalScrollIndicator
           contentContainerStyle={{
-            paddingTop: headerHeight ?? 0,
-            paddingBottom: height ?? 0,
+            paddingTop: headerHeight,
+            paddingBottom: height,
           }}
           scrollIndicatorInsets={{
-            top: (headerHeight ?? 0) - (insets.realTop ?? 0),
-            bottom: (height ?? 0) - (insets.realBottom ?? 0),
+            top: headerHeight,
+            bottom: height,
           }}
         />
         {chats?.length === 0 ? (
