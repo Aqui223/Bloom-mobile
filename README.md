@@ -73,6 +73,13 @@ npx expo run:ios
 npx expo run:android
 ```
 
+If this command shows the error `CommandError: No Android connected device found, and no emulators could be started automatically.`, then add the following into your `~/.bashrc` file and then reopen the terminal emulator window.
+```
+export ANDROID_HOME=$HOME/Library/Android/sdk
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=$PATH:$ANDROID_HOME/platform-tools
+```
+
 ---
 
 ## Scripts
