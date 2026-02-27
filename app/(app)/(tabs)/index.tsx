@@ -1,14 +1,13 @@
 import { useChatList } from '@api/providers/ChatsContext'
-import ChatItem from '@components/chats/chat/ChatItem'
+import Chat from '@components/chats/chat'
 import Header from '@components/chats/header'
 import Search from '@components/chats/search'
 import { EmptyModal } from '@components/ui'
 import { fastSpring } from '@constants/easings'
-import type { Chat } from '@interfaces'
-import { LegendList } from '@legendapp/list'
+import type { Chat as ChatType } from '@interfaces'
+import { FlashList } from '@shopify/flash-list'
 import useChatsScreenStore from '@stores/chats'
 import useTabBarStore from '@stores/tabBar'
-import useTokenTriggerStore from '@stores/tokenTriggerStore'
 import { useCallback } from 'react'
 import type { ViewStyle } from 'react-native'
 import Animated, { useAnimatedStyle, withSpring } from 'react-native-reanimated'
@@ -17,8 +16,9 @@ import { StyleSheet } from 'react-native-unistyles'
 export default function TabChats() {
   const { headerHeight } = useChatsScreenStore()
   const { height, search } = useTabBarStore()
-  const { userID } = useTokenTriggerStore()
   const { chats } = useChatList()
+
+  const lastIndex = chats?.length - 1
 
   const animatedViewStyle = useAnimatedStyle(
     (): ViewStyle => ({
@@ -26,12 +26,12 @@ export default function TabChats() {
     }),
   )
 
-  const keyExtractor = useCallback((item: Chat) => {
+  const keyExtractor = useCallback((item: ChatType) => {
     return String(item?.id)
   }, [])
 
-  const renderItem = useCallback(({ item, id }: { item: Chat; id: number }) => {
-    return <ChatItem item={item} userId={id} />
+  const renderItem = useCallback(({ item, index }: { item: ChatType; index: number }) => {
+    return <Chat chat={item} isLast={index === lastIndex} />
   }, [])
 
   return (
@@ -39,12 +39,13 @@ export default function TabChats() {
       <Search />
       <Animated.View style={[styles.container, animatedViewStyle]}>
         <Header />
-        <LegendList
+        <FlashList
           data={chats}
           style={styles.list}
-          renderItem={({ item }) => renderItem({ item, id: userID })}
+          renderItem={renderItem}
           keyExtractor={keyExtractor}
           showsVerticalScrollIndicator
+          automaticallyAdjustsScrollIndicatorInsets={false}
           contentContainerStyle={{
             paddingTop: headerHeight,
             paddingBottom: height,

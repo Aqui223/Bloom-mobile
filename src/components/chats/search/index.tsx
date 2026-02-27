@@ -1,6 +1,6 @@
 import { EmptyModal } from '@components/ui'
 import { getFadeIn, getFadeOut } from '@constants/animations'
-import { useInsets, useUsersSearch } from '@hooks'
+import { useUsersSearch } from '@hooks'
 import type { SearchUser as SearchUserType } from '@interfaces'
 import { FlashList, type ListRenderItem } from '@shopify/flash-list'
 import useTabBarStore from '@stores/tabBar'
@@ -15,7 +15,6 @@ const AnimatedFlashList = Animated.createAnimatedComponent(FlashList)
 
 export default function Search() {
   const { search, searchValue, height } = useTabBarStore()
-  const insets = useInsets()
   const scrollY = useSharedValue<number>(0)
   const [headerHeight, setHeaderHeight] = useState<number>(0)
   const { users, status, loadMore } = useUsersSearch(searchValue)
@@ -53,10 +52,11 @@ export default function Search() {
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator
+        automaticallyAdjustsScrollIndicatorInsets={false}
         contentContainerStyle={{ paddingBottom: height }}
         scrollIndicatorInsets={{
-          top: headerHeight - insets.realTop,
-          bottom: height - insets.realBottom,
+          top: headerHeight,
+          bottom: height,
         }}
         data={users}
         renderItem={renderItem}

@@ -35,7 +35,7 @@ export default function Avatar({
   ...props
 }: AvatarProps) {
   const dimension = SIZE_MAP[size]
-  const letter = username[0]?.toLowerCase()
+  const letter = username[0]?.toLowerCase() || 'a'
   const emojiResult = EMOJI_AVATARS[letter]
 
   const avatarStyle = styles.avatar({

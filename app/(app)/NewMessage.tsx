@@ -1,12 +1,12 @@
-import Chat from '@components/chats/chat'
+import SearchUser from '@components/chats/search/SearchUser'
 import { Button, GradientBlur, Icon } from '@components/ui'
 import { API_URL } from '@constants/api'
 import { useInsets } from '@hooks'
-import type { User } from '@interfaces'
+import type { SearchUser as SearchUserType, User } from '@interfaces'
 import axios from 'axios'
 import { useRouter } from 'expo-router'
 import { useCallback, useEffect, useState } from 'react'
-import { Text, View } from 'react-native'
+import { type ListRenderItem, Text, View } from 'react-native'
 import Transition from 'react-native-screen-transitions'
 import { StyleSheet, useUnistyles } from 'react-native-unistyles'
 
@@ -17,10 +17,12 @@ export default function NewMessage() {
   const { theme } = useUnistyles()
   const router = useRouter()
 
+  const lastIndex = users?.length - 1
+
   const headerHeight = theme.spacing.lg + theme.spacing.md + 44
 
-  const renderItem = useCallback(({ item }) => {
-    return <Chat chat={item} isSearch />
+  const renderItem: ListRenderItem<SearchUserType> = useCallback(({ item, index }) => {
+    return <SearchUser user={item} isLast={index === lastIndex} />
   }, [])
 
   const keyExtractor = useCallback((item: User) => {

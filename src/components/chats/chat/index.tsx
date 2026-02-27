@@ -2,7 +2,9 @@ import { Avatar, Button, Checkbox } from '@components/ui'
 import Icon from '@components/ui/Icon'
 import { getCharEnter, getCharExit, getFadeIn, getFadeOut, layoutAnimationSpringy, springyChar } from '@constants/animations'
 import { useChatItem } from '@hooks'
-import type { ChatView } from '@interfaces'
+import type { Chat as ChatType, ChatView } from '@interfaces'
+import formatSentTime from '@lib/formatSentTime'
+import useTokenTriggerStore from '@stores/tokenTriggerStore'
 import { useMemo } from 'react'
 import { Pressable, Text, View } from 'react-native'
 import Animated, { LayoutAnimationConfig } from 'react-native-reanimated'
@@ -10,7 +12,7 @@ import { useUnistyles } from 'react-native-unistyles'
 import { styles } from './Chat.styles'
 
 interface ChatProps {
-  chat: ChatView
+  chat: ChatType
   isLast?: boolean
 }
 
@@ -18,13 +20,28 @@ const AnimatedPressable = Animated.createAnimatedComponent(Pressable)
 const AnimatedCheckbox = Animated.createAnimatedComponent(Checkbox)
 
 export default function Chat({ chat, isLast = false }: ChatProps) {
+  const userID = useTokenTriggerStore((state) => state.userID)
   const { theme } = useUnistyles()
-  const { selected, edit, pinned, animatedMetaRowStyle, animatedShiftStyle, animatedChatStyle, pin, select, handlePress, onPressHandler } =
-    useChatItem(chat, false, theme)
 
-  const recipient = chat?.recipient
-  const lastMessage = chat?.lastMessage
+  const lastMessage = {
+    time: chat?.last_message?.date ? formatSentTime(chat?.last_message?.date) : '',
+    content: chat?.last_message?.content || 'Чат создан',
+  }
+
   const timeChars = useMemo(() => lastMessage?.time?.split('') || [], [lastMessage?.time])
+  const recipient = useMemo(() => chat.members?.find((member) => member.id !== userID), [chat, chat.members, userID])
+  const chatData = useMemo(
+    (): ChatView => ({
+      lastMessage,
+      recipient,
+      id: chat.id,
+      avatar: '',
+      unreadCount: 0,
+    }),
+    [chat.id, lastMessage, recipient],
+  )
+  const { selected, edit, pinned, animatedMetaRowStyle, animatedShiftStyle, animatedChatStyle, pin, select, handlePress, onPressHandler } =
+    useChatItem(chatData, false, theme)
 
   return (
     <AnimatedPressable
